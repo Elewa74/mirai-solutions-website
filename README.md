@@ -70,6 +70,10 @@ For WhatsApp follow-up, set `MIRAI_WHATSAPP` to the Mirai WhatsApp number in int
 
 This current build is dependency-free (Node + HTML/CSS/JS) because the execution environment could not reach the npm registry while building the site. The content model, routes, and UI can later be migrated to Next.js without changing the information architecture or visual direction.
 
+## Static preview on GitHub Pages
+
+`.github/workflows/pages.yml` publishes a static export on every push to `main` (`npm run export` → `dist/`). Pages get folder URLs (`/solutions/`), root-relative URLs are prefixed with the Pages base path, the Mirai Lens form falls back to the audit page and the audit form shows a preview notice (no server on Pages). A project-site preview is `noindex`; once a custom domain is set in Settings → Pages the export runs at the domain root with indexing on and a sitemap. The full-featured site (instant scan + email/WhatsApp lead flow) needs the Node server — see Deploy.
+
 ## Deploy
 
 See `PRE-LAUNCH.md` for the checklist. `npm run check` runs the tests and the 253-point preflight (routes, SEO, headers, assets, API). `render.yaml` (repo root) is a Render Blueprint — free plan for review, `SITE_URL=https://miraisolutions.net` (the domain is registered at NameSilo; DNS steps in PRE-LAUNCH.md), and `MIRAI_REDIRECT_TO_SITE_URL=1` turns on a 301 from any other host (onrender.com, www) to the canonical domain once DNS is live; `deploy/` holds a systemd unit + Caddyfile for a VPS and a Dockerfile. Copy `deploy/env.production.example.txt` to `.env` and run `npm run start:prod`.

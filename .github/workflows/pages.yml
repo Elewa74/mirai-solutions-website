@@ -1,0 +1,53 @@
+# Publishes a static export of the site to GitHub Pages on every push to main.
+# Preview URL: https://<user>.github.io/<repo>/  — once a custom domain is set in Settings → Pages,
+# configure-pages reports an empty base path and the same workflow publishes at the domain root.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Tests
+        run: node --test "tests/*.test.mjs"
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Export static site
+        run: node scripts/export-static.mjs
+        env:
+          NODE_ENV: production
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: https://miraisolutions.net
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

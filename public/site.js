@@ -2,6 +2,9 @@ import { nextTheme, resolveTheme } from "/theme.mjs";
 
 const root = document.documentElement;
 const locale = document.body.dataset.locale || "en";
+// Static export (GitHub Pages): no API — Lens falls back to the audit page, the audit form shows a preview notice.
+const STATIC = document.body.dataset.static === "1";
+const BASE = document.body.dataset.base || "";
 
 function currentTheme() {
   let stored = null;
@@ -45,7 +48,17 @@ function fieldError(field, code) {
 }
 
 const form = document.querySelector("[data-audit-form]");
-if (form) {
+if (form && STATIC) {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const message = form.querySelector("[data-form-message]");
+    if (message) message.textContent = locale === "ar"
+      ? "هذه نسخة معاينة ثابتة — الطلب لا يُرسل من هنا. على الموقع الفعلي يصل الطلب إلى Mirai بالبريد ورابط واتساب فورًا."
+      : "This is a static preview — the request isn't sent from here. On the live site it reaches Mirai by email with a WhatsApp link instantly.";
+    message?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+}
+if (form && !STATIC) {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const submit = form.querySelector("button[type='submit']");
@@ -60,7 +73,7 @@ if (form) {
     submit?.setAttribute("disabled", "");
 
     try {
-      const response = await fetch("/api/audit", {
+      const response = await fetch(`${BASE}/api/audit`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ ...data, locale })
@@ -355,7 +368,7 @@ function esc(s) { return String(s ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&a
 
 function renderScan(report) {
   const c = scanCopy();
-  const auditHref = (document.body.dataset.locale === "ar" ? "/ar/audit" : "/audit") + `?site=${encodeURIComponent(report.url)}&score=${report.total}`;
+  const auditHref = BASE + (document.body.dataset.locale === "ar" ? "/ar/audit" : "/audit") + `?site=${encodeURIComponent(report.url)}&score=${report.total}`;
   const weak = new Set(report.weakest);
   const ordered = [...report.checks].sort((a, b) => (weak.has(b.key) - weak.has(a.key)) || a.score - b.score);
   scanResult.innerHTML = `
@@ -397,7 +410,7 @@ function renderScan(report) {
   });
 }
 
-if (scanForm && scanResult) {
+if (scanForm && scanResult && !STATIC) {
   const input = scanForm.querySelector("input[name='site']");
   const label = scanForm.querySelector("[data-scan-label]");
   const errorEl = scanForm.querySelector("[data-scan-error]");
@@ -409,7 +422,7 @@ if (scanForm && scanResult) {
     if (!value) { input.focus(); return; }
     scanForm.classList.add("is-busy"); label.textContent = c.scanning;
     try {
-      const res = await fetch("/api/scan", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url: value }) });
+      const res = await fetch(`${BASE}/api/scan`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url: value }) });
       const data = await res.json();
       if (!data.ok) { errorEl.textContent = c.errors[data.error] || c.errors.invalid_request; return; }
       try { sessionStorage.setItem(SCAN_KEY, JSON.stringify({ url: data.report.url, total: data.report.total, weakest: data.report.weakest })); } catch {}
@@ -436,7 +449,9 @@ if (form) {
     const note = document.createElement("p");
     note.className = "scan-handoff";
     const s = score || last?.total;
-    note.textContent = locale === "ar" ? `تم ربط نتيجة الفحص الفوري (${s}/100) بهذا الطلب — سنبدأ من نقاط الضعف التي ظهرت.` : `Your instant scan result (${s}/100) is attached to this request — we'll start from the gaps it surfaced.`;
+    note.textContent = s != null
+      ? (locale === "ar" ? `تم ربط نتيجة الفحص الفوري (${s}/100) بهذا الطلب — سنبدأ من نقاط الضعف التي ظهرت.` : `Your instant scan result (${s}/100) is attached to this request — we'll start from the gaps it surfaced.`)
+      : (locale === "ar" ? `سنبدأ المراجعة من موقعك الحالي: ${website.value}` : `We'll start the review from your current site: ${website.value}`);
     form.prepend(note);
   }
 }

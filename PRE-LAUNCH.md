@@ -27,7 +27,10 @@
 4. انسخ `deploy/env.production.example.txt` إلى `.env` على الخادم وعبّئ القيم. **لا ترفع `.env` إلى Git.**
 5. شغّل `npm run check` مرة أخيرة بعد ضبط `.env` — يجب أن يختفي التحذير الوحيد المتبقي (env).
 
-## خيارات الرفع (كلها بلا build step — Node 20+ فقط)
+## معاينة عامة على GitHub Pages (بدون سيرفر)
+كل push إلى `main` ينشر نسخة ثابتة تلقائيًا (`.github/workflows/pages.yml`). تُظهر كل الصفحات والتصميم، لكن الفحص الفوري وإرسال الفورم يحتاجان السيرفر (Render/VPS). لتحويلها إلى الدومين: Settings → Pages → Custom domain = `miraisolutions.net`، وفي NameSilo: أربعة سجلات A للجذر (185.199.108.153 / 185.199.109.153 / 185.199.110.153 / 185.199.111.153) وسجل CNAME للـ `www` → `elewa74.github.io`، ثم فعّل Enforce HTTPS.
+
+## خيارات الرفع الكاملة (كلها بلا build step — Node 20+ فقط)
 | الخيار | الملف | الخطوات |
 |---|---|---|
 | **Render** (الأسهل) | `render.yaml` في جذر المشروع | ادفع المشروع إلى GitHub → Render → New + → Blueprint → اختر الريبو → Apply. خطة Free كافية للمراجعة (تنام بعد 15 دقيقة خمول؛ ارفعها إلى Starter للإنتاج). `SITE_URL` غير مطلوب على Render حتى يكون لديك دومين (يستخدم `RENDER_EXTERNAL_URL` تلقائيًا). أضف الأسرار لاحقًا من تبويب Environment. HTTPS تلقائي. |
