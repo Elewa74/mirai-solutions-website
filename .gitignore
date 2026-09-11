@@ -13,3 +13,4 @@ Thumbs.db
 
 # static export
 dist/
+public/fonts/

@@ -601,6 +601,22 @@ if (!reduceMotion) {
   run(); window.addEventListener("scroll", run, { passive: true });
 }
 
+// mobile sticky CTA: appears after the hero, hides near the final CTA / footer
+const mobileCta = document.querySelector("[data-mobile-cta]");
+if (mobileCta) {
+  const link = mobileCta.querySelector("a");
+  const finalCta = document.querySelector(".final-cta, .audit-promo, .site-footer");
+  const update = () => {
+    const pastHero = window.scrollY > Math.max(520, window.innerHeight * 0.85);
+    const nearEnd = finalCta ? finalCta.getBoundingClientRect().top < window.innerHeight * 0.9 : false;
+    const show = pastHero && !nearEnd && matchMedia("(max-width: 640px)").matches;
+    mobileCta.classList.toggle("is-visible", show);
+    mobileCta.setAttribute("aria-hidden", show ? "false" : "true");
+    link.tabIndex = show ? 0 : -1;
+  };
+  update(); window.addEventListener("scroll", update, { passive: true }); window.addEventListener("resize", update, { passive: true });
+}
+
 // cursor glow on dark bands
 if (matchMedia("(pointer: fine)").matches) {
   document.querySelectorAll(".dark-section, .lens-band").forEach((band) => {
