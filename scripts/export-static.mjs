@@ -7,28 +7,41 @@
  * What changes versus the Node server:
  *   - every route becomes <route>/index.html (GitHub Pages serves folders)
  *   - root-relative URLs are prefixed with BASE_PATH; page links get a trailing slash
- *   - body gets data-static="1" so site.js degrades gracefully: the Mirai Lens form falls back to the
- *     audit page (no /api/scan) and the audit form shows a preview notice (no /api/audit)
+ *   - body gets data-static="1" so site.js degrades honestly: there is no /api/consultation, so the
+ *     consultation form validates client-side and hands off to WhatsApp with the details pre-filled
+ *     (MIRAI_WHATSAPP is baked into data-whatsapp at export time)
+ *   - legacy URLs (/work, /audit, /manufacturing, /retail, /ngo + Arabic) become noindex redirect pages
  *   - a preview build (BASE_PATH set) is marked noindex and robots.txt disallows crawling; a root
- *     build (custom domain) keeps indexing on and ships sitemap.xml
+ *     build (custom domain) keeps indexing on and ships sitemap.xml with the canonical pages only
  */
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { renderPage } from "../lib/render.mjs";
+import { LEGACY_REDIRECTS, PUBLIC_ROUTES, legacyRedirect } from "../lib/http.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const dist = resolve(root, "dist");
+const dist = process.env.EXPORT_DIR ? resolve(process.env.EXPORT_DIR) : resolve(root, "dist");
 const BASE = (process.env.BASE_PATH || "").replace(/\/+$/, "");
 const preview = BASE !== "";
 const siteUrl = (process.env.SITE_URL || process.env.RENDER_EXTERNAL_URL || "https://miraisolutions.net").replace(/\/$/, "");
-const routes = ["/", "/solutions", "/who-we-help", "/manufacturing", "/retail", "/ngo", "/work", "/about", "/audit"];
+const routes = PUBLIC_ROUTES;
 const all = [...routes.map((r) => ({ path: r, locale: "en" })), ...routes.map((r) => ({ path: r === "/" ? "/ar" : `/ar${r}`, locale: "ar" }))];
 const routeSet = new Set(all.map((r) => r.path));
+const legacyPaths = Object.keys(LEGACY_REDIRECTS);
+const legacy = [...legacyPaths.map((p) => ({ path: p, locale: "en" })), ...legacyPaths.map((p) => ({ path: `/ar${p}`, locale: "ar" }))];
+
+/** "/who-we-help" → "<BASE>/who-we-help/", "/" → "<BASE>/", keeps ?query and #hash */
+function staticUrl(dest) {
+  const m = dest.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/);
+  const path = m[1] || "/", query = m[2] || "", hash = m[3] || "";
+  const page = path === "/" ? "/" : `${path.replace(/\/$/, "")}/`;
+  return `${BASE}${page}${query}${hash}`;
+}
 
 function rewrite(html) {
   // page links → BASE + route + trailing slash (so GitHub Pages serves index.html without a redirect)
-  html = html.replace(/(href|action)="(\/[a-z-]*(?:\/[a-z-]+)?)"/g, (m, attr, p) => (routeSet.has(p) ? `${attr}="${BASE}${p === "/" ? "/" : p + "/"}"` : m));
+  html = html.replace(/(href|action)="(\/[a-z-]*(?:\/[a-z-]+)?)(#[a-z-]+)?"/g, (m, attr, p, hash = "") => (routeSet.has(p) ? `${attr}="${BASE}${p === "/" ? "/" : p + "/"}${hash}"` : m));
   // assets
   html = html.replace(/(href|src|action)="\/(site\.css|site\.js|theme\.mjs|favicon\.svg|favicon\.ico|favicon-32\.png|apple-touch-icon\.png|site\.webmanifest|brand\/|images\/)/g, (m, attr, tail) => `${attr}="${BASE}/${tail}`);
   html = html.replace(/(srcset|imagesrcset)="([^"]+)"/g, (m, attr, list) => `${attr}="${list.replace(/(^|,\s*)\/(images|brand)\//g, `$1${BASE}/$2/`)}"`);
@@ -44,6 +57,14 @@ await mkdir(dist, { recursive: true });
 for (const { path, locale } of all) {
   const html = rewrite(renderPage(path, locale));
   const dir = resolve(dist, "." + (path === "/" ? "" : path));
+  await mkdir(dir, { recursive: true });
+  await writeFile(resolve(dir, "index.html"), html);
+}
+// legacy URLs → noindex redirect pages (meta refresh + JS + visible link)
+for (const { path, locale } of legacy) {
+  const dest = staticUrl(legacyRedirect(path));
+  const html = rewrite(renderPage("/redirect", locale, { redirectTo: dest }));
+  const dir = resolve(dist, "." + path);
   await mkdir(dir, { recursive: true });
   await writeFile(resolve(dir, "index.html"), html);
 }
@@ -74,4 +95,4 @@ if (preview) {
   await writeFile(resolve(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${urls}</urlset>`);
 }
 
-console.log(`exported ${all.length} pages → dist/ (base path: "${BASE || "/"}", ${preview ? "preview/noindex" : "indexable"})`);
+console.log(`exported ${all.length} pages + ${legacy.length} legacy redirects → ${dist} (base path: "${BASE || "/"}", ${preview ? "preview/noindex" : "indexable"}${process.env.MIRAI_WHATSAPP ? ", WhatsApp hand-off configured" : ", MIRAI_WHATSAPP not set"})`);

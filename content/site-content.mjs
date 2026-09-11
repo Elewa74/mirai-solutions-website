@@ -1,244 +1,282 @@
+/**
+ * Site copy for both locales. Shapes must match exactly (see tests/content.test.mjs).
+ * Arabic is written as natural Modern Standard Arabic for Egypt/MENA business audiences — not a literal translation.
+ */
+
 const en = {
   nav: {
     items: [
       { label: "Solutions", href: "/solutions" },
       { label: "Who We Help", href: "/who-we-help" },
-      { label: "Work", href: "/work" },
       { label: "About", href: "/about" }
     ],
-    audit: { label: "Get a Free Audit", href: "/audit" },
+    cta: "Get a Free Consultation",
     language: "AR",
     theme: "Theme",
     menu: "Menu"
   },
   global: {
-    brandLine: "Websites and digital presence built around real business goals.",
+    brandLine: "Practical digital solutions built around real business needs.",
     philosophy: "The future belongs to those who create it.",
-    auditLabel: "Get a Free Digital Presence Audit",
+    consultLabel: "Get a Free Consultation",
+    consultShort: "Request a Consultation",
     talkLabel: "Talk to Mirai",
-    workLabel: "View Our Work"
+    discussLabel: "Discuss this solution",
+    exploreLabel: "Explore Our Solutions",
+    flagship: "Flagship solution"
   },
+  meta: {
+    "/": { title: "Mirai Solutions | Practical Digital Solutions for Growing Businesses", description: "Mirai Solutions helps growing businesses and organizations with websites, digital presence, brand essentials, content digitalization and smarter digital workflows." },
+    "/solutions": { title: "Digital Solutions for SMEs & Organizations | Mirai Solutions", description: "Four practical solution areas — websites & digital presence, brand essentials, content digitalization and smarter workflows — built around the problem first." },
+    "/who-we-help": { title: "Digital Solutions for SMEs, Manufacturers, Retail & NGOs | Mirai Solutions", description: "SMEs across sectors, with deeper thinking for manufacturers, retail and local chains, and NGOs — different businesses, different challenges, practical digital solutions." },
+    "/about": { title: "About Mirai Solutions | Business, Technology & Practical Digital Solutions", description: "Mirai means Future: a technology-driven company combining business understanding, creativity, AI and modern tools to create practical digital solutions." }
+  },
+  solutions: [
+    {
+      key: "websites",
+      flagship: true,
+      name: "Websites & Digital Presence",
+      short: "Websites",
+      positioning: "Professional websites built around business goals — with strategy, structure, content, design and development handled as one connected process.",
+      needs: ["New business website", "Website redesign", "Bilingual Arabic / English", "Product / service presentation", "Lead / inquiry journeys", "Content and messaging"],
+      problem: "Customers, buyers and partners check a business online before they call. An outdated or unclear website makes an established business look smaller and less capable than it really is.",
+      helps: "We shape the message, structure the customer journey, write and organize the content, and design and build the website — in Arabic and English — around the action you need visitors to take.",
+      outputs: ["Website strategy and structure", "Bilingual copy and content organization", "Responsive design and development", "Inquiry, quotation or contact journeys", "Launch, handover and ownership of the site"],
+      useful: "Businesses that win customers, buyers or partners through credibility and clear information — from SMEs and professional services to manufacturers, retail chains and organizations."
+    },
+    {
+      key: "brand",
+      flagship: false,
+      name: "Brand Essentials & Business Materials",
+      short: "Brand",
+      positioning: "Practical brand foundations and business materials for growing organizations that need to look clear, consistent and professional.",
+      needs: ["Essential visual identity", "Logo / identity refinement where appropriate", "Basic brand guidelines", "Company profiles", "Essential business materials"],
+      problem: "A logo used ten different ways, a company profile from three years ago and presentations that never match: growing organizations often look improvised even when the work behind them is solid.",
+      helps: "We build the practical foundations — an essential identity, simple guidelines and the materials you actually use every week — so everything you send out looks like it comes from the same, professional organization.",
+      outputs: ["Essential visual identity or refinement of the current one", "Basic brand guidelines", "Company profile", "Presentation and document templates", "Essential business materials in Arabic and English"],
+      useful: "Growing businesses and organizations that need consistency across proposals, profiles, presentations and digital channels — without a large rebranding programme."
+    },
+    {
+      key: "content",
+      flagship: false,
+      name: "Content Digitalization",
+      short: "Content",
+      positioning: "Turn valuable information trapped in PDFs, manuals, Word documents and static files into clearer, easier-to-use digital experiences.",
+      needs: ["Reports", "Manuals", "Guides", "Training materials", "Static documents", "Interactive / accessible digital content"],
+      problem: "Valuable knowledge sits in PDFs, manuals and reports that are hard to find, hard to read on a phone and hard to keep up to date — so it is rarely used.",
+      helps: "We restructure the content, design it for screens and turn it into digital experiences people actually use: searchable, accessible, bilingual where needed and easy to update.",
+      outputs: ["Digital versions of reports, manuals and guides", "Interactive or web-based training material", "Structured, searchable content", "Accessible, mobile-friendly documents", "A simple way to keep content updated"],
+      useful: "Organizations with reports, manuals, guides, training materials or programme documentation that deserve a better digital life."
+    },
+    {
+      key: "workflows",
+      flagship: false,
+      name: "Digital Consulting & Smarter Workflows",
+      short: "Workflows",
+      positioning: "Identify digital bottlenecks, improve everyday processes and use modern tools or automation where they create meaningful business value.",
+      needs: ["Repetitive manual tasks", "Disconnected tools", "Operational friction", "Digital process improvement", "Workflow automation", "Practical digital guidance"],
+      problem: "Repetitive manual tasks, disconnected tools and operational friction quietly cost time every day — and buying more technology rarely fixes them on its own.",
+      helps: "We map how the work actually happens, find the bottlenecks and apply the simplest practical improvement: a clearer workflow, the right tool, or targeted automation where it creates real value.",
+      outputs: ["Digital process review and recommendations", "Workflow redesign", "Tool selection and setup", "Targeted automation of repetitive tasks", "Practical guidance and training for the team"],
+      useful: "Teams that feel the friction of manual work and disconnected tools and want practical, measurable improvement — not a platform migration."
+    }
+  ],
   home: {
     hero: {
-      kicker: "WEBSITES & DIGITAL PRESENCE",
-      title: "Websites built around what your business needs to achieve.",
-      segments: "Business-first websites for manufacturers, retail chains and organizations — built to explain, earn trust and move people to the next step.",
-      rotate: { before: "Websites built around what your", words: ["factory", "retail chain", "organization", "business"], after: "needs to achieve." },
-      ring: { label: "One team · strategy to launch", nodes: ["Manufacturers", "Retail chains", "Organizations"] },
-      body: "Mirai handles the strategy, content, design and development needed to build a professional digital presence that helps customers, buyers and partners understand, trust and take action.",
-      scan: {
-        label: "See how your website performs right now",
-        placeholder: "yourcompany.com",
-        button: "Scan my website",
-        hint: "Free · No sign-up · 10 business-first checks in seconds",
-        scanning: "Reading your site…",
-        resultTitle: "Digital presence score",
-        weakest: "Start here",
-        cta: "Get the full free audit for this site",
-        again: "Scan another site",
-        errors: { invalid_url: "That doesn't look like a public website address.", unreachable: "We couldn't reach that site. Check the address and try again.", timeout: "The site took too long to respond — that alone is a finding.", not_html: "That address doesn't return a web page.", rate_limited: "Too many scans from this connection. Try again in a minute." }
-      },
-      proof: "Business-first. Content included. AI-enabled delivery.",
-      badge: "Strategy · Content · Design · Development — one team",
-      scroll: "Scroll to explore",
-      stats: [
-        { value: "12+", label: "years of business & digital experience" },
-        { value: "AR / EN", label: "bilingual, RTL-first experiences" },
-        { value: "1 team", label: "strategy, content, design & build" },
-        { value: "0", label: "generic templates" }
-      ],
-      compare: {
-        eyebrow: "DRAG TO COMPARE",
-        before: "Before",
-        after: "With Mirai",
-        hint: "Same company. Same goal. Drag the handle.",
-        old: { nav: ["Home", "About Us", "Services", "Gallery", "Contact"], welcome: "Welcome to our website", tagline: "Best quality, best price, since 1998", marquee: "★ NEW ★ We are the leading company in the field ★ Click here for more ★", blocks: ["Our Vision", "Our Mission", "Our Values"], cta: "Click here", counter: "Visitors: 004213" }
-      },
-      demo: {
-        eyebrow: "ONE GOAL. THREE DIFFERENT WEBSITES.",
-        hint: "Same team. Different business logic.",
-        sectors: [
-          { key: "manufacturing", tab: "Manufacturing", title: "Precision components for export markets", nav: ["Products", "Capabilities", "Certifications", "RFQ"], blocks: ["ISO 9001", "Capacity", "Export"], cta: "Request a Quotation", metric: "Primary action", metricValue: "RFQ" },
-          { key: "retail", tab: "Retail chain", title: "Find a branch. Order in one tap.", nav: ["Menu", "Branches", "Offers", "Order"], blocks: ["Nearest branch", "Today's offer", "Delivery"], cta: "Order on WhatsApp", metric: "Primary action", metricValue: "Visit · Order" },
-          { key: "ngo", tab: "NGO", title: "One mission. Clear programs. Real impact.", nav: ["Programs", "Impact", "Reports", "Partner"], blocks: ["Beneficiaries", "Annual report", "Partners"], cta: "Partner with us", metric: "Primary action", metricValue: "Partner" }
-        ]
-      }
+      kicker: "DIGITAL SOLUTIONS FOR GROWING BUSINESSES",
+      title: "Digital solutions built around what your business needs to achieve.",
+      body: "From professional websites and content to brand essentials, digitalization and smarter workflows, Mirai helps growing businesses and organizations solve practical digital challenges with business thinking, creativity and modern technology.",
+      primary: "Get a Free Consultation",
+      secondary: "Explore Our Solutions",
+      ring: { label: "One team · practical digital solutions", nodes: ["Websites", "Content", "Brand", "Workflows"] }
     },
     trust: {
       eyebrow: "EXPERIENCE BEHIND MIRAI",
       title: "Business experience behind every digital decision.",
-      body: "Built on 12+ years across digital products, Product Management, EdTech, business development and social impact."
+      body: "The experience behind Mirai spans 12+ years across digital products, Product Management, EdTech, business development, operations and social impact — now applied to practical digital problems.",
+      caption: "Strategy · Content · Design · Technology",
+      facts: [
+        { value: "12+", label: "years of business & digital experience behind Mirai" },
+        { value: "4", label: "focused solution areas" },
+        { value: "AR / EN", label: "bilingual, RTL-first work" },
+        { value: "1 team", label: "from understanding the problem to delivery" }
+      ]
     },
-    problem: {
-      kicker: "YOUR BUSINESS DESERVES BETTER ONLINE",
-      title: "Your business may be stronger than it looks online.",
-      body: "Customers, buyers and partners often check your digital presence before they contact you. If the website is outdated, unclear or incomplete, an established business can look smaller or less capable than it really is.",
-      items: [
-        { title: "Your business has grown. Your website hasn't.", body: "Your online presence no longer reflects the quality of the business behind it." },
-        { title: "What you offer isn't clear enough.", body: "Important products, services, capabilities or programs are difficult to understand or find." },
-        { title: "There is no clear next step.", body: "People visit, but the website does little to turn their interest into action." }
-      ],
-      close: "A business website shouldn't simply exist. It should help people understand, trust and act."
+    solutionsOverview: {
+      kicker: "WHAT WE DO",
+      title: "Practical solutions for real digital challenges.",
+      body: "Four focused solution areas — with websites and digital presence as the flagship — instead of a menu of every possible digital service.",
+      needsLabel: "Typical needs"
     },
     audiences: {
       kicker: "WHO WE HELP",
       title: "Built for growing businesses and organizations.",
-      body: "We work with SMEs across different sectors, while bringing deeper thinking to business types where the website plays a particularly important role.",
+      body: "SMEs across different sectors are our broad audience. We also bring deeper thinking to several business types where digital presence, content and workflows play an important role.",
       items: [
-        { title: "SMEs & Growing Businesses", subtitle: "Build credibility. Explain your value. Generate opportunities.", detail: "Professional services, trading, education, healthcare, construction, food & beverage and other growing businesses.", tags: "Professional presence · Leads · Clear services" },
-        { title: "Manufacturing & Industrial", subtitle: "Present capabilities. Build B2B trust. Generate RFQs.", detail: "Products, capabilities, certifications and export credibility structured around the buyer journey.", tags: "Products · Certifications · RFQs" },
-        { title: "Retail & Local Chains", subtitle: "Make it easier to discover, visit and buy.", detail: "Stores, showrooms, cafés, restaurants and local brands with products, branches, maps and WhatsApp actions.", tags: "Products · Branches · Visits · Orders" },
-        { title: "NGOs & Organizations", subtitle: "Communicate your mission. Show your impact.", detail: "Programs, activities, reports and information turned into a clear experience that builds trust and engagement.", tags: "Mission · Impact · Partners · Engagement" }
+        { title: "SMEs & Growing Businesses", subtitle: "Look credible. Explain your value. Make it easy to enquire.", detail: "Professional services, trading, education, healthcare, construction, food & beverage and other growing businesses." },
+        { title: "Manufacturing & Industrial", subtitle: "Present capabilities. Build B2B trust. Support RFQs.", detail: "Products, capabilities, certifications, company profiles and processes organized around how buyers decide." },
+        { title: "Retail & Local Chains", subtitle: "Stay consistent. Be easy to find, visit and contact.", detail: "Stores, showrooms, cafés, restaurants and local brands with products, branches, customer contact and practical digital materials." },
+        { title: "NGOs & Organizations", subtitle: "Communicate the mission. Show the impact.", detail: "Programs, reports and information turned into clear digital communication and smarter internal workflows." }
       ],
+      link: "See who we help",
       closeTitle: "Don't see your sector here?",
-      closeBody: "That's okay. Mirai isn't limited to a fixed list of industries. We start by understanding what your business or organization needs its digital presence to achieve."
+      closeBody: "Mirai isn't limited to these categories. If you have a digital challenge worth solving, we start by understanding the business and finding the simplest practical solution."
     },
-    difference: {
+    mix: {
       kicker: "BUSINESS-FIRST BY DESIGN",
-      title: "Different businesses need different websites.",
-      body: "A factory, a retail chain and an NGO shouldn't have the same website with different colors and content. We start with the business, then shape the experience around the audience and the action you need them to take.",
-      steps: [
-        { no: "01", title: "Understand the goal", body: "Who are we trying to reach? What do they need to know? What should they do next?" },
-        { no: "02", title: "Shape the journey", body: "We organize content, pages and calls to action around how your audience actually makes decisions." },
-        { no: "03", title: "Build around the business", body: "Then we design and develop the website around that journey instead of forcing the business into a generic structure." }
-      ],
-      close: "The goal isn't simply a new website. It's the right website for what your business needs to accomplish."
+      title: "Different businesses need different digital solutions.",
+      body: "We don't force every client into the same service package. Different businesses have different problems, audiences, processes and priorities — so the mix of solutions changes with them.",
+      hint: "Same team. A different mix for each business.",
+      panelLabel: "A typical mix",
+      sectors: [
+        { key: "sme", tab: "SME / Growing business", title: "A credible presence and a clearer path to enquiries.", items: [{ label: "Professional website", pillar: "websites" }, { label: "Clear messaging", pillar: "content" }, { label: "Brand essentials", pillar: "brand" }, { label: "Better inquiry flow", pillar: "workflows" }] },
+        { key: "manufacturing", tab: "Manufacturing", title: "B2B credibility from the first visit to the quotation.", items: [{ label: "B2B digital presence", pillar: "websites" }, { label: "Products and capabilities", pillar: "content" }, { label: "Company profile / sales materials", pillar: "brand" }, { label: "RFQ or process improvements", pillar: "workflows" }] },
+        { key: "retail", tab: "Retail / Local chain", title: "Consistent, easy to find and easy to contact.", items: [{ label: "Brand consistency", pillar: "brand" }, { label: "Products and branches", pillar: "websites" }, { label: "Customer contact / WhatsApp flows", pillar: "workflows" }, { label: "Practical digital materials", pillar: "content" }] },
+        { key: "ngo", tab: "NGO / Organization", title: "Mission, programs and impact — clearly communicated.", items: [{ label: "Website and program communication", pillar: "websites" }, { label: "Reports and content digitalization", pillar: "content" }, { label: "Impact presentation", pillar: "brand" }, { label: "Smarter internal digital workflows", pillar: "workflows" }] }
+      ]
     },
-    work: {
-      kicker: "SELECTED WORK",
-      title: "Turning real business needs into better digital experiences.",
-      client: "Social Impact Organization",
-      sector: "NGO / Social Impact",
-      challenge: "The organization needed a clearer digital presence to bring its mission, programs and information together in one professional experience.",
-      role: "Strategy · Content · UX · Design · Development",
-      transformation: "From fragmented information to one structured digital presence.",
-      cta: "View the Case Study"
+    organizations: {
+      kicker: "ORGANIZATIONS WE'VE WORKED WITH",
+      title: "Trusted relationships. Real organizations.",
+      body: "Organizations Mirai has worked with — shown with their permission. Case studies will follow as work is approved for publication.",
+      visit: "Visit website"
     },
     process: {
-      kicker: "A SIMPLER WAY TO BUILD",
-      title: "Clear process. Less complexity.",
-      body: "Website projects don't need endless meetings, technical confusion or months of uncertainty.",
+      kicker: "HOW WE WORK",
+      title: "Start with the problem. Choose the right solution.",
+      body: "The same way of working across every solution — clear, lean and built around the outcome.",
       steps: [
-        { no: "01", title: "Understand", body: "We review your business, current digital presence and goals.", outcome: "Clear direction and scope." },
-        { no: "02", title: "Create", body: "Content, structure, design and development move through one connected process.", outcome: "A website built around the agreed goals." },
-        { no: "03", title: "Launch", body: "We test, launch and complete the agreed handover.", outcome: "A finished website your business can own and use." }
-      ],
-      closeTitle: "Fast doesn't have to mean rushed.",
-      closeBody: "Modern tools help us remove unnecessary delays while keeping strategy, quality and human judgment at the center."
+        { no: "01", title: "Understand", body: "Start with the business problem, the audience and the goal." },
+        { no: "02", title: "Define", body: "Choose the right solution and agree on a clear scope." },
+        { no: "03", title: "Create", body: "Use the right mix of content, design, technology and AI-enabled tools." },
+        { no: "04", title: "Deliver", body: "Launch, hand over and train the team where relevant." }
+      ]
     },
     why: {
       kicker: "WHY MIRAI",
       title: "Modern tools. Business thinking. Practical execution.",
-      body: "Technology alone doesn't create a better website. Understanding the business does.",
+      body: "Technology alone doesn't solve a business problem. Understanding the business does — and modern tools make the work faster and better.",
       items: [
-        { title: "Business-first", body: "We start with what the website needs to accomplish, not what technology we want to use." },
-        { title: "Content support", body: "You don't need to arrive with perfect website copy. We help structure and create the message with you." },
-        { title: "AI-enabled & lean", body: "AI and modern tools accelerate research, content, design exploration, development, translation and QA while strategy and judgment remain human-led." }
+        { title: "Business-first", body: "We start with the problem and the outcome before selecting the technology." },
+        { title: "Content & communication", body: "We help turn business knowledge into clearer messages, materials and digital experiences." },
+        { title: "AI-enabled & lean", body: "We use AI and modern tools where they help us research, create, automate or deliver faster — while human judgment stays in control." },
+        { title: "Practical ownership", body: "Clear scope, usable deliverables and a straightforward handover." }
       ],
-      close: "Technology should make the process better — not more complicated."
-    },
-    audit: {
-      kicker: "START WITH CLARITY",
-      title: "Not sure what your website actually needs?",
-      body: "Show us where you are today. We'll review the digital presence and identify the areas that may be limiting clarity, trust or action.",
-      points: ["Clarity", "Trust", "Content", "Customer journey", "Mobile", "Calls to action", "Business fit"],
-      close: "A practical review covering what works, what's missing, quick wins and the recommended next step."
+      close: "Technology should make the work better — not more complicated."
     },
     faq: {
       kicker: "COMMON QUESTIONS",
-      title: "What you may want to know before we start.",
+      title: "What you may want to know before we talk.",
       items: [
-        { q: "How long does a website project take?", a: "It depends on scope and complexity. We agree on the expected timeline before work starts and use a lean process to avoid unnecessary delays." },
-        { q: "What if we don't have the content ready?", a: "That's fine. Content structure, messaging and copy support can be part of the project." },
-        { q: "Can the website be in Arabic and English?", a: "Yes. We treat Arabic and English as proper user experiences, not just word-for-word translation." },
-        { q: "How does Mirai use AI?", a: "AI helps us make parts of the process faster and more efficient. It does not replace business understanding, strategy, creative judgment or quality control." },
-        { q: "How much does a website cost, and how long does it take?", a: "Most company websites we build are delivered in 6–10 weeks, depending on the number of pages, languages and integrations. We share a clear price range after the free audit — before any commitment — so you can compare it with what the website needs to achieve." }
+        { q: "What can Mirai help with?", a: "Four practical areas: websites and digital presence, brand essentials and business materials, content digitalization, and digital consulting and smarter workflows. Websites are our flagship, but many projects combine two or three of these." },
+        { q: "What if we're not sure which solution we need?", a: "That's normal, and it's exactly what the free consultation is for. We start from the business problem, then recommend the simplest practical solution — sometimes that's one area, sometimes a small mix." },
+        { q: "How does a project usually start?", a: "With a short conversation about the business, the audience and what you want to achieve. Then we define the scope, agree on deliverables and timeline, and start." },
+        { q: "Can Mirai work in Arabic and English?", a: "Yes. We treat Arabic and English as two proper experiences designed for their audiences — not a word-for-word translation of one another." },
+        { q: "How does Mirai use AI?", a: "As part of how we work: faster research, content drafts, design exploration, development, translation and quality checks. AI supports the work; strategy, creativity and responsibility remain human-led." },
+        { q: "Do you provide support after delivery?", a: "Yes. Every project ends with a clear handover so you understand what you own and how to use it, and we can agree on ongoing support or updates when you need them." },
+        { q: "How long does a project take?", a: "It depends on the scope. A focused website or a set of business materials moves faster than a full digitalization programme. We agree on a realistic timeline before work starts and keep the process lean." }
       ]
     },
     final: {
-      title: "Your digital presence can do more for your business.",
-      body: "Let's identify what is working, what is missing and what could make the biggest difference."
+      title: "Not sure where to start? Start with a conversation.",
+      body: "Tell us about the business and the challenge. We'll come back with a practical next step — no obligation."
     }
   },
-  solutions: {
-    kicker: "WEBSITES & DIGITAL PRESENCE",
-    title: "One connected process from business goal to finished website.",
-    intro: "Mirai doesn't split the work into disconnected agency services. We connect strategy, content, experience, design and development around one clear business goal.",
-    stages: [
-      { no: "01", title: "Understand", body: "Business goals, audience, priorities and current digital presence." },
-      { no: "02", title: "Structure", body: "Sitemap, messaging, content hierarchy, user journeys and calls to action." },
-      { no: "03", title: "Create", body: "Copy, visual direction, responsive design, development and integrations." },
-      { no: "04", title: "Launch", body: "QA, launch, agreed access, ownership, handover and training." }
-    ],
-    closingTitle: "You don't need to figure out the website before coming to us.",
-    closingBody: "You know your business. We help turn that knowledge into a clear, professional digital experience."
+  solutionsPage: {
+    kicker: "OUR SOLUTIONS",
+    title: "Practical digital solutions, built around the problem first.",
+    intro: "Mirai combines business understanding, creativity, technology and AI-enabled workflows to solve practical digital challenges for growing businesses and organizations.",
+    labels: { problem: "The problem", helps: "What Mirai helps with", outputs: "Typical outputs", useful: "Useful for" },
+    process: {
+      kicker: "HOW WE WORK",
+      title: "One way of working across every solution.",
+      steps: [
+        { no: "01", title: "Understand", body: "We start with the business problem, audience and goal." },
+        { no: "02", title: "Define", body: "We decide what solution is actually needed and agree on scope." },
+        { no: "03", title: "Create", body: "We use the right mix of strategy, content, design, technology and modern tools." },
+        { no: "04", title: "Deliver", body: "We test, hand over and make sure the client understands what they own and how to use it." }
+      ]
+    },
+    principle: "We sell solutions and outcomes — not unnecessary technology."
   },
   whoWeHelp: {
     kicker: "WHO WE HELP",
-    title: "Different businesses. Different audiences. Different actions.",
-    intro: "SMEs across sectors are our umbrella audience. Manufacturing, retail/local chains and NGOs are priority segments where we are developing deeper playbooks.",
+    title: "Different businesses. Different challenges. Practical digital solutions.",
+    intro: "SMEs across different sectors are Mirai's broad audience. We also bring deeper thinking to several priority business types where digital presence, content and workflows play an important role.",
+    needsLabel: "Needs may include",
     groups: [
-      { title: "SMEs & Growing Businesses", goal: "Credibility · Leads · Clear services", body: "For businesses that need a professional presence that explains their value and makes it easier to enquire." },
-      { title: "Manufacturing & Industrial", goal: "Capabilities · Certifications · RFQs", body: "For B2B buyers who need to quickly understand what you make, what you can deliver and why they should trust you." },
-      { title: "Retail & Local Chains", goal: "Products · Locations · Visits · Orders", body: "For mobile-first customer journeys around discovery, branches, maps, WhatsApp, visits and ordering." },
-      { title: "NGOs & Organizations", goal: "Mission · Impact · Partners · Engagement", body: "For organizations that need to turn programs, reports and information into a clear, trusted digital presence." }
+      { title: "SMEs & Growing Businesses", needs: ["Professional digital presence", "Clearer messaging", "Brand essentials", "Customer inquiries", "Practical workflow improvements"] },
+      { title: "Manufacturing & Industrial", needs: ["B2B credibility", "Products and capabilities", "Certifications", "Company profiles", "RFQ journeys", "Content organization", "Workflow improvement"] },
+      { title: "Retail & Local Chains", needs: ["Brand consistency", "Products and locations", "Branches / maps", "WhatsApp / customer contact", "Practical content and digital materials", "Operational digital improvements"] },
+      { title: "NGOs & Organizations", needs: ["Mission and programs", "Impact communication", "Reports and content", "Partners and stakeholders", "Document digitalization", "Practical digital workflows"] }
     ],
     closingTitle: "Don't see your sector here?",
-    closingBody: "If your organization needs a stronger digital presence, we'll start by understanding how it works and what the website needs to accomplish."
-  },
-  work: {
-    kicker: "SELECTED WORK",
-    title: "Work explained through the problem, not just the pixels.",
-    intro: "Mirai is early, so we prefer one credible case study with real context over a wall of meaningless logos.",
-    caseStudy: {
-      client: "Social Impact Organization",
-      sector: "NGO / Social Impact",
-      challengeTitle: "Challenge",
-      challenge: "Important information existed across different materials and formats without one clear digital experience bringing everything together.",
-      approachTitle: "Mirai's role",
-      approach: "Website strategy, content structuring, UX, design and development.",
-      transformationTitle: "Transformation",
-      transformation: "A clearer, more professional digital presence that brings the organization's mission, programs and information together.",
-      note: "Client name, screenshots and measurable outcomes will be added only when verified and approved for publication."
-    }
+    closingBody: "Mirai isn't limited to these categories. If you have a digital challenge worth solving, we start by understanding the business and finding the simplest practical solution."
   },
   about: {
     kicker: "ABOUT MIRAI",
-    title: "Mirai means Future. We think that should show in how we work, not just how we look.",
-    intro: "Mirai Solutions is a technology-driven company combining business understanding, creativity and modern tools to build practical digital solutions.",
+    title: "Mirai means Future. We think that should show in how we solve problems — not just how we look.",
+    intro: "Mirai Solutions is a technology-driven company combining business understanding, creativity, AI and modern tools to create practical digital solutions.",
     storyTitle: "Built on experience across business, products and impact.",
-    story: "The experience behind Mirai spans 12+ years across Product Management, business development, EdTech, digital products, operations and social impact. Mirai itself is a new company, built to turn that experience into a faster, clearer way to solve digital business problems.",
+    story: "The experience behind Mirai spans 12+ years across Product Management, business development, EdTech, digital products, operations, social impact and AI-assisted workflows. Mirai Solutions itself is a new company, built to turn that experience into a faster, clearer way to solve practical digital problems.",
+    experience: ["Product Management", "Business Development", "EdTech", "Digital Products", "Operations", "Social Impact", "AI-assisted workflows"],
+    todayTitle: "What we do today",
+    todayBody: "Four focused solution areas, with websites and digital presence as the flagship.",
+    principlesTitle: "How we think",
     principles: [
-      { title: "Business first", body: "We start with the problem and outcome before choosing technology." },
-      { title: "Technology with purpose", body: "AI and modern tools are useful when they create a meaningful advantage." },
-      { title: "Practical execution", body: "Clear scope, lean communication and work that can actually be used and owned." }
-    ]
+      { title: "Business first", body: "Start with the problem and the outcome." },
+      { title: "Technology with purpose", body: "AI and modern tools matter only when they create an actual advantage." },
+      { title: "Practical execution", body: "Clear scope, lean communication and usable results." },
+      { title: "Human judgment", body: "AI supports the work; strategy, creativity and responsibility remain human-led." },
+      { title: "Ownership", body: "Clients should clearly understand what they receive and own." }
+    ],
+    closingTitle: "Build for the future. Execute practically today."
   },
-  audit: {
-    kicker: "FREE DIGITAL PRESENCE AUDIT",
-    title: "Start with clarity before you start with a redesign.",
-    intro: "Tell us about the business and where you are today. We'll review the digital presence and identify what is working, what is missing and what should be improved first.",
+  consult: {
+    title: "Get a free consultation",
+    intro: "Tell us a little about the business and the challenge. We'll reply with a practical next step — a real conversation, not an automated report.",
     fields: {
       name: "Name",
-      company: "Company",
-      website: "Website URL (optional)",
-      businessType: "Business type",
-      improvementGoal: "What do you want to improve?",
+      company: "Company / Organization",
       email: "Email",
       whatsapp: "WhatsApp number",
-      budget: "Budget range (optional)",
-      timeline: "When do you want to launch? (optional)",
-      submit: "Request My Free Audit"
+      businessType: "Business type",
+      interest: "Interested in",
+      website: "Website URL (optional)",
+      message: "Briefly tell us what you need",
+      choose: "Choose…"
     },
-    options: ["SME / Growing Business", "Manufacturing / Industrial", "Retail / Local Chain", "NGO / Organization", "Other"],
-    budgets: ["Under 50,000 EGP", "50,000 – 100,000 EGP", "100,000 – 250,000 EGP", "250,000+ EGP", "Not sure yet"],
-    timelines: ["As soon as possible", "Within 1–2 months", "Within 3–6 months", "Just exploring"],
-    privacy: "We'll use these details only to review your request and contact you about the audit.",
-    successTitle: "Your audit request is in.",
-    successBody: "We'll review what you shared and reply within one working day with the audit scope and next step. You can also continue the conversation on WhatsApp now.",
+    businessTypes: ["SME / Growing Business", "Manufacturing / Industrial", "Retail / Local Chain", "NGO / Organization", "Other"],
+    interests: ["Websites & Digital Presence", "Brand Essentials & Business Materials", "Content Digitalization", "Digital Consulting & Workflows", "Not Sure Yet"],
+    submit: "Send request",
+    sending: "Sending…",
+    privacy: "We'll use these details only to review your request and get back to you.",
+    close: "Close",
     whatsappCta: "Continue on WhatsApp",
-    error: "Something went wrong. Please try again or continue on WhatsApp."
-  }
+    copyCta: "Copy message",
+    copied: "Copied",
+    channelNote: "WhatsApp is the current contact channel for this website.",
+    states: {
+      static: { title: "Your request is ready to send.", body: "This version of the site sends consultation requests through WhatsApp. Your details are pre-filled — tap the button to send them to Mirai." },
+      success: { title: "Request received.", body: "We'll review what you shared and reply within one working day with a practical next step. You can also continue on WhatsApp now." },
+      noEmail: { title: "Ready to send.", body: "Email delivery isn't set up on this server yet, so your request continues on WhatsApp with your details pre-filled." },
+      noChannel: { title: "Almost there.", body: "Copy the message below and send it to Mirai on WhatsApp or by email — the contact channel is being set up." }
+    },
+    errors: {
+      required: { name: "Tell us your name so we know who we're talking to.", company: "Add your company or organization name.", email: "We need an email to reply to.", whatsapp: "Add a WhatsApp number so we can follow up.", businessType: "Pick the closest business type.", interest: "Pick the closest area — or “Not sure yet”.", message: "One or two sentences on what you need is enough." },
+      email: "That email doesn't look right — e.g. name@company.com",
+      url: "Enter a full address starting with https://",
+      whatsapp: "Use the international format — e.g. +2010XXXXXXXX",
+      generic: "Please review the highlighted fields and try again.",
+      network: "We couldn't send the request right now. Please try again or continue on WhatsApp."
+    },
+    whatsappMessage: {
+      greeting: "Hello Mirai, I'd like a free consultation.",
+      labels: { name: "Name", company: "Company", email: "Email", whatsapp: "WhatsApp", businessType: "Business type", interest: "Interested in", website: "Website", message: "What I need" }
+    }
+  },
+  notFound: { title: "Page not found", body: "The page you're looking for doesn't exist or has moved.", cta: "Back home" },
+  redirect: { title: "This page has moved", body: "Taking you to the new page…", cta: "Continue" }
 };
 
 const ar = {
@@ -246,242 +284,275 @@ const ar = {
     items: [
       { label: "الحلول", href: "/solutions" },
       { label: "من نخدم", href: "/who-we-help" },
-      { label: "أعمالنا", href: "/work" },
       { label: "عن Mirai", href: "/about" }
     ],
-    audit: { label: "اطلب مراجعة مجانية", href: "/audit" },
+    cta: "اطلب استشارة مجانية",
     language: "EN",
     theme: "المظهر",
     menu: "القائمة"
   },
   global: {
-    brandLine: "مواقع وحضور رقمي يُبنى حول أهداف عملك الحقيقية.",
+    brandLine: "حلول رقمية عملية تُبنى حول احتياجات عملك الحقيقية.",
     philosophy: "المستقبل لمن يصنعه.",
-    auditLabel: "اطلب مراجعة مجانية لحضورك الرقمي",
-    talkLabel: "تحدّث مع Mirai",
-    workLabel: "شاهد أعمالنا"
+    consultLabel: "اطلب استشارة مجانية",
+    consultShort: "اطلب استشارة",
+    talkLabel: "تحدث مع Mirai",
+    discussLabel: "ناقش هذا الحل معنا",
+    exploreLabel: "استكشف حلولنا",
+    flagship: "الحل الأساسي"
   },
+  meta: {
+    "/": { title: "Mirai Solutions | حلول رقمية عملية للأعمال النامية", description: "تساعد Mirai Solutions الشركات والمنظمات النامية في المواقع والحضور الرقمي، وأساسيات الهوية والمواد التعريفية، ورقمنة المحتوى، والاستشارات الرقمية وتحسين سير العمل." },
+    "/solutions": { title: "حلول رقمية للشركات الصغيرة والمتوسطة والمنظمات | Mirai Solutions", description: "أربعة مجالات عملية: المواقع والحضور الرقمي، أساسيات الهوية، رقمنة المحتوى، والاستشارات الرقمية وتحسين سير العمل — نبدأ من المشكلة لا من التقنية." },
+    "/who-we-help": { title: "حلول رقمية للشركات والمصانع والتجزئة والمنظمات | Mirai Solutions", description: "الشركات الصغيرة والمتوسطة هي جمهورنا الأوسع، مع تركيز أعمق على المصانع وسلاسل التجزئة والمنظمات — أعمال مختلفة، تحديات مختلفة، حلول رقمية عملية." },
+    "/about": { title: "عن Mirai Solutions | الأعمال والتقنية والحلول الرقمية العملية", description: "Mirai تعني المستقبل: شركة تقودها التقنية تجمع بين فهم الأعمال والإبداع والذكاء الاصطناعي والأدوات الحديثة لبناء حلول رقمية عملية." }
+  },
+  solutions: [
+    {
+      key: "websites",
+      flagship: true,
+      name: "المواقع والحضور الرقمي",
+      short: "المواقع",
+      positioning: "مواقع احترافية تُبنى حول أهداف العمل — الاستراتيجية والهيكل والمحتوى والتصميم والتطوير في مسار واحد مترابط.",
+      needs: ["موقع جديد للشركة", "إعادة تصميم موقع قائم", "موقع ثنائي اللغة عربي / إنجليزي", "عرض المنتجات أو الخدمات", "رحلات الاستفسار وطلب العروض", "المحتوى والرسالة"],
+      problem: "العملاء والمشترون والشركاء يتفقّدون حضور الشركة على الإنترنت قبل أن يتصلوا بها. الموقع القديم أو الغامض يجعل شركة راسخة تبدو أصغر وأقل قدرة من حقيقتها.",
+      helps: "نصوغ الرسالة، ونرتّب رحلة العميل، ونكتب المحتوى وننظّمه، ثم نصمّم الموقع ونطوّره — بالعربية والإنجليزية — حول الخطوة التي تريد من الزائر أن يتخذها.",
+      outputs: ["استراتيجية الموقع وهيكله", "نصوص ثنائية اللغة وتنظيم للمحتوى", "تصميم متجاوب وتطوير", "رحلات الاستفسار أو طلب عرض السعر أو التواصل", "الإطلاق والتسليم وملكية كاملة للموقع"],
+      useful: "الأعمال التي تكسب عملاءها أو مشتريها أو شركاءها بالمصداقية والمعلومات الواضحة — من الشركات الصغيرة والمتوسطة والخدمات المهنية إلى المصانع وسلاسل المتاجر والمنظمات."
+    },
+    {
+      key: "brand",
+      flagship: false,
+      name: "أساسيات الهوية والمواد التعريفية",
+      short: "الهوية",
+      positioning: "أساسيات عملية للهوية ومواد تعريفية للمنظمات النامية التي تحتاج أن تبدو واضحة ومتسقة واحترافية.",
+      needs: ["هوية بصرية أساسية", "تحسين الشعار أو الهوية الحالية عند الحاجة", "دليل هوية مبسّط", "ملف تعريفي للشركة", "المواد التعريفية الأساسية"],
+      problem: "شعار يُستخدم بعشر طرق مختلفة، وملف تعريفي عمره ثلاث سنوات، وعروض تقديمية لا تشبه بعضها: كثير من المنظمات النامية تبدو مرتجلة رغم أن العمل خلفها متين.",
+      helps: "نبني الأساسيات العملية — هوية أساسية، ودليل مبسّط، والمواد التي تستخدمها فعلًا كل أسبوع — حتى يبدو كل ما يخرج من شركتك صادرًا عن جهة واحدة محترفة.",
+      outputs: ["هوية بصرية أساسية أو تحسين للهوية الحالية", "دليل هوية مبسّط", "ملف تعريفي للشركة", "قوالب للعروض التقديمية والمستندات", "المواد التعريفية الأساسية بالعربية والإنجليزية"],
+      useful: "الشركات والمنظمات النامية التي تحتاج اتساقًا في العروض والملفات التعريفية والقنوات الرقمية — من دون برنامج إعادة هوية ضخم."
+    },
+    {
+      key: "content",
+      flagship: false,
+      name: "رقمنة المحتوى",
+      short: "المحتوى",
+      positioning: "تحويل المعلومات القيّمة المحبوسة في ملفات PDF والأدلة ومستندات Word والملفات الثابتة إلى تجارب رقمية أوضح وأسهل في الاستخدام.",
+      needs: ["التقارير", "الأدلة والكتيبات", "الإرشادات", "المواد التدريبية", "المستندات الثابتة", "محتوى رقمي تفاعلي وسهل الوصول"],
+      problem: "معرفة ثمينة تقبع في ملفات PDF وأدلة وتقارير يصعب العثور عليها، ويصعب قراءتها على الهاتف، ويصعب تحديثها — فلا يستخدمها أحد تقريبًا.",
+      helps: "نعيد هيكلة المحتوى، ونصمّمه للشاشات، ونحوّله إلى تجارب رقمية يستخدمها الناس فعلًا: قابلة للبحث، سهلة الوصول، ثنائية اللغة عند الحاجة، وسهلة التحديث.",
+      outputs: ["نسخ رقمية من التقارير والأدلة والإرشادات", "مواد تدريبية تفاعلية أو على الويب", "محتوى منظّم وقابل للبحث", "مستندات سهلة الوصول ومناسبة للهاتف", "طريقة بسيطة لإبقاء المحتوى محدّثًا"],
+      useful: "المنظمات التي لديها تقارير أو أدلة أو إرشادات أو مواد تدريبية أو توثيق لبرامجها يستحق حياة رقمية أفضل."
+    },
+    {
+      key: "workflows",
+      flagship: false,
+      name: "الاستشارات الرقمية وتحسين سير العمل",
+      short: "سير العمل",
+      positioning: "تحديد الاختناقات الرقمية، وتحسين العمليات اليومية، واستخدام الأدوات الحديثة أو الأتمتة حيث تصنع قيمة حقيقية للعمل.",
+      needs: ["المهام اليدوية المتكررة", "أدوات غير مترابطة", "احتكاك في العمليات اليومية", "تحسين العمليات الرقمية", "أتمتة سير العمل", "إرشاد رقمي عملي"],
+      problem: "المهام اليدوية المتكررة والأدوات غير المترابطة والاحتكاك في العمليات تستهلك الوقت كل يوم بصمت — وشراء المزيد من التقنية نادرًا ما يحل المشكلة وحده.",
+      helps: "نرسم خريطة العمل كما يحدث فعلًا، ونحدد الاختناقات، ثم نطبّق أبسط تحسين عملي: مسار عمل أوضح، أو الأداة المناسبة، أو أتمتة موجّهة حيث تصنع قيمة حقيقية.",
+      outputs: ["مراجعة للعمليات الرقمية مع توصيات", "إعادة تصميم سير العمل", "اختيار الأدوات وإعدادها", "أتمتة موجّهة للمهام المتكررة", "إرشاد عملي وتدريب للفريق"],
+      useful: "الفرق التي تشعر بعبء العمل اليدوي والأدوات المتفرقة وتريد تحسينًا عمليًا يمكن قياسه — لا الانتقال إلى منصة جديدة."
+    }
+  ],
   home: {
     hero: {
-      kicker: "مواقع وحضور رقمي",
-      title: "مواقع تُبنى حول ما يحتاج عملك إلى تحقيقه.",
-      segments: "مواقع تنطلق من هدف العمل — للمصانع وسلاسل المتاجر والمنظمات — تشرح ما تقدّمه، وتبني الثقة، وتقود الزائر إلى الخطوة التالية.",
-      rotate: { before: "مواقع تُبنى حول ما يحتاج", words: ["مصنعك", "متاجرك", "منظمتك", "عملك"], after: "إلى تحقيقه." },
-      ring: { label: "فريق واحد · من الاستراتيجية إلى الإطلاق", nodes: ["المصانع", "سلاسل المتاجر", "المنظمات"] },
-      scan: {
-        label: "اعرف أداء موقعك الآن",
-        placeholder: "yourcompany.com",
-        button: "افحص موقعي",
-        hint: "مجاني · بدون تسجيل · عشرة فحوصات من منظور العمل في ثوانٍ",
-        scanning: "نقرأ موقعك…",
-        resultTitle: "درجة الحضور الرقمي",
-        weakest: "ابدأ من هنا",
-        cta: "اطلب المراجعة الكاملة المجانية لهذا الموقع",
-        again: "افحص موقعًا آخر",
-        errors: { invalid_url: "هذا لا يبدو عنوان موقع عام.", unreachable: "لم نستطع الوصول إلى الموقع. تأكد من العنوان وحاول مرة أخرى.", timeout: "تأخّر الموقع كثيرًا في الاستجابة — وهذه وحدها ملاحظة تستحق الانتباه.", not_html: "هذا العنوان لا يعرض صفحة ويب.", rate_limited: "محاولات كثيرة من هذا الاتصال. حاول بعد دقيقة." }
-      },
-      body: "تتولى Mirai الاستراتيجية والمحتوى والتصميم والتطوير لبناء حضور رقمي احترافي يساعد عملاءك ومشتريك وشركاءك على أن يفهموا، ويثقوا، ويتخذوا الخطوة التالية.",
-      proof: "ننطلق من هدف العمل · المحتوى جزء من العمل · تنفيذ أسرع بأدوات الذكاء الاصطناعي",
-      badge: "استراتيجية · محتوى · تصميم · تطوير — فريق واحد",
-      scroll: "اسحب للأسفل لاستكشاف المزيد",
-      stats: [
-        { value: "+12", label: "عامًا من الخبرة في إدارة الأعمال والمنتجات الرقمية" },
-        { value: "AR / EN", label: "تجارب ثنائية اللغة تُصمَّم للعربية أولًا" },
-        { value: "فريق واحد", label: "استراتيجية ومحتوى وتصميم وتطوير" },
-        { value: "0", label: "قوالب جاهزة" }
-      ],
-      compare: {
-        eyebrow: "اسحب للمقارنة",
-        before: "قبل",
-        after: "مع Mirai",
-        hint: "الشركة نفسها. الهدف نفسه. اسحب المقبض.",
-        old: { nav: ["الرئيسية", "من نحن", "خدماتنا", "معرض الصور", "اتصل بنا"], welcome: "مرحبًا بكم في موقعنا", tagline: "أفضل جودة وأفضل سعر منذ 1998", marquee: "★ جديد ★ نحن الشركة الرائدة في المجال ★ اضغط هنا للمزيد ★", blocks: ["رؤيتنا", "رسالتنا", "قيمنا"], cta: "اضغط هنا", counter: "عدد الزوار: 004213" }
-      },
-      demo: {
-        eyebrow: "هدف واحد. ثلاثة مواقع مختلفة.",
-        hint: "الفريق نفسه. منطق عمل مختلف.",
-        sectors: [
-          { key: "manufacturing", tab: "مصنع", title: "مكوّنات دقيقة لأسواق التصدير", nav: ["المنتجات", "القدرات", "الشهادات", "طلب عرض سعر"], blocks: ["ISO 9001", "الطاقة الإنتاجية", "التصدير"], cta: "اطلب عرض سعر", metric: "الإجراء الأساسي", metricValue: "طلب عرض سعر" },
-          { key: "retail", tab: "سلسلة متاجر", title: "اعرف أقرب فرع. اطلب بضغطة واحدة.", nav: ["القائمة", "الفروع", "العروض", "اطلب"], blocks: ["أقرب فرع", "عرض اليوم", "التوصيل"], cta: "اطلب عبر واتساب", metric: "الإجراء الأساسي", metricValue: "زيارة · طلب" },
-          { key: "ngo", tab: "منظمة", title: "رسالة واحدة. برامج واضحة. أثر حقيقي.", nav: ["البرامج", "الأثر", "التقارير", "شراكة"], blocks: ["المستفيدون", "التقرير السنوي", "الشركاء"], cta: "كن شريكًا معنا", metric: "الإجراء الأساسي", metricValue: "شراكة" }
-        ]
-      }
+      kicker: "حلول رقمية للأعمال النامية",
+      title: "حلول رقمية تُبنى حول ما يحتاجه عملك فعلًا.",
+      body: "من المواقع والحضور الرقمي إلى المحتوى وأساسيات الهوية ورقمنة المعلومات وتحسين سير العمل، تساعد Mirai الشركات والمنظمات على حل تحدياتها الرقمية بطريقة عملية تجمع فهم الأعمال والإبداع والتكنولوجيا الحديثة.",
+      primary: "اطلب استشارة مجانية",
+      secondary: "استكشف حلولنا",
+      ring: { label: "فريق واحد · حلول رقمية عملية", nodes: ["المواقع", "المحتوى", "الهوية", "سير العمل"] }
     },
     trust: {
       eyebrow: "الخبرة التي تقف خلف Mirai",
       title: "خبرة عملية خلف كل قرار رقمي.",
-      body: "نستند إلى أكثر من اثني عشر عامًا في المنتجات الرقمية وإدارة المنتجات وتقنيات التعليم وتطوير الأعمال والعمل المجتمعي."
+      body: "تمتد الخبرة خلف Mirai لأكثر من اثني عشر عامًا في المنتجات الرقمية وإدارة المنتجات وتقنيات التعليم وتطوير الأعمال والعمليات والعمل المجتمعي — ونطبّقها اليوم على مشكلات رقمية عملية.",
+      caption: "استراتيجية · محتوى · تصميم · تقنية",
+      facts: [
+        { value: "+12", label: "عامًا من الخبرة في الأعمال والمنتجات الرقمية خلف Mirai" },
+        { value: "4", label: "مجالات حلول محددة" },
+        { value: "AR / EN", label: "عمل ثنائي اللغة يبدأ من العربية" },
+        { value: "فريق واحد", label: "من فهم المشكلة إلى التسليم" }
+      ]
     },
-    problem: {
-      kicker: "عملك يستحق حضورًا أقوى",
-      title: "قد يكون عملك أقوى بكثير مما يبدو على الإنترنت.",
-      body: "العملاء والمشترون والشركاء يتفقّدون حضورك الرقمي قبل أن يتواصلوا معك. وإذا كان الموقع قديمًا أو غامضًا أو ناقصًا، تبدو شركة راسخة ومحترمة أصغر من حقيقتها.",
-      items: [
-        { title: "عملك تطوّر، وموقعك لم يلحق به.", body: "حضورك الرقمي لم يعد يعكس جودة عملك ولا حجمه الحقيقي." },
-        { title: "ما تقدّمه ليس واضحًا بما يكفي.", body: "المنتجات أو الخدمات أو القدرات أو البرامج المهمة يصعب فهمها أو الوصول إليها." },
-        { title: "لا توجد خطوة تالية واضحة.", body: "الزائر يصل إلى الموقع، لكن لا شيء يحوّل اهتمامه إلى فرصة حقيقية." }
-      ],
-      close: "الموقع لا يكفي أن يكون موجودًا؛ عليه أن يساعد الناس على أن يفهموا، ويثقوا، ويتحركوا."
+    solutionsOverview: {
+      kicker: "ماذا نقدّم",
+      title: "حلول عملية لتحديات رقمية حقيقية.",
+      body: "أربعة مجالات محددة — المواقع والحضور الرقمي في المقدمة — بدل قائمة بكل خدمة رقمية ممكنة.",
+      needsLabel: "احتياجات شائعة"
     },
     audiences: {
       kicker: "من نخدم",
       title: "مصمَّم للشركات والمنظمات التي تنمو.",
-      body: "نعمل مع الشركات الصغيرة والمتوسطة في قطاعات مختلفة، ونبني فهمًا أعمق للفئات التي يلعب فيها الموقع دورًا محوريًا في العمل.",
+      body: "الشركات الصغيرة والمتوسطة من مختلف القطاعات هي جمهورنا الأوسع، ونبني فهمًا أعمق لعدة فئات يلعب فيها الحضور الرقمي والمحتوى وسير العمل دورًا مهمًا.",
       items: [
-        { title: "الشركات الصغيرة والمتوسطة النامية", subtitle: "ابنِ المصداقية. وضّح قيمتك. اصنع فرصًا جديدة.", detail: "للخدمات المهنية والتجارة والتعليم والرعاية الصحية والمقاولات والمطاعم والمقاهي وغيرها من الشركات النامية.", tags: "حضور احترافي · فرص · خدمات واضحة" },
-        { title: "المصانع والشركات الصناعية", subtitle: "اعرض قدراتك. ابنِ ثقة المشتري. احصل على طلبات عروض أسعار.", detail: "المنتجات والقدرات والشهادات والتصدير مرتّبة حول رحلة المشتري — لا مجرد ملف تعريفي منشور على الإنترنت.", tags: "منتجات · شهادات · طلبات عروض أسعار" },
-        { title: "التجزئة والسلاسل المحلية", subtitle: "سهّل على العميل أن يجدك، ويزورك، ويطلب منك.", detail: "للمتاجر والمعارض والمقاهي والمطاعم والعلامات المحلية، مع المنتجات والفروع والخرائط والطلب عبر واتساب.", tags: "منتجات · فروع · زيارات · طلبات" },
-        { title: "المنظمات والمؤسسات", subtitle: "وضّح رسالتك. أظهر أثرك. سهّل الشراكة.", detail: "نحوّل البرامج والأنشطة والتقارير والمعلومات إلى تجربة واضحة تبني الثقة وتفتح باب المشاركة.", tags: "رسالة · أثر · شركاء · مشاركة" }
+        { title: "الشركات الصغيرة والمتوسطة النامية", subtitle: "مصداقية واضحة، وقيمة مفهومة، وتواصل أسهل.", detail: "الخدمات المهنية والتجارة والتعليم والرعاية الصحية والمقاولات والمطاعم والمقاهي وغيرها من الأعمال النامية." },
+        { title: "المصانع والشركات الصناعية", subtitle: "اعرض قدراتك، وابنِ ثقة المشتري، وسهّل طلب عروض الأسعار.", detail: "المنتجات والقدرات والشهادات والملفات التعريفية والعمليات مرتّبة حول طريقة اتخاذ المشتري قراره." },
+        { title: "التجزئة والسلاسل المحلية", subtitle: "هوية متسقة، وسهولة في الوصول والزيارة والتواصل.", detail: "المتاجر والمعارض والمقاهي والمطاعم والعلامات المحلية، مع المنتجات والفروع وقنوات التواصل والمواد الرقمية العملية." },
+        { title: "المنظمات والمؤسسات", subtitle: "وضّح رسالتك، وأظهر أثرك.", detail: "البرامج والتقارير والمعلومات تتحول إلى تواصل رقمي واضح وسير عمل داخلي أذكى." }
       ],
+      link: "اعرف من نخدم",
       closeTitle: "قطاعك غير موجود هنا؟",
-      closeBody: "لا مشكلة. Mirai لا تقتصر على قائمة قطاعات محددة؛ نبدأ بفهم عملك أو مؤسستك وما ينبغي أن يحققه حضورك الرقمي."
+      closeBody: "Mirai لا تقتصر على هذه الفئات. إذا كان لديك تحدٍّ رقمي يستحق الحل، نبدأ بفهم عملك ثم نبحث عن أبسط حل عملي له."
     },
-    difference: {
+    mix: {
       kicker: "نبدأ من العمل لا من القالب",
-      title: "كل عمل يحتاج موقعًا مختلفًا.",
-      body: "المصنع وسلسلة المتاجر والمنظمة لا ينبغي أن يحصلوا على الموقع نفسه بألوان ومحتوى مختلفين. نبدأ من طبيعة العمل، ثم نشكّل التجربة حول جمهوره والخطوة التي نريد منه أن يتخذها.",
-      steps: [
-        { no: "01", title: "نفهم الهدف", body: "من نريد أن نصل إليه؟ ماذا يحتاج أن يعرف؟ وما الخطوة التالية التي نريده أن يتخذها؟" },
-        { no: "02", title: "نرسم الرحلة", body: "ننظّم المحتوى والصفحات ودعوات التحرّك حول الطريقة التي يتخذ بها جمهورك قراره فعلًا." },
-        { no: "03", title: "نبني حول العمل", body: "ثم نصمّم ونطوّر الموقع ليخدم هذه الرحلة، بدل أن نحشر العمل في قالب عام." }
-      ],
-      close: "الهدف ليس موقعًا جديدًا فقط، بل الموقع الصحيح لما يحتاج عملك إلى تحقيقه."
+      title: "أعمال مختلفة تحتاج حلولًا رقمية مختلفة.",
+      body: "لا نحشر كل عميل في الباقة نفسها. لكل عمل مشكلاته وجمهوره وعملياته وأولوياته — ولذلك يتغير مزيج الحلول بتغيّر العمل.",
+      hint: "الفريق نفسه. مزيج مختلف لكل عمل.",
+      panelLabel: "مزيج شائع",
+      sectors: [
+        { key: "sme", tab: "شركة نامية", title: "حضور موثوق ومسار أوضح للاستفسارات.", items: [{ label: "موقع احترافي", pillar: "websites" }, { label: "رسالة واضحة", pillar: "content" }, { label: "أساسيات الهوية", pillar: "brand" }, { label: "مسار أفضل للاستفسارات", pillar: "workflows" }] },
+        { key: "manufacturing", tab: "مصنع", title: "ثقة المشتري من أول زيارة حتى طلب عرض السعر.", items: [{ label: "حضور رقمي للأعمال B2B", pillar: "websites" }, { label: "المنتجات والقدرات", pillar: "content" }, { label: "ملف تعريفي ومواد بيع", pillar: "brand" }, { label: "تحسين طلبات العروض أو العمليات", pillar: "workflows" }] },
+        { key: "retail", tab: "سلسلة متاجر", title: "هوية متسقة، وسهولة في الوصول والتواصل.", items: [{ label: "اتساق الهوية", pillar: "brand" }, { label: "المنتجات والفروع", pillar: "websites" }, { label: "تواصل العملاء ومسارات واتساب", pillar: "workflows" }, { label: "مواد رقمية عملية", pillar: "content" }] },
+        { key: "ngo", tab: "منظمة", title: "الرسالة والبرامج والأثر — بوضوح.", items: [{ label: "الموقع والتواصل حول البرامج", pillar: "websites" }, { label: "رقمنة التقارير والمحتوى", pillar: "content" }, { label: "عرض الأثر", pillar: "brand" }, { label: "سير عمل داخلي أذكى", pillar: "workflows" }] }
+      ]
     },
-    work: {
-      kicker: "أعمال مختارة",
-      title: "نحوّل احتياجات عمل حقيقية إلى تجارب رقمية أوضح.",
-      client: "مؤسسة ذات أثر مجتمعي",
-      sector: "منظمة غير ربحية / أثر مجتمعي",
-      challenge: "احتاجت المؤسسة إلى حضور رقمي أوضح يجمع رسالتها وبرامجها ومعلوماتها في تجربة احترافية واحدة.",
-      role: "استراتيجية · محتوى · تجربة مستخدم · تصميم · تطوير",
-      transformation: "من معلومات متفرقة إلى حضور رقمي واحد منظّم وواضح.",
-      cta: "اطّلع على دراسة الحالة"
+    organizations: {
+      kicker: "جهات عملنا معها",
+      title: "علاقات حقيقية مع جهات حقيقية.",
+      body: "جهات عملت معها Mirai — تُعرض بإذنها. وستُضاف دراسات الحالة تباعًا مع اعتماد نشرها.",
+      visit: "زيارة الموقع"
     },
     process: {
-      kicker: "طريقة أبسط للبناء",
-      title: "خطوات واضحة. تعقيد أقل.",
-      body: "مشروع الموقع لا يحتاج إلى اجتماعات بلا نهاية، ولا نقاشات تقنية مرهقة، ولا شهورًا من الغموض.",
+      kicker: "كيف نعمل",
+      title: "نبدأ من المشكلة، ونختار الحل المناسب.",
+      body: "طريقة عمل واحدة عبر كل الحلول — واضحة ورشيقة ومبنية حول النتيجة.",
       steps: [
-        { no: "01", title: "نفهم", body: "نراجع عملك وحضورك الرقمي الحالي وأهدافك.", outcome: "اتجاه واضح ونطاق عمل محدد." },
-        { no: "02", title: "نبني", body: "المحتوى والهيكل والتصميم والتطوير يسيرون في مسار واحد مترابط.", outcome: "موقع مبني حول الأهداف المتفق عليها." },
-        { no: "03", title: "نُطلق", body: "نختبر ونُطلق ونسلّمك كل ما اتفقنا عليه.", outcome: "موقع مكتمل تملكه وتستخدمه شركتك." }
-      ],
-      closeTitle: "السرعة لا تعني الاستعجال.",
-      closeBody: "الأدوات الحديثة تساعدنا على إزالة التأخير غير الضروري، بينما تبقى الاستراتيجية والجودة والحكم البشري في القلب."
+        { no: "01", title: "نفهم", body: "نبدأ من مشكلة العمل، وجمهوره، وهدفه." },
+        { no: "02", title: "نحدد", body: "نختار الحل المناسب ونتفق على نطاق واضح." },
+        { no: "03", title: "ننفّذ", body: "نستخدم المزيج المناسب من المحتوى والتصميم والتقنية وأدوات الذكاء الاصطناعي." },
+        { no: "04", title: "نسلّم", body: "نُطلق، ونسلّم، وندرّب الفريق حين يلزم." }
+      ]
     },
     why: {
       kicker: "لماذا Mirai",
       title: "أدوات حديثة. فهم للعمل. تنفيذ عملي.",
-      body: "التقنية وحدها لا تصنع موقعًا أفضل. فهم العمل هو ما يصنعه.",
+      body: "التقنية وحدها لا تحل مشكلة عمل. فهم العمل هو ما يحلها — والأدوات الحديثة تجعل التنفيذ أسرع وأفضل.",
       items: [
-        { title: "نبدأ من هدف العمل", body: "نبدأ بما يجب أن يحققه الموقع، لا بالتقنية التي نريد استخدامها." },
-        { title: "المحتوى معنا", body: "لا تحتاج أن تأتي بنصوص جاهزة. نساعدك على بناء الرسالة وصياغتها معك." },
-        { title: "ذكاء اصطناعي وفريق رشيق", body: "نستخدم الذكاء الاصطناعي والأدوات الحديثة لتسريع البحث والمحتوى واستكشاف التصميم والتطوير والترجمة والمراجعة، بينما تبقى الاستراتيجية والقرار للإنسان." }
+        { title: "نبدأ من العمل", body: "نبدأ بالمشكلة والنتيجة المطلوبة قبل اختيار التقنية." },
+        { title: "المحتوى والتواصل", body: "نساعدك على تحويل معرفتك بعملك إلى رسائل ومواد وتجارب رقمية أوضح." },
+        { title: "ذكاء اصطناعي وفريق رشيق", body: "نستخدم الذكاء الاصطناعي والأدوات الحديثة حيث تساعدنا على البحث والإنتاج والأتمتة والتسليم بسرعة أكبر — ويبقى الحكم البشري صاحب القرار." },
+        { title: "ملكية عملية", body: "نطاق واضح، ومخرجات قابلة للاستخدام، وتسليم مباشر بلا تعقيد." }
       ],
-      close: "التقنية يجب أن تجعل العملية أفضل — لا أكثر تعقيدًا."
-    },
-    audit: {
-      kicker: "ابدأ بالوضوح",
-      title: "لست متأكدًا ممّا يحتاجه موقعك فعلًا؟",
-      body: "أخبرنا أين أنت اليوم. سنراجع حضورك الرقمي ونحدد ما قد يُضعف الوضوح أو الثقة أو يعرقل الخطوة التالية.",
-      points: ["الوضوح", "الثقة", "المحتوى", "رحلة العميل", "الموبايل", "دعوات التحرّك", "الملاءمة لطبيعة العمل"],
-      close: "مراجعة عملية تحدد ما يعمل جيدًا، وما ينقص، والمكاسب السريعة، والخطوة التالية التي نوصي بها."
+      close: "التقنية يجب أن تجعل العمل أفضل — لا أكثر تعقيدًا."
     },
     faq: {
       kicker: "أسئلة شائعة",
-      title: "ما قد تريد معرفته قبل أن نبدأ.",
+      title: "ما قد تريد معرفته قبل أن نتحدث.",
       items: [
-        { q: "كم يستغرق مشروع الموقع؟", a: "يعتمد على حجم العمل وتعقيده. نتفق على جدول زمني متوقع قبل البدء، ونعمل بمسار رشيق يتجنب التأخير غير الضروري." },
-        { q: "ماذا لو لم يكن المحتوى جاهزًا؟", a: "هذا طبيعي. تنظيم المحتوى وصياغة الرسالة وكتابة النصوص يمكن أن تكون جزءًا من المشروع." },
-        { q: "هل يمكن بناء الموقع بالعربية والإنجليزية؟", a: "نعم. نتعامل مع العربية والإنجليزية كتجربتَين مستقلتَين مصمَّمتَين لجمهورهما، لا ترجمةً حرفية." },
-        { q: "كيف تستخدم Mirai الذكاء الاصطناعي؟", a: "يساعدنا الذكاء الاصطناعي على إنجاز أجزاء من العملية بسرعة وكفاءة أعلى، لكنه لا يحلّ محل فهم العمل، ولا الاستراتيجية، ولا الحكم الإبداعي، ولا مراقبة الجودة." },
-        { q: "كم تكلفة الموقع، وكم يستغرق؟", a: "أغلب مواقع الشركات التي نبنيها تُسلَّم خلال ستة إلى عشرة أسابيع بحسب عدد الصفحات واللغات والتكاملات. ونشارك نطاق السعر بوضوح بعد المراجعة المجانية — وقبل أي التزام — لتقارنه بما يحتاج الموقع أن يحققه." }
+        { q: "فيمَ تستطيع Mirai مساعدتنا؟", a: "في أربعة مجالات عملية: المواقع والحضور الرقمي، وأساسيات الهوية والمواد التعريفية، ورقمنة المحتوى، والاستشارات الرقمية وتحسين سير العمل. المواقع هي حلّنا الأساسي، لكن كثيرًا من المشاريع يجمع بين مجالين أو ثلاثة." },
+        { q: "ماذا لو لم نكن متأكدين من الحل الذي نحتاجه؟", a: "هذا طبيعي، وهو بالضبط ما تخدمه الاستشارة المجانية. نبدأ من مشكلة العمل ثم نقترح أبسط حل عملي — أحيانًا يكون مجالًا واحدًا، وأحيانًا مزيجًا صغيرًا." },
+        { q: "كيف يبدأ المشروع عادةً؟", a: "بحديث قصير عن العمل وجمهوره وما تريد تحقيقه. ثم نحدد النطاق، ونتفق على المخرجات والجدول الزمني، ونبدأ." },
+        { q: "هل تعملون بالعربية والإنجليزية؟", a: "نعم. نتعامل مع العربية والإنجليزية كتجربتين مستقلتين مصمَّمتين لجمهور كل منهما — لا ترجمةً حرفية لإحداهما عن الأخرى." },
+        { q: "كيف تستخدم Mirai الذكاء الاصطناعي؟", a: "كجزء من طريقة عملنا: بحث أسرع، ومسودات محتوى، واستكشاف للتصميم، وتطوير، وترجمة، ومراجعات للجودة. الذكاء الاصطناعي يدعم العمل، أما الاستراتيجية والإبداع والمسؤولية فتبقى بيد الإنسان." },
+        { q: "هل تقدّمون دعمًا بعد التسليم؟", a: "نعم. ينتهي كل مشروع بتسليم واضح تفهم فيه ما تملكه وكيف تستخدمه، ويمكننا الاتفاق على دعم مستمر أو تحديثات عند الحاجة." },
+        { q: "كم يستغرق المشروع؟", a: "يعتمد على النطاق. الموقع المحدد أو مجموعة المواد التعريفية أسرع من برنامج رقمنة كامل. نتفق على جدول زمني واقعي قبل البدء ونحافظ على مسار عمل رشيق." }
       ]
     },
     final: {
-      title: "حضورك الرقمي يستطيع أن يفعل أكثر من ذلك لعملك.",
-      body: "دعنا نحدد معًا ما يعمل الآن، وما ينقص، وما الذي يصنع الفارق الأكبر."
+      title: "لا تعرف من أين تبدأ؟ ابدأ بحديث.",
+      body: "أخبرنا عن عملك والتحدي الذي تواجهه، ونعود إليك بخطوة عملية تالية — دون أي التزام."
     }
   },
-  solutions: {
-    kicker: "مواقع وحضور رقمي",
-    title: "مسار واحد مترابط من هدف العمل إلى موقع جاهز.",
-    intro: "لا تفصل Mirai الاستراتيجية عن المحتوى عن التصميم عن التطوير كخدمات متفرقة، بل تربطها كلها حول هدف عمل واحد واضح.",
-    stages: [
-      { no: "01", title: "نفهم", body: "أهداف العمل، والجمهور، والأولويات، والحضور الرقمي الحالي." },
-      { no: "02", title: "نهيكل", body: "خريطة الموقع، والرسالة، وترتيب المحتوى، ورحلات المستخدم، ودعوات التحرّك." },
-      { no: "03", title: "نبني", body: "النصوص، والاتجاه البصري، والتصميم المتجاوب، والتطوير، والتكاملات." },
-      { no: "04", title: "نُطلق", body: "المراجعة والاختبار، والإطلاق، وتسليم الصلاحيات والملكية، والتدريب بحسب الاتفاق." }
-    ],
-    closingTitle: "لا تحتاج أن تعرف ما يحتاجه موقعك قبل أن تأتي إلينا.",
-    closingBody: "أنت تعرف عملك. ونحن نحوّل هذه المعرفة إلى تجربة رقمية واضحة واحترافية."
+  solutionsPage: {
+    kicker: "حلولنا",
+    title: "حلول رقمية عملية تبدأ من المشكلة أولًا.",
+    intro: "تجمع Mirai بين فهم الأعمال والإبداع والتقنية ومسارات العمل المدعومة بالذكاء الاصطناعي لحل تحديات رقمية عملية للشركات والمنظمات النامية.",
+    labels: { problem: "المشكلة", helps: "كيف تساعد Mirai", outputs: "مخرجات شائعة", useful: "لمن يناسب" },
+    process: {
+      kicker: "كيف نعمل",
+      title: "طريقة عمل واحدة عبر كل الحلول.",
+      steps: [
+        { no: "01", title: "نفهم", body: "نبدأ من مشكلة العمل وجمهوره وهدفه." },
+        { no: "02", title: "نحدد", body: "نقرر الحل المطلوب فعلًا ونتفق على النطاق." },
+        { no: "03", title: "ننفّذ", body: "نستخدم المزيج المناسب من الاستراتيجية والمحتوى والتصميم والتقنية والأدوات الحديثة." },
+        { no: "04", title: "نسلّم", body: "نختبر، ونسلّم، ونتأكد أن العميل يفهم ما يملكه وكيف يستخدمه." }
+      ]
+    },
+    principle: "نبيع حلولًا ونتائج — لا تقنية بلا داعٍ."
   },
   whoWeHelp: {
     kicker: "من نخدم",
-    title: "أعمال مختلفة. جماهير مختلفة. خطوات مختلفة.",
-    intro: "الشركات الصغيرة والمتوسطة من مختلف القطاعات هي جمهورنا الأوسع. ونركّز حاليًا بشكل أعمق على المصانع وسلاسل التجزئة والمنظمات، حيث نطوّر أدلة عمل متخصصة.",
+    title: "أعمال مختلفة. تحديات مختلفة. حلول رقمية عملية.",
+    intro: "الشركات الصغيرة والمتوسطة من مختلف القطاعات هي جمهور Mirai الأوسع. ونبني فهمًا أعمق لعدة فئات ذات أولوية يلعب فيها الحضور الرقمي والمحتوى وسير العمل دورًا مهمًا.",
+    needsLabel: "قد تشمل الاحتياجات",
     groups: [
-      { title: "الشركات الصغيرة والمتوسطة النامية", goal: "مصداقية · فرص · خدمات واضحة", body: "للشركات التي تحتاج حضورًا احترافيًا يشرح قيمتها ويجعل التواصل والاستفسار أسهل." },
-      { title: "المصانع والشركات الصناعية", goal: "قدرات · شهادات · طلبات عروض أسعار", body: "لمشتري الأعمال الذي يحتاج أن يفهم بسرعة ما تنتجه، وما تستطيع تسليمه، ولماذا يثق بك." },
-      { title: "التجزئة والسلاسل المحلية", goal: "منتجات · فروع · زيارات · طلبات", body: "لرحلات عميل تبدأ من الهاتف: الاكتشاف، والفروع، والخرائط، وواتساب، والزيارة، والطلب." },
-      { title: "المنظمات والمؤسسات", goal: "رسالة · أثر · شركاء · مشاركة", body: "للمؤسسات التي تحتاج أن تحوّل البرامج والتقارير والمعلومات إلى حضور رقمي واضح وموثوق." }
+      { title: "الشركات الصغيرة والمتوسطة النامية", needs: ["حضور رقمي احترافي", "رسالة أوضح", "أساسيات الهوية", "استفسارات العملاء", "تحسينات عملية لسير العمل"] },
+      { title: "المصانع والشركات الصناعية", needs: ["مصداقية أمام مشتري الأعمال", "المنتجات والقدرات", "الشهادات والاعتمادات", "الملفات التعريفية", "رحلات طلب عروض الأسعار", "تنظيم المحتوى", "تحسين سير العمل"] },
+      { title: "التجزئة والسلاسل المحلية", needs: ["اتساق الهوية", "المنتجات والمواقع", "الفروع والخرائط", "التواصل عبر واتساب", "محتوى ومواد رقمية عملية", "تحسينات رقمية للتشغيل"] },
+      { title: "المنظمات والمؤسسات", needs: ["الرسالة والبرامج", "التواصل حول الأثر", "التقارير والمحتوى", "الشركاء وأصحاب المصلحة", "رقمنة المستندات", "سير عمل رقمي عملي"] }
     ],
     closingTitle: "قطاعك غير موجود هنا؟",
-    closingBody: "إذا كانت مؤسستك تحتاج حضورًا رقميًا أقوى، نبدأ بفهم طريقة عملها وما ينبغي أن يحققه الموقع."
-  },
-  work: {
-    kicker: "أعمال مختارة",
-    title: "نشرح العمل من خلال المشكلة، لا من خلال الشكل وحده.",
-    intro: "Mirai ما زالت في بدايتها، ولذلك نفضّل دراسة حالة واحدة صادقة ومشروحة جيدًا على جدار من الشعارات بلا معنى.",
-    caseStudy: {
-      client: "مؤسسة ذات أثر مجتمعي",
-      sector: "منظمة غير ربحية / أثر مجتمعي",
-      challengeTitle: "التحدي",
-      challenge: "كانت المعلومات المهمة موزعة على مواد وصيغ مختلفة، من دون تجربة رقمية واحدة تجمعها بوضوح.",
-      approachTitle: "دور Mirai",
-      approach: "استراتيجية الموقع، وتنظيم المحتوى، وتجربة المستخدم، والتصميم، والتطوير.",
-      transformationTitle: "التحوّل",
-      transformation: "حضور رقمي أوضح وأكثر احترافية يجمع رسالة المؤسسة وبرامجها ومعلوماتها في مكان واحد.",
-      note: "سيُضاف اسم العميل والصور والنتائج المقيسة بعد التحقق منها والحصول على موافقة النشر."
-    }
+    closingBody: "Mirai لا تقتصر على هذه الفئات. إذا كان لديك تحدٍّ رقمي يستحق الحل، نبدأ بفهم عملك ثم نبحث عن أبسط حل عملي له."
   },
   about: {
     kicker: "عن Mirai",
-    title: "Mirai تعني «المستقبل». ونرى أن ذلك ينبغي أن يظهر في طريقة عملنا، لا في شكلنا فقط.",
-    intro: "Mirai Solutions شركة تقودها التقنية، تجمع بين فهم العمل والإبداع والأدوات الحديثة لبناء حلول رقمية عملية.",
+    title: "Mirai تعني «المستقبل». ونرى أن ذلك ينبغي أن يظهر في طريقة حلّنا للمشكلات، لا في شكلنا فقط.",
+    intro: "Mirai Solutions شركة تقودها التقنية، تجمع بين فهم الأعمال والإبداع والذكاء الاصطناعي والأدوات الحديثة لبناء حلول رقمية عملية.",
     storyTitle: "خبرة تمتد عبر الأعمال والمنتجات والأثر.",
-    story: "تمتد الخبرة خلف Mirai لأكثر من اثني عشر عامًا في إدارة المنتجات وتطوير الأعمال وتقنيات التعليم والمنتجات الرقمية والعمليات والعمل المجتمعي. أما Mirai نفسها فشركة جديدة، أُسّست لتحوّل هذه الخبرة إلى طريقة أسرع وأوضح لحل مشكلات الأعمال الرقمية.",
+    story: "تمتد الخبرة خلف Mirai لأكثر من اثني عشر عامًا في إدارة المنتجات وتطوير الأعمال وتقنيات التعليم والمنتجات الرقمية والعمليات والعمل المجتمعي ومسارات العمل المدعومة بالذكاء الاصطناعي. أما Mirai Solutions نفسها فشركة جديدة، أُسّست لتحوّل هذه الخبرة إلى طريقة أسرع وأوضح لحل المشكلات الرقمية العملية.",
+    experience: ["إدارة المنتجات", "تطوير الأعمال", "تقنيات التعليم", "المنتجات الرقمية", "العمليات", "الأثر المجتمعي", "مسارات عمل مدعومة بالذكاء الاصطناعي"],
+    todayTitle: "ماذا نقدّم اليوم",
+    todayBody: "أربعة مجالات حلول محددة، والمواقع والحضور الرقمي في المقدمة.",
+    principlesTitle: "كيف نفكر",
     principles: [
-      { title: "العمل أولًا", body: "نبدأ بالمشكلة والنتيجة المطلوبة قبل اختيار التقنية." },
-      { title: "تقنية لها غاية", body: "نستخدم الذكاء الاصطناعي والأدوات الحديثة حين تصنع فارقًا حقيقيًا." },
-      { title: "تنفيذ عملي", body: "نطاق واضح، وتواصل رشيق، وعمل يستطيع العميل استخدامه وامتلاكه." }
-    ]
+      { title: "العمل أولًا", body: "نبدأ بالمشكلة والنتيجة المطلوبة." },
+      { title: "تقنية لها غاية", body: "الذكاء الاصطناعي والأدوات الحديثة تهم فقط حين تصنع ميزة حقيقية." },
+      { title: "تنفيذ عملي", body: "نطاق واضح، وتواصل رشيق، ونتائج قابلة للاستخدام." },
+      { title: "الحكم البشري", body: "الذكاء الاصطناعي يدعم العمل، أما الاستراتيجية والإبداع والمسؤولية فتبقى بيد الإنسان." },
+      { title: "الملكية", body: "ينبغي أن يفهم العميل بوضوح ما يستلمه وما يملكه." }
+    ],
+    closingTitle: "نبني للمستقبل، وننفّذ بخطوات عملية اليوم."
   },
-  audit: {
-    kicker: "مراجعة مجانية للحضور الرقمي",
-    title: "ابدأ بالوضوح قبل أن تبدأ بإعادة التصميم.",
-    intro: "أخبرنا عن عملك وأين أنت اليوم. سنراجع حضورك الرقمي ونحدد ما يعمل، وما ينقص، وما ينبغي تحسينه أولًا.",
+  consult: {
+    title: "اطلب استشارة مجانية",
+    intro: "أخبرنا قليلًا عن عملك والتحدي الذي تواجهه، ونرد عليك بخطوة عملية تالية — حديث حقيقي، لا تقرير آلي.",
     fields: {
       name: "الاسم",
       company: "الشركة / المؤسسة",
-      website: "رابط الموقع (اختياري)",
-      businessType: "نوع النشاط",
-      improvementGoal: "ما الذي تريد تحسينه؟",
       email: "البريد الإلكتروني",
       whatsapp: "رقم واتساب",
-      budget: "نطاق الميزانية (اختياري)",
-      timeline: "متى تريد الإطلاق؟ (اختياري)",
-      submit: "اطلب المراجعة المجانية"
+      businessType: "نوع النشاط",
+      interest: "المجال الذي يهمك",
+      website: "رابط الموقع (اختياري)",
+      message: "أخبرنا باختصار بما تحتاجه",
+      choose: "اختر…"
     },
-    options: ["شركة صغيرة أو متوسطة نامية", "مصنع / شركة صناعية", "تجزئة / سلسلة محلية", "منظمة / مؤسسة", "أخرى"],
-    budgets: ["أقل من 50,000 جنيه", "50,000 – 100,000 جنيه", "100,000 – 250,000 جنيه", "أكثر من 250,000 جنيه", "لم أحدد بعد"],
-    timelines: ["في أقرب وقت", "خلال شهر إلى شهرين", "خلال ثلاثة إلى ستة أشهر", "أستكشف فقط"],
-    privacy: "نستخدم هذه البيانات فقط لمراجعة طلبك والتواصل معك بشأن المراجعة.",
-    successTitle: "استلمنا طلب المراجعة.",
-    successBody: "سنراجع ما أرسلته ونردّ عليك خلال يوم عمل واحد بنطاق المراجعة والخطوة التالية. ويمكنك متابعة الحديث معنا على واتساب الآن.",
+    businessTypes: ["شركة صغيرة أو متوسطة نامية", "مصنع / شركة صناعية", "تجزئة / سلسلة محلية", "منظمة / مؤسسة", "أخرى"],
+    interests: ["المواقع والحضور الرقمي", "أساسيات الهوية والمواد التعريفية", "رقمنة المحتوى", "الاستشارات الرقمية وسير العمل", "لم أحدد بعد"],
+    submit: "أرسل الطلب",
+    sending: "جارٍ الإرسال…",
+    privacy: "نستخدم هذه البيانات فقط لمراجعة طلبك والرد عليك.",
+    close: "إغلاق",
     whatsappCta: "تابع على واتساب",
-    error: "حدث خطأ. حاول مرة أخرى أو تابع معنا مباشرة على واتساب."
-  }
+    copyCta: "انسخ الرسالة",
+    copied: "تم النسخ",
+    channelNote: "واتساب هو قناة التواصل الحالية لهذا الموقع.",
+    states: {
+      static: { title: "طلبك جاهز للإرسال.", body: "هذه النسخة من الموقع ترسل طلبات الاستشارة عبر واتساب. بياناتك مجهّزة مسبقًا — اضغط الزر لإرسالها إلى Mirai." },
+      success: { title: "استلمنا طلبك.", body: "سنراجع ما أرسلته ونرد عليك خلال يوم عمل واحد بخطوة عملية تالية. ويمكنك متابعة الحديث على واتساب الآن." },
+      noEmail: { title: "جاهز للإرسال.", body: "إرسال البريد غير مفعّل على هذا الخادم بعد، لذلك يتابع طلبك عبر واتساب وبياناتك مجهّزة مسبقًا." },
+      noChannel: { title: "خطوة أخيرة.", body: "انسخ الرسالة أدناه وأرسلها إلى Mirai عبر واتساب أو البريد — قناة التواصل قيد الإعداد." }
+    },
+    errors: {
+      required: { name: "اكتب اسمك حتى نعرف مع من نتحدث.", company: "اكتب اسم الشركة أو المؤسسة.", email: "نحتاج بريدًا إلكترونيًا للرد عليك.", whatsapp: "أضف رقم واتساب حتى نتابع معك.", businessType: "اختر نوع النشاط الأقرب لعملك.", interest: "اختر المجال الأقرب — أو «لم أحدد بعد».", message: "جملة أو جملتان عمّا تحتاجه تكفيان." },
+      email: "البريد الإلكتروني غير صحيح — مثال: name@company.com",
+      url: "أدخل رابطًا كاملًا يبدأ بـ https://",
+      whatsapp: "استخدم الصيغة الدولية — مثال: +2010XXXXXXXX",
+      generic: "راجع الحقول المحددة وحاول مرة أخرى.",
+      network: "تعذر إرسال الطلب الآن. حاول مرة أخرى أو تابع على واتساب."
+    },
+    whatsappMessage: {
+      greeting: "مرحبًا Mirai، أرغب في استشارة مجانية.",
+      labels: { name: "الاسم", company: "الشركة", email: "البريد", whatsapp: "واتساب", businessType: "نوع النشاط", interest: "المجال", website: "الموقع", message: "ما أحتاجه" }
+    }
+  },
+  notFound: { title: "الصفحة غير موجودة", body: "الصفحة التي تبحث عنها غير موجودة أو انتقلت إلى مكان آخر.", cta: "العودة إلى الرئيسية" },
+  redirect: { title: "انتقلت هذه الصفحة", body: "جارٍ نقلك إلى الصفحة الجديدة…", cta: "متابعة" }
 };
 
 export const siteContent = { en, ar };

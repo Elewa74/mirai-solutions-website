@@ -3,8 +3,7 @@ import { readFile, stat } from "node:fs/promises";
 import { extname, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync, brotliCompressSync, constants as zc } from "node:zlib";
-import { handleAuditSubmission, renderRequest } from "./lib/http.mjs";
-import { rateLimited, scanUrl } from "./lib/scan.mjs";
+import { handleConsultation, PUBLIC_ROUTES, renderRequest } from "./lib/http.mjs";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 const publicDir = resolve(root, "public");
@@ -108,7 +107,7 @@ async function serveStatic(req, pathname, res) {
 }
 
 function sitemap(origin) {
-  const pages = ["/", "/solutions", "/who-we-help", "/manufacturing", "/retail", "/ngo", "/work", "/about", "/audit"];
+  const pages = PUBLIC_ROUTES;
   const urls = [...pages, ...pages.map((p) => (p === "/" ? "/ar" : `/ar${p}`))];
   const today = new Date().toISOString().slice(0, 10);
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${urls.map((p) => {
@@ -146,25 +145,13 @@ const server = http.createServer(async (req, res) => {
     return send(req, res, 200, sitemap(origin), { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" });
   }
 
-  if (req.method === "POST" && url.pathname === "/api/scan") {
-    const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").toString().split(",")[0].trim();
-    if (rateLimited(ip)) return json(req, res, 429, { ok: false, error: "rate_limited" });
+  if (req.method === "POST" && url.pathname === "/api/consultation") {
     try {
       const payload = await readJson(req);
-      const result = await scanUrl(payload?.url);
-      return json(req, res, result.ok ? 200 : 422, result);
-    } catch {
-      return json(req, res, 400, { ok: false, error: "invalid_request" });
-    }
-  }
-
-  if (req.method === "POST" && url.pathname === "/api/audit") {
-    try {
-      const payload = await readJson(req);
-      const result = await handleAuditSubmission(payload, process.env, fetch);
+      const result = await handleConsultation(payload, process.env, fetch);
       return json(req, res, result.status, result.body);
     } catch (error) {
-      return json(req, res, 400, { ok: false, message: error instanceof Error ? error.message : "Invalid request" });
+      return json(req, res, 400, { ok: false, error: "invalid_request", message: error instanceof Error ? error.message : "Invalid request" });
     }
   }
 
@@ -178,6 +165,10 @@ const server = http.createServer(async (req, res) => {
   if (await serveStatic(req, url.pathname, res)) return;
 
   const rendered = renderRequest(url.pathname);
+  if (rendered.status === 301) {
+    // legacy URLs (/work, /audit, sector pages) → their new home; body is a noindex fallback page
+    return send(req, res, 301, rendered.body, { location: rendered.location, "content-type": rendered.contentType, "cache-control": "public, max-age=86400" });
+  }
   return send(req, res, rendered.status, rendered.body, {
     "content-type": rendered.contentType,
     "cache-control": isProd ? "public, max-age=300, stale-while-revalidate=600" : "no-store"

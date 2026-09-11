@@ -1,79 +1,82 @@
 # Mirai Solutions Website
 
-Bilingual English/Arabic marketing website for Mirai Solutions with RTL/LTR support, light-first theming with an optional dark mode, responsive editorial layouts, brand photography, and a Free Digital Presence Audit lead flow.
+A bilingual English/Arabic marketing website for **Mirai Solutions**, a technology-driven company delivering practical digital solutions for growing businesses and organizations. Four focused solution areas — Websites & Digital Presence (flagship), Brand Essentials & Business Materials, Content Digitalization, and Digital Consulting & Smarter Workflows — with one conversion flow: a free consultation.
+
+Dependency-free: Node 20+ renders the pages server-side (`server.mjs`) and the same renderer produces a static export for GitHub Pages. No framework, no build step.
 
 ## Run locally
 
 ```bash
-npm test
-npm run dev
+npm test          # unit + integration tests (node:test)
+npm run check     # tests + preflight (routes, redirects, SEO, headers, assets, API)
+npm run dev       # http://localhost:3000  (Arabic: /ar)
+npm run export    # static site → dist/
 ```
-
-Open `http://localhost:3000`.
 
 ## Routes
 
-English (default):
-- `/`
-- `/solutions`
-- `/who-we-help`
-- `/manufacturing`, `/retail`, `/ngo` — segment playbooks (content in `content/segments.mjs`)
-- `/work`
-- `/about`
-- `/audit` (accepts `?site=<url>&score=<n>` hand-off from the instant scan)
+English (default locale):
 
-Arabic uses the same logical pages under `/ar`, for example `/ar/about`.
+| Route | Page |
+|---|---|
+| `/` | Home — hero, experience, four solutions, who we help, "different businesses need different digital solutions", organizations (when configured), how we work, why Mirai, FAQ, consultation CTA |
+| `/solutions` | The four solution areas in depth + how we work |
+| `/who-we-help` | SMEs (umbrella) + manufacturing, retail & local chains, NGOs |
+| `/about` | Mirai means Future — story, what we do today, principles |
 
-## Homepage hero (v1.4)
+Arabic mirrors the same logical pages under `/ar` (`/ar`, `/ar/solutions`, `/ar/who-we-help`, `/ar/about`). `lang`/`dir` switch per locale; copy lives in `content/site-content.mjs` and must keep the same shape in both languages (enforced by tests).
 
-Light, typographic hero: the headline rotates the audience word ("factory / retail chain / organization / business") in the brand gradient while the **Mirai ring** — an abstract of the logo's "a" — draws itself and lights the matching segment node. One lead sentence, one primary CTA, one text link to the scan. Everything else moved out of the hero:
-- **Mirai Lens** band (`#lens`) directly below: the instant website scan.
-- **"Different businesses need different websites"** section: sector tabs + live website preview (was the hero device) and the four facts (12+ years, AR/EN, one team, 0 templates).
+Legacy URLs redirect (301 on the server, `noindex` refresh pages in the static export):
 
-Hero copy lives in `content/site-content.mjs` → `home.hero.rotate` / `home.hero.ring` for both locales.
+| Old | New |
+|---|---|
+| `/work`, `/ar/work` | `/#clients`, `/ar#clients` |
+| `/audit`, `/ar/audit` | `/?consult=1`, `/ar?consult=1` (opens the consultation modal) |
+| `/manufacturing`, `/retail`, `/ngo` (+ `/ar/…`) | `/who-we-help` (+ `/ar/who-we-help`) |
 
-## Motion layer (v1.5)
+Only the eight canonical pages appear in `sitemap.xml`. There is no website scanner, no audit page, no work/portfolio page and no per-sector or per-service pages.
 
-Site-wide, all CSS/vanilla JS, all disabled under `prefers-reduced-motion`: page fade-in, scroll progress bar, header shrink on scroll, cursor-reactive dot grid in the hero, rotating audience word + Mirai ring, staggered scroll reveals (lists, cards, timeline draw-on), animated counters, magnetic/shine CTAs, 3D tilt on cards, cursor glow on dark bands, smooth FAQ. Patterns reviewed against 21st.dev components (interactive dot-grid hero, staggered word reveal, infinite marquee, bounce cards) and rebuilt dependency-free.
+## Consultation modal (the one conversion flow)
 
-## Responsive
+Every "Get a Free Consultation" control (`[data-consult]` in the header, hero, solution blocks, page CTAs, footer and the mobile sticky bar) opens one global modal rendered on every page (`consultationModal()` in `lib/render.mjs`, behaviour in `public/site.js`).
 
-Verified at 375px on all 12 routes (EN + AR): no horizontal scroll, tap targets ≥ 42px, header/nav/hero/Lens/demo/forms stack correctly.
+- Fields: name, company/organization, email, WhatsApp number, business type, interested in (four solutions + "Not sure yet"), website URL (optional), message. Solution CTAs preselect "Interested in" via `data-interest="websites|brand|content|workflows"`; `/?consult=1&interest=<key>` does the same on load.
+- Accessibility: `role="dialog"` + `aria-modal`, labelled/described by the title and intro, focus moves to the first field, Tab is trapped inside, `Esc` and the backdrop close it, focus returns to the trigger, every control has a `<label for>` and an `aria-describedby` error slot, RTL layout in Arabic; near-full-screen sheet on phones.
+- **Node server mode** — `POST /api/consultation` validates server-side (`lib/consultation.mjs`), emails the request through Resend to `MIRAI_LEAD_EMAIL` when `RESEND_API_KEY` is set (`lib/consultation-email.mjs`), and returns `{ ok, emailSent, emailConfigured, whatsappHref }`. The client shows "Request received" only when `emailSent` is true; otherwise it offers the WhatsApp hand-off. A Resend failure returns 502 with the WhatsApp link — never a fake success.
+- **Static mode (GitHub Pages)** — the export marks `<body data-static="1">`; there is no API, so the form validates client-side and hands off to WhatsApp (`https://wa.me/<MIRAI_WHATSAPP>?text=…`) with a professionally pre-filled message containing the submitted details. WhatsApp is presented as the current contact channel. If `MIRAI_WHATSAPP` is not set, the visitor gets the composed message with a copy button instead.
 
-## Mirai Lens — instant scan (v1.2)
+## Email + WhatsApp configuration
 
-`POST /api/scan { url }` fetches the public home page server-side (9s timeout, 1.5MB cap, no external services) and runs 10 business-first checks — clarity, CTA, mobile, speed, HTTPS, Arabic/English, search & AI visibility, content depth, visual trust, business-model fit — returning a 0–100 score with AR/EN labels and advice (`lib/scan.mjs`). Rate-limited to 12 scans/minute per IP. The hero form renders the report inline and hands the URL + score to `/audit`, where they are attached to the lead (email includes budget, timeline and scan score).
+Copy `.env.example` (or `deploy/env.production.example.txt`) and set:
 
-## SEO
+- `RESEND_API_KEY`, `MIRAI_LEAD_EMAIL`, `MIRAI_FROM_EMAIL` — Resend delivery (verify the sending domain first).
+- `MIRAI_WHATSAPP` — the Mirai WhatsApp number in international digits (e.g. `2010XXXXXXXX`). Used by the server response and baked into the static export as `data-whatsapp`. On GitHub Pages set it as a repository **variable** (`Settings → Secrets and variables → Actions → Variables → MIRAI_WHATSAPP`); the workflow passes it to the export.
+- `SITE_URL` — canonical origin for canonical/hreflang/sitemap (`https://miraisolutions.net`).
 
-Every page ships canonical + `hreflang` (en/ar/x-default), Open Graph locale/url, and JSON-LD (`Organization`, `WebSite`, `Service`; `FAQPage` on the home page). Set `SITE_URL` in production so absolute URLs are correct.
+## Organizations we've worked with
 
-## Photography, palette & typography (v1.6)
-
-**Photography.** Eight AI-generated, brand-toned photos (Egyptian/regional settings, teal palette) live in `public/images/` as `name-1600.webp` + `name-800.webp` (+ `name-1200.jpg` fallback, `name-thumb.webp` for row thumbnails). They are placed by `picture()` in `lib/render.mjs`, which emits `<picture>` with `srcset/sizes`, intrinsic `width/height` (no layout shift), `loading="lazy"` everywhere except the segment-page hero (eager + `<link rel="preload">` for LCP), and **localised alt text** (`imageAlt.en/.ar`). Placements: home experience band (team), audience rows (thumbnails), work case frame (work), segment heroes (photo behind the device mockup), about story (about), audit sidebar (audit), Mirai Lens background (glass, decorative). `og:image` + `twitter:card` are set per page. Total weight ≈ 1.9 MB for all variants; a page loads ~250–400 KB of imagery.
-
-**Palette polish (same direction).** Tokens in `:root`: cool paper `--bg #f6f8fa`, `--surface-tint`, deeper neutrals (`--muted #5c6a7c` ≥ 5:1), a dedicated **`--accent-text #077a84`** for teal text (kickers, indices, text links — 5.1:1 on white; the bright `--accent` stays for fills and borders), tinted shadows (`--shadow`, `--photo-shadow`), `--danger`, a deeper CTA gradient for legible white labels, and a soft grain texture on dark bands. Dark theme mirrors every token.
-
-**Typographic scale.** Fluid tokens `--fs-display/h1/h2/h3/lead/body/small/micro`, line-height tokens (`--lh-tight 1.02` for display, `1.08` headings, `1.3` sub-heads, body `1.6`), tracking tokens, `text-wrap: balance` on headings and `pretty` on paragraphs, and a reading measure (`main p { max-width: 62ch }`). **Arabic overrides:** body `1.85`, h1 `1.22`, h2 `1.28`, h3 `1.5`, lists `1.8`, no letter-spacing, weights capped at 600/700 so Readex Pro / IBM Plex Sans Arabic never synthesise bold. Section rhythm uses `--space-section` / `--space-block`.
+`content/organizations.mjs` holds real organizations only (`{ name, nameAr?, logo?, websiteUrl?, alt?, caseStudyUrl?, servicesProvided?, portfolioContent? }`). The homepage section `#clients` renders only when the list has entries: a logo (or a tasteful text fallback when no logo file exists) that opens the organization's real website in a new tab. Never add placeholder names or logos.
 
 ## Theme
 
-The light look is the default for every visitor (`MIRAI_THEME=light`, the default); the header toggle switches to dark and the choice is stored in `localStorage` under `mirai-theme`. To follow the device's light/dark setting instead, deploy with `MIRAI_THEME=system` (policy in `public/theme.mjs`, mirrored by the inline no-flash script in `lib/render.mjs`).
+Light is the default for every visitor (`MIRAI_THEME=light`); the header toggle switches to dark and stores the choice in `localStorage` (`mirai-theme`). `MIRAI_THEME=system` follows the device setting instead (`public/theme.mjs` + the inline no-flash script in `lib/render.mjs`). `color-scheme: only light` stops browsers' forced auto-dark from repainting the light look.
 
-## Audit email and WhatsApp
+## Design system
 
-Copy `.env.example` values into your host environment. Email sending uses the Resend HTTP API only when `RESEND_API_KEY` and `MIRAI_LEAD_EMAIL` are configured. Without those variables, local/demo submissions still validate and return success without sending email.
+`public/site.css`: tokens (cool paper + cyan/mint/blue gradient accent, fluid type scale, spacing rhythm), Manrope/Inter for Latin and Readex Pro/IBM Plex Sans Arabic for Arabic, editorial layouts with generous whitespace, one restrained dark band per page, photography via `<picture>` (WebP + JPG, intrinsic sizes, localized alt), and a motion layer (scroll reveals, hero ring, magnetic CTA, dot grid) that is fully disabled under `prefers-reduced-motion`. Verified at 1440 / 768 / 375 in both locales and both themes with no horizontal overflow.
 
-For WhatsApp follow-up, set `MIRAI_WHATSAPP` to the Mirai WhatsApp number in international format.
+## SEO
 
-## Architecture note
+Per-page titles and descriptions (`content/site-content.mjs → meta`), canonical, `hreflang` en/ar/x-default, Open Graph, `twitter:card`, JSON-LD (`Organization`, `WebSite`, four `Service` entries; `FAQPage` on the home page), `robots.txt` and `sitemap.xml`. Redirect and 404 pages are `noindex`.
 
-This current build is dependency-free (Node + HTML/CSS/JS) because the execution environment could not reach the npm registry while building the site. The content model, routes, and UI can later be migrated to Next.js without changing the information architecture or visual direction.
+## Tests
 
-## Static preview on GitHub Pages
+`tests/` (node:test, no dependencies): content parity + positioning rules, renderer (IA, CTAs, modal markup, metadata, no scanner/legacy links), consultation validation/WhatsApp/email, HTTP handler (email modes), live server (301s, `/api/scan` gone, sitemap), static export (redirect pages, links resolve, WhatsApp baked, preview mode), theme, i18n, canonical-host redirect. `tests/browser.test.mjs` covers the modal end-to-end (open/close, focus trap, preselect, `?consult=1`, validation, static WhatsApp fallback, theme toggle, 375px overflow) and runs only when Playwright is available (`npm i -D playwright` or `PLAYWRIGHT_MODULE=/path/to/playwright/index.mjs`); it is skipped otherwise.
 
-`.github/workflows/pages.yml` publishes a static export on every push to `main` (`npm run export` → `dist/`). Pages get folder URLs (`/solutions/`), root-relative URLs are prefixed with the Pages base path, the Mirai Lens form falls back to the audit page and the audit form shows a preview notice (no server on Pages). A project-site preview is `noindex`; once a custom domain is set in Settings → Pages the export runs at the domain root with indexing on and a sitemap. The full-featured site (instant scan + email/WhatsApp lead flow) needs the Node server — see Deploy.
+## Static site on GitHub Pages
 
-## Deploy
+`.github/workflows/pages.yml` runs the tests and publishes `npm run export` on every push to `main`. Pages get folder URLs (`/solutions/`), root-relative URLs are prefixed with the Pages base path, legacy URLs become `noindex` redirect pages, a project-site preview is `noindex`, and a custom-domain build (currently `miraisolutions.net`) is indexable with a sitemap. The consultation form uses the WhatsApp hand-off on Pages; email delivery needs the Node server.
 
-See `PRE-LAUNCH.md` for the checklist. `npm run check` runs the tests and the 253-point preflight (routes, SEO, headers, assets, API). `render.yaml` (repo root) is a Render Blueprint — free plan for review, `SITE_URL=https://miraisolutions.net` (the domain is registered at NameSilo; DNS steps in PRE-LAUNCH.md), and `MIRAI_REDIRECT_TO_SITE_URL=1` turns on a 301 from any other host (onrender.com, www) to the canonical domain once DNS is live; `deploy/` holds a systemd unit + Caddyfile for a VPS and a Dockerfile. Copy `deploy/env.production.example.txt` to `.env` and run `npm run start:prod`.
+## Deploy the Node server
+
+See `PRE-LAUNCH.md`. `render.yaml` is a Render Blueprint (set the secrets in the service's Environment tab); `deploy/` holds a systemd unit + Caddyfile for a VPS and a Dockerfile. `MIRAI_REDIRECT_TO_SITE_URL=1` turns on a 301 from any other host to `SITE_URL` once DNS points at the server.

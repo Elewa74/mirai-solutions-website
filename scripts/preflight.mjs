@@ -13,8 +13,10 @@ const args = process.argv.slice(2);
 const urlArg = args.includes("--url") ? args[args.indexOf("--url") + 1] : null;
 const PORT = 3999;
 const base = (urlArg || `http://localhost:${PORT}`).replace(/\/$/, "");
-const routes = ["/", "/solutions", "/who-we-help", "/manufacturing", "/retail", "/ngo", "/work", "/about", "/audit"];
+const routes = ["/", "/solutions", "/who-we-help", "/about"];
 const all = [...routes, ...routes.map((r) => (r === "/" ? "/ar" : `/ar${r}`))];
+const legacy = { "/work": "/#clients", "/ar/work": "/ar#clients", "/audit": "/?consult=1", "/ar/audit": "/ar?consult=1", "/manufacturing": "/who-we-help", "/retail": "/who-we-help", "/ngo": "/who-we-help", "/ar/manufacturing": "/ar/who-we-help", "/ar/retail": "/ar/who-we-help", "/ar/ngo": "/ar/who-we-help" };
+const SCANNER_TEXT = /mirai lens|scan my website|website score|10 checks|instant scan|digital presence score|api\/scan|افحص موقعي|درجة الحضور الرقمي/i;
 
 const results = []; // {area, check, status: PASS|WARN|FAIL, detail}
 const add = (area, check, ok, detail = "", warn = false) => results.push({ area, check, status: ok ? "PASS" : warn ? "WARN" : "FAIL", detail });
@@ -40,8 +42,11 @@ for (const route of all) {
   add("routes", `GET ${route}`, res.status === 200, `${res.status} · ${ms} ms · ${(Buffer.byteLength(html) / 1024).toFixed(0)} KB`);
 }
 
-// 404 behaviour
+// 404 behaviour + legacy redirects
 try { const r = await fetch(`${base}/this-page-does-not-exist`); add("routes", "unknown route returns 404", r.status === 404, String(r.status)); } catch (e) { add("routes", "unknown route returns 404", false, String(e)); }
+for (const [from, to] of Object.entries(legacy)) {
+  try { const r = await fetch(base + from, { redirect: "manual" }); add("legacy", `${from} → ${to}`, r.status === 301 && r.headers.get("location") === to, `${r.status} → ${r.headers.get("location")}`); } catch (e) { add("legacy", `${from} → ${to}`, false, String(e)); }
+}
 
 // SEO per page
 for (const [route, { html, res }] of Object.entries(pages)) {
@@ -72,6 +77,9 @@ for (const [route, { html, res }] of Object.entries(pages)) {
   add(p, "html lang/dir match locale", isAr ? lang === "ar" && dir === "rtl" : lang === "en" && dir === "ltr", `${lang}/${dir}`);
   add(p, "viewport meta", viewport, "");
   add(p, "favicon link", favicon, "");
+  add(p, "no scanner / audit language", !SCANNER_TEXT.test(html) && !/\baudit\b/i.test(strip(html)), "");
+  add(p, "no links to removed pages (work, audit, sector pages)", !/href="\/(ar\/)?(work|audit|manufacturing|retail|ngo)(\/|"|[?#])/.test(html), "");
+  add(p, "consultation modal + header CTA present", /data-consult-modal/.test(html) && /header-cta/.test(html), "");
   if (!isAr) { const ar = pages[route === "/" ? "/ar" : `/ar${route}`]; if (ar?.html) { const arTitle = strip((ar.html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || ""); add(p, "Arabic title differs from English", arTitle !== title, ""); } }
 }
 
@@ -101,8 +109,8 @@ for (const [route, { html, res }] of Object.entries(pages)) {
   for (const ref of refs) { if (!/-1600\.webp$/.test(ref)) continue; try { const buf = await (await fetch(base + ref)).arrayBuffer(); if (buf.byteLength > biggest) { biggest = buf.byteLength; biggestName = ref; } } catch {} }
   add("performance", "largest hero photo ≤ 140 KB", biggest <= 140 * 1024, `${biggestName} · ${(biggest / 1024).toFixed(0)} KB`, biggest <= 200 * 1024);
 }
-for (const asset of ["/site.css", "/site.js", "/theme.mjs", "/favicon.svg", "/favicon.ico", "/apple-touch-icon.png", "/site.webmanifest", "/brand/mirai-logo-light.webp", "/brand/mirai-logo-dark.webp", "/brand/mirai-logo-light.png", "/images/team-800.webp", "/images/glass-1600.webp", "/robots.txt", "/sitemap.xml"]) {
-  try { const r = await fetch(base + asset); const buf = await r.arrayBuffer(); add("assets", `GET ${asset}`, r.ok, `${r.status} · ${(buf.byteLength / 1024).toFixed(0)} KB · ${r.headers.get("content-type")} · cache: ${r.headers.get("cache-control")}`); if (asset === "/sitemap.xml") { const xml = Buffer.from(buf).toString(); const missing = all.filter((p) => !xml.includes(`${p}</loc>`)); add("assets", "sitemap lists every route", missing.length === 0, missing.join(" ") || `${all.length} routes`); } } catch (e) { add("assets", `GET ${asset}`, false, String(e)); }
+for (const asset of ["/site.css", "/site.js", "/theme.mjs", "/favicon.svg", "/favicon.ico", "/apple-touch-icon.png", "/site.webmanifest", "/brand/mirai-logo-light.webp", "/brand/mirai-logo-dark.webp", "/brand/mirai-logo-light.png", "/images/team-800.webp", "/robots.txt", "/sitemap.xml"]) {
+  try { const r = await fetch(base + asset); const buf = await r.arrayBuffer(); add("assets", `GET ${asset}`, r.ok, `${r.status} · ${(buf.byteLength / 1024).toFixed(0)} KB · ${r.headers.get("content-type")} · cache: ${r.headers.get("cache-control")}`); if (asset === "/sitemap.xml") { const xml = Buffer.from(buf).toString(); const locs = [...xml.matchAll(/<loc>[^<]*?(\/[^<]*)?<\/loc>/g)].length; const missing = all.filter((p) => !xml.includes(`${p}</loc>`)); const extra = Object.keys(legacy).filter((p) => xml.includes(`${p}</loc>`)); add("assets", "sitemap lists exactly the canonical routes", missing.length === 0 && extra.length === 0 && locs === all.length, missing.length ? `missing ${missing.join(" ")}` : extra.length ? `legacy ${extra.join(" ")}` : `${locs} routes`); } } catch (e) { add("assets", `GET ${asset}`, false, String(e)); }
 }
 // budget
 {
@@ -114,12 +122,13 @@ for (const asset of ["/site.css", "/site.js", "/theme.mjs", "/favicon.svg", "/fa
 
 // API
 try {
-  const bad = await fetch(`${base}/api/scan`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url: "localhost" }) });
-  add("api", "/api/scan rejects localhost (SSRF guard)", bad.status === 422, String(bad.status));
-  const ip = await fetch(`${base}/api/scan`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url: "http://169.254.169.254/" }) });
-  add("api", "/api/scan rejects raw IPs", ip.status === 422, String(ip.status));
-  const audit = await fetch(`${base}/api/audit`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "Test", company: "Co", businessType: "Other", improvementGoal: "x", email: "bad", whatsapp: "+201000000000" }) });
-  add("api", "/api/audit validates email", audit.status === 400, String(audit.status));
+  const gone = await fetch(`${base}/api/scan`, { method: "POST", headers: { "content-type": "application/json" }, body: "{}" });
+  add("api", "/api/scan no longer exists", gone.status === 404, String(gone.status));
+  const bad = await fetch(`${base}/api/consultation`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "Test", company: "Co", businessType: "Other", interest: "Not Sure Yet", message: "x", email: "bad", whatsapp: "+201000000000" }) });
+  add("api", "/api/consultation validates email", bad.status === 400, String(bad.status));
+  const good = await fetch(`${base}/api/consultation`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "Test", company: "Co", businessType: "Other", interest: "Not Sure Yet", message: "Preflight check", email: "test@example.com", whatsapp: "+201000000000" }) });
+  const goodBody = await good.json().catch(() => ({}));
+  add("api", "/api/consultation accepts a valid request without faking email", good.status === 200 && goodBody.ok === true && (goodBody.emailSent === true || goodBody.emailConfigured === false), `${good.status} · emailConfigured=${goodBody.emailConfigured} emailSent=${goodBody.emailSent} whatsapp=${goodBody.whatsappHref ? "yes" : "no"}`);
   const env = ["RESEND_API_KEY", "MIRAI_LEAD_EMAIL", "MIRAI_WHATSAPP", "SITE_URL"].filter((k) => !process.env[k] && !(k === "SITE_URL" && process.env.RENDER_EXTERNAL_URL));
   add("env", "production env vars set", env.length === 0, env.length ? `missing: ${env.join(", ")}` : "all set", true);
 } catch (e) { add("api", "API reachable", false, String(e)); }

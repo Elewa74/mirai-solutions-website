@@ -1,57 +1,52 @@
-# Mirai Solutions — قائمة ما قبل الرفع (v1.5)
+# Mirai Solutions — قائمة ما قبل الرفع (v2.0)
 
-آخر فحص: 11 سبتمبر 2026 (v1.6) · `npm run check` → 28/28 اختبار · preflight 253 فحصًا · 0 FAIL
+آخر فحص: 12 سبتمبر 2026 (v2.0 — إعادة التموضع) · `npm run check` → 59/59 اختبار (+1 اختبار متصفح يعمل عند توفر Playwright) · preflight 164 فحصًا · 0 FAIL
 
-## ما تم التحقق منه آليًا (`npm run preflight`)
+## ما تغيّر في v2.0
+- الموقع يقدّم Mirai كشركة حلول رقمية تقودها التقنية بأربعة مجالات (المواقع والحضور الرقمي — الأساسي، أساسيات الهوية والمواد التعريفية، رقمنة المحتوى، الاستشارات الرقمية وتحسين سير العمل). الذكاء الاصطناعي جزء من طريقة العمل لا خدمة.
+- الصفحات العامة أربع فقط لكل لغة: `/` `/solutions` `/who-we-help` `/about` (+ `/ar/...`). صفحات `/work` و`/audit` والقطاعات أُزيلت وتحوّل تلقائيًا (301 على السيرفر، وصفحات تحويل `noindex` على GitHub Pages).
+- **لا يوجد فاحص مواقع (Mirai Lens) ولا `/api/scan`** — أُزيل بالكامل من الواجهة والكود والاختبارات والتوثيق.
+- التحويل الوحيد: نافذة «اطلب استشارة مجانية» على كل الصفحات (الهيدر، الهيرو، كل حل، النهاية، الفوتر، الشريط اللاصق على الموبايل). على السيرفر: `POST /api/consultation` → بريد عبر Resend + رابط واتساب. على GitHub Pages: تحقق في المتصفح ثم متابعة عبر واتساب برسالة مجهّزة بكل البيانات — بلا رسالة «تم الإرسال» وهمية.
+
+## ما الذي تحقق منه preflight آليًا (`npm run preflight`)
 - الخادم يعمل في وضع الإنتاج ويجيب على `/health`.
-- 18 مسارًا (9 إنجليزي + 9 عربي) ترجع 200، والمسار غير المعروف يرجع 404، والشرطة المائلة الزائدة تُحوَّل 301.
-- SEO لكل صفحة: عنوان 20–70 حرفًا، وصف مخصص 80–170 حرفًا، H1 واحد، canonical، hreflang (en/ar/x-default)، Open Graph، JSON-LD صالح، كل الصور لها alt، lang/dir صحيحان، viewport، favicon، العنوان العربي يختلف عن الإنجليزي.
+- 8 مسارات (4 إنجليزي + 4 عربي) ترجع 200، والمسار غير المعروف 404، والشرطة الزائدة 301، و10 روابط قديمة تحوّل 301 إلى وجهتها الصحيحة.
+- SEO لكل صفحة: عنوان ووصف مخصصان، H1 واحد، canonical، hreflang (en/ar/x-default)، Open Graph، JSON-LD صالح (Organization + 4 Service + FAQPage)، كل الصور لها alt، lang/dir صحيحان، viewport، favicon، لا نص فاحص/مراجعة، لا روابط للصفحات المحذوفة، نافذة الاستشارة موجودة.
 - الرؤوس الأمنية: CSP، nosniff، Referrer-Policy، X-Frame-Options، Permissions-Policy، HSTS (إنتاج فقط) — وضغط gzip/brotli.
-- الأصول: CSS/JS/الشعار (WebP + PNG)/favicon/robots/sitemap (يشمل الـ 18 مسارًا مع hreflang).
-- الصور: 28 ملفًا في `public/images` (WebP بمقاسين + JPG احتياطي) كلها تُقدَّم بنجاح، أكبر صورة ≤ 140 KB، كل صورة لها نص بديل بالعربية والإنجليزية وأبعاد ثابتة (بدون اهتزاز في التخطيط)، وصورة `og:image` لكل صفحة.
-- الأداء: متوسط HTML 12 KB، عرض الخادم < 35 ms لكل صفحة.
-- الـ API: الفحص الفوري يرفض localhost وعناوين IP الخام (حماية SSRF)، والفورم يتحقق من البريد.
-- في المتصفح (وضع الإنتاج): لا أخطاء كونسول، الخطوط تُحمَّل تحت CSP، الفحص الفوري يعمل ويسلّم النتيجة لصفحة المراجعة، الفورم يُرسَل بنجاح بالعربية.
+- الأصول: CSS/JS/الشعار/الأيقونات/robots/sitemap (8 روابط فقط)، كل الصور تُقدَّم وأكبرها ≤ 140 KB.
+- الـ API: `/api/scan` غير موجود (404)، `/api/consultation` يتحقق من البيانات ولا يدّعي إرسال بريد غير مُرسَل.
 
-## ما تحتاجه أنت قبل الرفع (بالترتيب)
-1. **الدومين `miraisolutions.net` (مسجَّل على NameSilo)** — `SITE_URL=https://miraisolutions.net` مضبوط بالفعل في `render.yaml` و`.env.example`. لربط الدومين بـ Render:
-   - في Render: الخدمة → Settings → **Custom Domains** → Add `miraisolutions.net` ثم `www.miraisolutions.net`. سيعرض لك Render السجلات المطلوبة بالضبط.
-   - في NameSilo: Domain Manager → الدومين → **DNS Records**: احذف سجلات الـ Parking (A/CNAME الافتراضية)، ثم أضف: سجل **A** للجذر (Hostname فارغ) → عنوان IP الذي يعرضه Render، وسجل **CNAME** للـ `www` → عنوان الخدمة `xxxx.onrender.com`. اترك TTL على الأقل.
-   - انتظر التحقق (دقائق إلى ساعة). Render يصدر شهادة HTTPS تلقائيًا ويحوّل `www` إلى الجذر.
-   - بعد أن يعمل الدومين: في Render → Environment غيّر `MIRAI_REDIRECT_TO_SITE_URL` إلى `1` حتى يتحوّل رابط `onrender.com` القديم تلقائيًا إلى `miraisolutions.net` (لا يوجد محتوى مكرر في محركات البحث).
-2. **Resend** — أنشئ حسابًا على resend.com، أضف الدومين `miraisolutions.net` وتحقق منه (Resend يعرض سجلات TXT/MX للـ SPF وDKIM تضيفها في NameSilo بنفس شاشة DNS Records)، أنشئ API Key، ثم:
-   - `RESEND_API_KEY=re_...`
-   - `MIRAI_LEAD_EMAIL=` البريد الذي تصل إليه الطلبات
-   - `MIRAI_FROM_EMAIL=Mirai Website <hello@miraisolutions.net>` (لا بد أن يكون على الدومين المتحقق منه)
-3. **واتساب** — `MIRAI_WHATSAPP=2010XXXXXXXX` (أرقام فقط بالصيغة الدولية).
-4. انسخ `deploy/env.production.example.txt` إلى `.env` على الخادم وعبّئ القيم. **لا ترفع `.env` إلى Git.**
-5. شغّل `npm run check` مرة أخيرة بعد ضبط `.env` — يجب أن يختفي التحذير الوحيد المتبقي (env).
+> ملاحظة: عنوانا `/who-we-help` و`/about` بطول 78 حرفًا (كما طُلب في المواصفة) فيظهران كتحذير WARN فقط.
 
-## معاينة عامة على GitHub Pages (بدون سيرفر)
-الموقع يعمل على **https://miraisolutions.net/** عبر GitHub Pages (الريبو: github.com/Elewa74/mirai-solutions-website؛ DNS في NameSilo: 4 سجلات A للجذر → GitHub + CNAME www → elewa74.github.io). كل push إلى `main` ينشر نسخة ثابتة تلقائيًا (`.github/workflows/pages.yml`). تُظهر كل الصفحات والتصميم، لكن الفحص الفوري وإرسال الفورم يحتاجان السيرفر (Render/VPS). الدومين مربوط بالفعل (Settings → Pages → Custom domain = `miraisolutions.net`). عند الانتقال لاحقًا إلى Render/VPS للنسخة الكاملة: غيّر سجلات A في NameSilo إلى ما يعرضه المزود الجديد وأزل الدومين من إعدادات Pages.
+## ما تحتاجه أنت قبل الإطلاق (بالترتيب)
+1. **رقم واتساب** — هو قناة التواصل الحالية على النسخة الحية (GitHub Pages):
+   - في GitHub: الريبو → Settings → Secrets and variables → Actions → **Variables** → New repository variable: `MIRAI_WHATSAPP` = الرقم بالصيغة الدولية أرقامًا فقط (مثال `2010XXXXXXXX`)، ثم أعد تشغيل الـ workflow (Actions → Deploy to GitHub Pages → Run workflow) أو ادفع أي commit.
+   - بدون هذا المتغير تعرض النافذة الرسالة المجهّزة مع زر «انسخ الرسالة» بدل زر واتساب.
+2. **الجهات التي عملنا معها** — أضف كل جهة حقيقية (بإذنها) في `content/organizations.mjs` بالاسم والرابط، وضع الشعار في `public/brand/orgs/` إن توفر (وإلا يظهر الاسم نصًا). القسم `#clients` لا يظهر على الرئيسية حتى تُضاف جهة واحدة على الأقل. لا تضف أسماء أو شعارات غير مؤكدة.
+3. **البريد (عند رفع نسخة السيرفر على Render/VPS)** — Resend: أضف الدومين `miraisolutions.net` وتحقق منه (سجلات SPF/DKIM في NameSilo)، ثم في بيئة الخادم: `RESEND_API_KEY`، `MIRAI_LEAD_EMAIL`، `MIRAI_FROM_EMAIL=Mirai Website <hello@miraisolutions.net>`، و`MIRAI_WHATSAPP`. الفورم يبدأ الإرسال بالبريد تلقائيًا عبر `/api/consultation` من دون أي تغيير في الكود.
+4. **الصور** — الصور الحالية مولَّدة بالذكاء الاصطناعي (فريق، مصنع، متجر، منظمة، مكتب، مراجعة). استبدلها بصور حقيقية بالأسماء نفسها في `public/images` (WebP 1600/800 + JPG 1200) مع تحديث `ASSET_VERSION` في `lib/render.mjs`.
+5. شغّل `npm run check` بعد ضبط المتغيرات — يجب أن يختفي تحذير env.
 
-## خيارات الرفع الكاملة (كلها بلا build step — Node 20+ فقط)
+## النسخة الحية على GitHub Pages
+الموقع يعمل على **https://miraisolutions.net/** (الريبو: github.com/Elewa74/mirai-solutions-website؛ DNS في NameSilo: 4 سجلات A للجذر → GitHub + CNAME www → elewa74.github.io). كل push إلى `main` يشغّل الاختبارات ثم ينشر النسخة الثابتة (`.github/workflows/pages.yml`). النسخة الثابتة تعرض كل الصفحات والتصميم، ونافذة الاستشارة تعمل عبر واتساب؛ إرسال البريد يحتاج نسخة السيرفر.
+
+## خيارات رفع نسخة السيرفر (بلا build step — Node 20+ فقط)
 | الخيار | الملف | الخطوات |
 |---|---|---|
-| **Render** (الأسهل) | `render.yaml` في جذر المشروع | ادفع المشروع إلى GitHub → Render → New + → Blueprint → اختر الريبو → Apply. خطة Free كافية للمراجعة (تنام بعد 15 دقيقة خمول؛ ارفعها إلى Starter للإنتاج). `SITE_URL` غير مطلوب على Render حتى يكون لديك دومين (يستخدم `RENDER_EXTERNAL_URL` تلقائيًا). أضف الأسرار لاحقًا من تبويب Environment. HTTPS تلقائي. |
-| **VPS** (Ubuntu) | `deploy/mirai.service` + `deploy/Caddyfile` | `apt install nodejs caddy` → انسخ المشروع إلى `/var/www/mirai` → `.env` → `systemctl enable --now mirai` → عدّل الدومين في Caddyfile → `systemctl reload caddy`. Caddy يصدر شهادة HTTPS تلقائيًا. |
+| **Render** | `render.yaml` في جذر المشروع | New + → Blueprint → اختر الريبو → Apply. أضف الأسرار من تبويب Environment. HTTPS تلقائي. عند ربط الدومين: غيّر سجلات A في NameSilo إلى ما يعرضه Render، وأزل الدومين من إعدادات GitHub Pages، ثم `MIRAI_REDIRECT_TO_SITE_URL=1`. |
+| **VPS** (Ubuntu) | `deploy/mirai.service` + `deploy/Caddyfile` | `apt install nodejs caddy` → انسخ المشروع إلى `/var/www/mirai` → `.env` → `systemctl enable --now mirai` → `systemctl reload caddy`. |
 | **Docker** | `deploy/Dockerfile` | `docker build -t mirai . && docker run -d -p 3000:3000 --env-file .env mirai` خلف أي reverse proxy. |
 
-> ملاحظة: انسخ `deploy/Dockerfile` و `deploy/.dockerignore` إلى جذر المشروع قبل `docker build`.
-
 ## بعد الرفع (10 دقائق)
-- افتح `https://domain/health` و `https://domain/sitemap.xml` و `/ar`.
-- أرسل طلب مراجعة حقيقيًا وتأكد من وصول الإيميل ورابط واتساب.
-- Google Search Console: أضف الدومين وأرسل `sitemap.xml`.
-- Rich Results Test على الرئيسية (FAQPage + Organization).
-- Lighthouse (اختياري): `npm run lighthouse` — يحتاج تحميل الحزمة مرة واحدة عبر npx.
-- الصور الحالية مولَّدة بالذكاء الاصطناعي بطابع مصري/إقليمي — استبدلها بصور حقيقية للفريق والعملاء عند توفرها (نفس الأسماء في `public/images` مع تحديث `ASSET_VERSION` في `lib/render.mjs`)، وأضف دراسة الحالة المعتمدة.
-- الثيم: الوضع الفاتح هو الأساسي لكل الزوار (`MIRAI_THEME=light`). لو أردت اتباع إعداد الجهاز (فاتح/داكن) ضع `MIRAI_THEME=system` في `.env`.
+- افتح `/`، `/ar`، `/solutions`، `/sitemap.xml`، وجرّب رابطًا قديمًا مثل `/audit` (يجب أن يفتح الرئيسية ونافذة الاستشارة).
+- أرسل طلب استشارة حقيقيًا وتأكد من وصول رسالة واتساب (وعلى السيرفر: البريد أيضًا).
+- Google Search Console: أرسل `sitemap.xml` من جديد (8 روابط) — الروابط القديمة تحوّل 301 فلا حاجة لإجراء إضافي.
+- Rich Results Test على الرئيسية (FAQPage + Organization + Service).
 
 ## أوامر مفيدة
 ```
 npm test              # الاختبارات
-npm run preflight     # فحص ما قبل الرفع (يشغّل نسخة مؤقتة على :3999)
-npm run preflight:live   # فحص نسخة تعمل على :3000
+npm run check         # الاختبارات + preflight (يشغّل نسخة مؤقتة على :3999)
+npm run export        # تصدير النسخة الثابتة إلى dist/
 npm run start:prod    # تشغيل بالإنتاج مع .env
 ```
