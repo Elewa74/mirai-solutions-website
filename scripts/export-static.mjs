@@ -30,7 +30,7 @@ function rewrite(html) {
   // page links → BASE + route + trailing slash (so GitHub Pages serves index.html without a redirect)
   html = html.replace(/(href|action)="(\/[a-z-]*(?:\/[a-z-]+)?)"/g, (m, attr, p) => (routeSet.has(p) ? `${attr}="${BASE}${p === "/" ? "/" : p + "/"}"` : m));
   // assets
-  html = html.replace(/(href|src|action)="\/(site\.css|site\.js|theme\.mjs|favicon\.svg|brand\/|images\/)/g, (m, attr, tail) => `${attr}="${BASE}/${tail}`);
+  html = html.replace(/(href|src|action)="\/(site\.css|site\.js|theme\.mjs|favicon\.svg|favicon\.ico|favicon-32\.png|apple-touch-icon\.png|site\.webmanifest|brand\/|images\/)/g, (m, attr, tail) => `${attr}="${BASE}/${tail}`);
   html = html.replace(/(srcset|imagesrcset)="([^"]+)"/g, (m, attr, list) => `${attr}="${list.replace(/(^|,\s*)\/(images|brand)\//g, `$1${BASE}/$2/`)}"`);
   // static-mode flags on <body>
   html = html.replace(/<body\b([^>]*)>/, `<body$1 data-static="1" data-base="${BASE}">`);
@@ -50,12 +50,15 @@ for (const { path, locale } of all) {
 await writeFile(resolve(dist, "404.html"), rewrite(renderPage("/not-found", "en")));
 
 // static assets
-for (const entry of ["site.css", "theme.mjs", "favicon.svg", "brand", "images"]) {
+for (const entry of ["site.css", "theme.mjs", "favicon.svg", "favicon.ico", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-512-maskable.png", "brand", "images"]) {
   await cp(resolve(root, "public", entry), resolve(dist, entry), { recursive: true });
 }
 const js = (await readFile(resolve(root, "public", "site.js"), "utf8")).replace('from "/theme.mjs"', `from "${BASE}/theme.mjs"`);
 await writeFile(resolve(dist, "site.js"), js);
 await writeFile(resolve(dist, ".nojekyll"), "");
+const manifest = JSON.parse(await readFile(resolve(root, "public", "site.webmanifest"), "utf8"));
+manifest.start_url = `${BASE}/`; manifest.icons = manifest.icons.map((i) => ({ ...i, src: `${BASE}${i.src}` }));
+await writeFile(resolve(dist, "site.webmanifest"), JSON.stringify(manifest, null, 2));
 
 // crawling policy
 if (preview) {

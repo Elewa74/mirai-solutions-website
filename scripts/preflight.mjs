@@ -101,7 +101,7 @@ for (const [route, { html, res }] of Object.entries(pages)) {
   for (const ref of refs) { if (!/-1600\.webp$/.test(ref)) continue; try { const buf = await (await fetch(base + ref)).arrayBuffer(); if (buf.byteLength > biggest) { biggest = buf.byteLength; biggestName = ref; } } catch {} }
   add("performance", "largest hero photo ≤ 140 KB", biggest <= 140 * 1024, `${biggestName} · ${(biggest / 1024).toFixed(0)} KB`, biggest <= 200 * 1024);
 }
-for (const asset of ["/site.css", "/site.js", "/theme.mjs", "/favicon.svg", "/brand/mirai-logo-light.webp", "/brand/mirai-logo-dark.webp", "/brand/mirai-logo-light.png", "/images/team-800.webp", "/images/glass-1600.webp", "/robots.txt", "/sitemap.xml"]) {
+for (const asset of ["/site.css", "/site.js", "/theme.mjs", "/favicon.svg", "/favicon.ico", "/apple-touch-icon.png", "/site.webmanifest", "/brand/mirai-logo-light.webp", "/brand/mirai-logo-dark.webp", "/brand/mirai-logo-light.png", "/images/team-800.webp", "/images/glass-1600.webp", "/robots.txt", "/sitemap.xml"]) {
   try { const r = await fetch(base + asset); const buf = await r.arrayBuffer(); add("assets", `GET ${asset}`, r.ok, `${r.status} · ${(buf.byteLength / 1024).toFixed(0)} KB · ${r.headers.get("content-type")} · cache: ${r.headers.get("cache-control")}`); if (asset === "/sitemap.xml") { const xml = Buffer.from(buf).toString(); const missing = all.filter((p) => !xml.includes(`${p}</loc>`)); add("assets", "sitemap lists every route", missing.length === 0, missing.join(" ") || `${all.length} routes`); } } catch (e) { add("assets", `GET ${asset}`, false, String(e)); }
 }
 // budget

@@ -1,0 +1,14 @@
+{
+  "name": "Mirai Solutions",
+  "short_name": "Mirai",
+  "description": "Business-first websites and digital presence — Arabic and English.",
+  "start_url": "/",
+  "display": "minimal-ui",
+  "background_color": "#f6f8fa",
+  "theme_color": "#f6f8fa",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
