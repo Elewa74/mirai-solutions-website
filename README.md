@@ -54,7 +54,10 @@ Copy `.env.example` (or `deploy/env.production.example.txt`) and set:
 - `MIRAI_WHATSAPP` — the Mirai WhatsApp number in international digits (e.g. `2010XXXXXXXX`). Used by the server response and baked into the static export as `data-whatsapp`. On GitHub Pages it would be a repository **variable** (`Settings → Secrets and variables → Actions → Variables → MIRAI_WHATSAPP`), but the workflow line that passes it to the export is commented out on purpose — the live site is email-only and shows no number.
 - `MIRAI_FORM_ENDPOINT` — static email relay: `https://formsubmit.co/ajax/<address>` (FormSubmit emails an activation link to that address on the first submission; click it once). `MIRAI_FORM_CC` — optional extra recipient(s), comma-separated. Both are GitHub repository variables like `MIRAI_WHATSAPP`.
 - `MIRAI_NOTIFY_URL` — optional owner WhatsApp notification URL containing a literal `{text}` placeholder, e.g. `https://api.callmebot.com/whatsapp.php?phone=2010XXXXXXXX&apikey=<key>&text={text}` (CallMeBot needs a one-time opt-in message from that number). Note that this URL — key included — is visible in the page source; keep the key revocable.
+- `MIRAI_CF_BEACON_TOKEN` — optional Cloudflare Web Analytics site token (32 hex chars): adds the cookie-free beacon to public pages (never to redirect/404 pages) and whitelists it in the server CSP. GitHub repository variable on Pages.
 - `SITE_URL` — canonical origin for canonical/hreflang/sitemap (`https://miraisolutions.net`).
+
+SEO ownership: `public/google81ab947214573202.html` is the Google Search Console verification file for `https://miraisolutions.net/` — keep it (the exporter copies it); the sitemap is submitted there.
 
 ## Organizations we've worked with
 

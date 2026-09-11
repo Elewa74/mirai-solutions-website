@@ -47,6 +47,8 @@ jobs:
           MIRAI_FORM_CC: ${{ vars.MIRAI_FORM_CC }}
           # Optional owner WhatsApp notification (CallMeBot URL with a {text} placeholder), fired after a confirmed send
           MIRAI_NOTIFY_URL: ${{ vars.MIRAI_NOTIFY_URL }}
+          # Optional cookie-free visitor analytics: Cloudflare Web Analytics site token (32 hex chars)
+          MIRAI_CF_BEACON_TOKEN: ${{ vars.MIRAI_CF_BEACON_TOKEN }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

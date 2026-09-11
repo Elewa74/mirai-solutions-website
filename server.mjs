@@ -33,13 +33,14 @@ const compressible = /^(text\/|application\/(javascript|json|xml)|image\/svg)/;
 /* ---------- security headers (applied to every response) ---------- */
 // Optional third-party endpoints the consultation form may call from the browser (static-site email relay + owner notification)
 const extraConnect = ["MIRAI_FORM_ENDPOINT", "MIRAI_NOTIFY_URL"].map((k) => { try { return new URL(process.env[k] || "").origin; } catch { return ""; } }).filter((o) => /^https:/.test(o));
+const cfAnalytics = /^[0-9a-f]{32}$/i.test(process.env.MIRAI_CF_BEACON_TOKEN || "");
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${cfAnalytics ? " https://static.cloudflareinsights.com" : ""}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: https:",
-  ["connect-src 'self'", ...new Set(extraConnect)].join(" "),
+  ["connect-src 'self'", ...new Set(extraConnect), ...(cfAnalytics ? ["https://cloudflareinsights.com"] : [])].join(" "),
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self' https://wa.me"

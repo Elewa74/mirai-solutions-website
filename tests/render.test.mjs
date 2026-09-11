@@ -146,6 +146,14 @@ test("WhatsApp number and the optional email relay are exposed to the client onl
   process.env.MIRAI_NOTIFY_URL = "https://api.callmebot.com/whatsapp.php?phone=201000000000&apikey=k&text={text}";
   assert.match(renderPage("/", "en"), /data-notify-url="https:\/\/api\.callmebot\.com\/whatsapp\.php\?phone=201000000000&amp;apikey=k&amp;text=\{text\}"/);
   delete process.env.MIRAI_NOTIFY_URL;
+  // cookie-free analytics beacon: only with a valid token, never on redirect/404 pages
+  assert.doesNotMatch(renderPage("/", "en"), /cloudflareinsights/);
+  process.env.MIRAI_CF_BEACON_TOKEN = "0123456789abcdef0123456789abcdef";
+  assert.match(renderPage("/ar", "ar"), /<script defer src="https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js" data-cf-beacon='\{"token": "0123456789abcdef0123456789abcdef"\}'><\/script>/);
+  assert.doesNotMatch(renderPage("/not-found", "en"), /cloudflareinsights/);
+  process.env.MIRAI_CF_BEACON_TOKEN = "<script>";
+  assert.doesNotMatch(renderPage("/", "en"), /cloudflareinsights/, "only a 32-hex token is accepted");
+  delete process.env.MIRAI_CF_BEACON_TOKEN;
   process.env.MIRAI_FORM_ENDPOINT = "not-a-url";
   assert.doesNotMatch(renderPage("/", "en"), /data-form-endpoint=/, "only https endpoints are accepted");
   for (const [k, v] of [["MIRAI_WHATSAPP", prev.w], ["MIRAI_FORM_ENDPOINT", prev.f], ["MIRAI_FORM_CC", prev.c]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
