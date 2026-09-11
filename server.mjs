@@ -37,8 +37,8 @@ const cfAnalytics = /^[0-9a-f]{32}$/i.test(process.env.MIRAI_CF_BEACON_TOKEN || 
 const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${cfAnalytics ? " https://static.cloudflareinsights.com" : ""}`,
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com data:",
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self' data:",
   "img-src 'self' data: https:",
   ["connect-src 'self'", ...new Set(extraConnect), ...(cfAnalytics ? ["https://cloudflareinsights.com"] : [])].join(" "),
   "frame-ancestors 'none'",
@@ -97,7 +97,7 @@ async function serveStatic(req, pathname, res) {
     const data = await readFile(filePath);
     const versioned = /[?&]v=/.test(req.url || "");
     const cache = !isProd ? "no-cache"
-      : pathname.startsWith("/brand/") || versioned ? "public, max-age=31536000, immutable"
+      : pathname.startsWith("/brand/") || pathname.startsWith("/fonts/") || versioned ? "public, max-age=31536000, immutable"
       : "public, max-age=3600";
     send(req, res, 200, data, {
       "content-type": mime[extname(filePath).toLowerCase()] || "application/octet-stream",

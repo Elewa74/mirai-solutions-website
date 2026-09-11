@@ -47,6 +47,7 @@ test("static export: canonical pages + noindex legacy redirects, honest static f
     const rel = (p) => relative(dir, p).split(sep).join("/");
     const pages = (await walk(dir)).filter((p) => !/^(ar\/)?(work|audit|manufacturing|retail|ngo)\/index\.html$/.test(rel(p)) && !/^google[0-9a-f]+\.html$/.test(rel(p)));
     assert.equal(await readFile(join(dir, "google81ab947214573202.html"), "utf8"), "google-site-verification: google81ab947214573202.html", "Search Console verification file is exported");
+    for (const p of ["fonts/fonts.css", "fonts/manrope-800-latin.woff2", "fonts/noto-kufi-arabic-700-arabic.woff2", "images/og-en.jpg", "images/og-ar.jpg"]) assert.ok(await exists(join(dir, p)), `missing ${p}`);
     for (const file of pages) {
       const html = await readFile(file, "utf8");
       assert.match(html, /<body[^>]*data-static="1" data-base="">/, file);
@@ -81,6 +82,8 @@ test("static export: a project-site preview (BASE_PATH) prefixes URLs and is noi
     assert.match(html, /href="\/mirai-solutions-website\/ar\/solutions\/"/);
     assert.match(html, /src="\/mirai-solutions-website\/site\.js/);
     assert.match(html, /data-base="\/mirai-solutions-website"/);
+    assert.match(html, /href="\/mirai-solutions-website\/fonts\/fonts\.css/);
+    assert.match(await readFile(join(dir, "fonts", "fonts.css"), "utf8"), /url\(\/mirai-solutions-website\/fonts\//, "font URLs are prefixed for a project-site preview");
     assert.doesNotMatch(html, /data-whatsapp=/);
     const redirect = await readFile(join(dir, "audit", "index.html"), "utf8");
     assert.match(redirect, /url=\/mirai-solutions-website\/\?consult=1/);

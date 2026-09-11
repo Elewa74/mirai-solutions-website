@@ -60,7 +60,7 @@ function errorText(field, code) {
 
 let lastTrigger = null;
 let openState = false;
-const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]):not([tabindex="-1"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 function focusables() {
   return [...dialog.querySelectorAll(FOCUSABLE)].filter((el) => !el.hidden && el.offsetParent !== null && !el.closest("[hidden]"));
@@ -185,9 +185,11 @@ async function relayEmail(data) {
     "Name": data.name, "Company / Organization": data.company, "Email": data.email, "WhatsApp": data.whatsapp,
     "Business type": data.businessType, "Interested in": data.interest, "Website": data.website || "-", "Message": data.message,
     "Language": locale === "ar" ? "Arabic" : "English", "Page": location.href,
-    _subject: `New consultation request — ${data.name} / ${data.company}`, _template: "table", _captcha: "false", _replyto: data.email
+    email: data.email,
+    _subject: `New consultation request — ${data.name} / ${data.company}`, _template: "table", _captcha: "false", _replyto: data.email, _honey: data._honey || ""
   };
   if (FORM_CC) payload._cc = FORM_CC;
+  if (T.autoReply?.body) payload._autoresponse = T.autoReply.body;
   const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "content-type": "application/json", accept: "application/json" }, body: JSON.stringify(payload) });
   const json = await res.json().catch(() => ({}));
   return res.ok && (json.success === true || json.success === "true");
@@ -236,6 +238,8 @@ if (form) {
     message.textContent = "";
     const errors = validateClient(data);
     if (showErrors(errors)) { message.textContent = T.errors?.generic || ""; return; }
+    // Honeypot: a hidden field humans never see. Bots that fill it get a quiet "success" and nothing is sent.
+    if (data._honey) { showResult("success", {}); return; }
 
     const text = buildMessage(data);
     const localWa = WHATSAPP ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}` : null;

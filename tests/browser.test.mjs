@@ -117,6 +117,9 @@ test("browser: consultation modal — open/close, focus management, preselect, ?
     assert.equal(relayPayload._cc, "second@example.com");
     assert.equal(relayPayload["Company / Organization"], "Nile Works");
     assert.equal(relayPayload._replyto, "mona@example.com");
+    assert.equal(relayPayload.email, "mona@example.com");
+    assert.match(relayPayload._autoresponse, /Mirai Solutions/, "visitor auto-reply text is sent with the relay");
+    assert.equal(relayPayload._honey, "");
     assert.match(await page.locator("[data-result-title]").textContent(), /has been sent/);
     assert.equal(await page.locator("[data-whatsapp-link]").isVisible(), true, "WhatsApp stays available next to the email confirmation");
     assert.equal(notifyCalls, 1, "owner WhatsApp notification fired after a confirmed send");
@@ -143,6 +146,13 @@ test("browser: consultation modal — open/close, focus management, preselect, ?
       const html = (await res.text()).replace(/<body\b([^>]*)>/, '<body$1 data-static="1" data-base="" data-form-cc="second@example.com">');
       await route.fulfill({ response: res, body: html, headers: { ...res.headers(), "content-type": "text/html; charset=utf-8", "content-length": String(Buffer.byteLength(html)) } });
     });
+    // honeypot filled (a bot) → quiet "success", no relay call
+    await page.goto(`${base}/solutions`);
+    await page.locator(".header-cta").click();
+    await page.evaluate(() => { document.querySelector("#c-honey").value = "http://spam.example"; });
+    await fill();
+    assert.equal(relayCalls, 2, "honeypot submissions never reach the relay");
+    assert.match(await page.locator("[data-result-title]").textContent(), /has been sent/);
     relayOk = false;
     await page.goto(`${base}/solutions`);
     await page.locator(".header-cta").click();

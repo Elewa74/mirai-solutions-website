@@ -43,7 +43,7 @@ function rewrite(html) {
   // page links → BASE + route + trailing slash (so GitHub Pages serves index.html without a redirect)
   html = html.replace(/(href|action)="(\/[a-z-]*(?:\/[a-z-]+)?)(#[a-z-]+)?"/g, (m, attr, p, hash = "") => (routeSet.has(p) ? `${attr}="${BASE}${p === "/" ? "/" : p + "/"}${hash}"` : m));
   // assets
-  html = html.replace(/(href|src|action)="\/(site\.css|site\.js|theme\.mjs|favicon\.svg|favicon\.ico|favicon-32\.png|apple-touch-icon\.png|site\.webmanifest|brand\/|images\/)/g, (m, attr, tail) => `${attr}="${BASE}/${tail}`);
+  html = html.replace(/(href|src|action)="\/(site\.css|site\.js|theme\.mjs|favicon\.svg|favicon\.ico|favicon-32\.png|apple-touch-icon\.png|site\.webmanifest|brand\/|images\/|fonts\/)/g, (m, attr, tail) => `${attr}="${BASE}/${tail}`);
   html = html.replace(/(srcset|imagesrcset)="([^"]+)"/g, (m, attr, list) => `${attr}="${list.replace(/(^|,\s*)\/(images|brand)\//g, `$1${BASE}/$2/`)}"`);
   // static-mode flags on <body>
   html = html.replace(/<body\b([^>]*)>/, `<body$1 data-static="1" data-base="${BASE}">`);
@@ -71,9 +71,10 @@ for (const { path, locale } of legacy) {
 await writeFile(resolve(dist, "404.html"), rewrite(renderPage("/not-found", "en")));
 
 // static assets
-for (const entry of ["site.css", "theme.mjs", "favicon.svg", "favicon.ico", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-512-maskable.png", "google81ab947214573202.html", "brand", "images"]) {
+for (const entry of ["site.css", "theme.mjs", "favicon.svg", "favicon.ico", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-512-maskable.png", "google81ab947214573202.html", "fonts", "brand", "images"]) {
   await cp(resolve(root, "public", entry), resolve(dist, entry), { recursive: true });
 }
+if (BASE) await writeFile(resolve(dist, "fonts", "fonts.css"), (await readFile(resolve(root, "public", "fonts", "fonts.css"), "utf8")).replaceAll("url(/fonts/", `url(${BASE}/fonts/`));
 const js = (await readFile(resolve(root, "public", "site.js"), "utf8")).replace('from "/theme.mjs"', `from "${BASE}/theme.mjs"`);
 await writeFile(resolve(dist, "site.js"), js);
 await writeFile(resolve(dist, ".nojekyll"), "");

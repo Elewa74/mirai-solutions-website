@@ -43,6 +43,14 @@ test("consultation: validation errors come back as 400 with field codes", async 
   assert.equal(result.body.errors.message, "required");
 });
 
+test("consultation: a filled honeypot is answered like a success but nothing is validated or sent", async () => {
+  const result = await handleConsultation({ ...lead, _honey: "http://spam.example" }, { RESEND_API_KEY: "re_x", MIRAI_LEAD_EMAIL: "a@b.c" }, async () => { throw new Error("must not send"); });
+  assert.equal(result.status, 200);
+  assert.equal(result.body.spam, true);
+  const clean = await handleConsultation({ ...lead, _honey: "" }, { MIRAI_WHATSAPP: "201000000000" }, async () => { throw new Error("no email configured"); });
+  assert.equal(clean.body.spam, undefined);
+});
+
 test("consultation without email configuration never claims an email was sent, but still offers WhatsApp", async () => {
   const result = await handleConsultation(lead, { MIRAI_WHATSAPP: "201000000000" }, async () => { throw new Error("fetch should not run"); });
   assert.equal(result.status, 200);

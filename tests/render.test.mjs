@@ -153,7 +153,19 @@ test("photography: every image has localised alt text, responsive sources and re
     }
     if (locale === "ar") assert.match(html, /alt="[^"]*[؀-ۿ]/, `${path}: Arabic alt text expected`);
     assert.match(html, /<source type="image\/webp" srcset="\/images\/[a-z]+-800\.webp\?v=[^"]+ 800w, \/images\/[a-z]+-1600\.webp/);
-    assert.match(html, /property="og:image" content="https:\/\/[^"]+\/images\/team-1200\.jpg"/);
+    assert.match(html, new RegExp(`property="og:image" content="https://[^"]+/images/og-${locale}\\.jpg\\?v=`), `${path}: branded share image per locale`);
+    assert.match(html, /property="og:image:width" content="1200">\s*<meta property="og:image:height" content="630"/);
+  }
+});
+
+test("fonts are self-hosted (no Google Fonts), with a per-locale preload; the form has a honeypot and a privacy line", () => {
+  for (const [path, locale] of PAGES) {
+    const html = renderPage(path, locale);
+    assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic/, `${path}: no Google Fonts request`);
+    assert.match(html, /<link rel="stylesheet" href="\/fonts\/fonts\.css\?v=/, `${path}: local font stylesheet`);
+    assert.match(html, locale === "ar" ? /rel="preload" as="font"[^>]*href="\/fonts\/noto-kufi-arabic-700-arabic\.woff2"/ : /rel="preload" as="font"[^>]*href="\/fonts\/manrope-800-latin\.woff2"/, `${path}: preload for the locale's display font`);
+    assert.match(html, /<div class="hp-field" aria-hidden="true"><label for="c-honey">[^<]+<\/label><input id="c-honey" name="_honey" type="text" tabindex="-1" autocomplete="off"><\/div>/, `${path}: honeypot`);
+    assert.match(html, /class="form-privacy">[^<]*(cookies|كوكيز)/, `${path}: privacy line mentions no cookies`);
   }
 });
 
