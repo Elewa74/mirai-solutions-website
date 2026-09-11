@@ -1,6 +1,6 @@
 # Mirai Solutions Website — Review Guide / دليل المراجعة (v2.0)
 
-**الرابط الأونلاين / Live site:** https://miraisolutions.net/ (Arabic: https://miraisolutions.net/ar/) — GitHub Pages، نسخة ثابتة: نافذة الاستشارة ترسل بالبريد عبر FormSubmit (مع تنبيه واتساب لصاحب الموقع) وتُبقي زر واتساب للزائر؛ وعند تعذّر البريد تتحول تلقائيًا إلى متابعة واتساب.
+**الرابط الأونلاين / Live site:** https://miraisolutions.net/ (Arabic: https://miraisolutions.net/ar/) — GitHub Pages، نسخة ثابتة: نافذة الاستشارة ترسل بالبريد عبر FormSubmit (مع تنبيه واتساب لصاحب الموقع عند ضبطه)؛ لا يظهر رقم واتساب للزائر.
 **الكود / Code:** https://github.com/Elewa74/mirai-solutions-website
 
 ## ما الذي يمثله الموقع

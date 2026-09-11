@@ -38,9 +38,9 @@ jobs:
           NODE_ENV: production
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
           SITE_URL: https://miraisolutions.net
-          # Repository variable (Settings → Secrets and variables → Actions → Variables): the WhatsApp number in
-          # international digits (e.g. 2010XXXXXXXX). The static site hands consultation requests to WhatsApp with it.
-          MIRAI_WHATSAPP: ${{ vars.MIRAI_WHATSAPP }}
+          # Visitor-facing WhatsApp hand-off is switched OFF (owner's decision, Sep 2026): the number must not appear
+          # on the site. To re-enable, restore the line below (repository variable MIRAI_WHATSAPP, international digits).
+          # MIRAI_WHATSAPP: ${{ vars.MIRAI_WHATSAPP }}
           # Optional email relay for the static site: a FormSubmit AJAX endpoint (https://formsubmit.co/ajax/<address>)
           # and extra recipients (comma-separated). Success is shown only when the relay confirms delivery.
           MIRAI_FORM_ENDPOINT: ${{ vars.MIRAI_FORM_ENDPOINT }}

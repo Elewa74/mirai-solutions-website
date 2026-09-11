@@ -208,9 +208,10 @@ function showResult(kind, { whatsappHref, message } = {}) {
   const note = result.querySelector("[data-channel-note]");
   const state = T.states?.[kind] || {};
   title.textContent = state.title || "";
-  body.textContent = state.body || "";
+  body.textContent = (state.body || "") + (kind === "success" && whatsappHref && state.whatsapp ? ` ${state.whatsapp}` : "");
   if (whatsappHref) { wa.href = whatsappHref; wa.hidden = false; } else wa.hidden = true;
-  const showCopy = !whatsappHref && !!message;
+  // the copy-message fallback is only for states where nothing was delivered yet
+  const showCopy = kind !== "success" && !whatsappHref && !!message;
   copy.hidden = !showCopy;
   preview.hidden = !showCopy;
   if (showCopy) preview.textContent = message;

@@ -120,11 +120,34 @@ test("browser: consultation modal — open/close, focus management, preselect, ?
     assert.match(await page.locator("[data-result-title]").textContent(), /has been sent/);
     assert.equal(await page.locator("[data-whatsapp-link]").isVisible(), true, "WhatsApp stays available next to the email confirmation");
     assert.equal(notifyCalls, 1, "owner WhatsApp notification fired after a confirmed send");
+    assert.match(await page.locator("[data-result-body]").textContent(), /Prefer WhatsApp/);
+    // email-only configuration (no WhatsApp number): a clean confirmation — no WhatsApp button, no copy fallback, no WhatsApp copy
+    await page.route(`${base}/solutions`, async (route) => {
+      const res = await route.fetch();
+      const html = (await res.text()).replace(/<body\b([^>]*)>/, (m, attrs) => `<body${attrs.replace(/\sdata-whatsapp="[^"]*"/, "")} data-static="1" data-base="">`);
+      await route.fulfill({ response: res, body: html, headers: { ...res.headers(), "content-type": "text/html; charset=utf-8", "content-length": String(Buffer.byteLength(html)) } });
+    });
+    await page.goto(`${base}/solutions`);
+    assert.equal(await page.evaluate(() => "whatsapp" in document.body.dataset), false);
+    await page.locator(".header-cta").click();
+    await fill();
+    assert.equal(relayCalls, 2);
+    assert.match(await page.locator("[data-result-title]").textContent(), /has been sent/);
+    assert.doesNotMatch(await page.locator("[data-result-body]").textContent(), /WhatsApp/);
+    assert.equal(await page.locator("[data-whatsapp-link]").isVisible(), false);
+    assert.equal(await page.locator("[data-copy-message]").isVisible(), false, "no copy fallback after a confirmed send");
+    assert.equal(await page.locator("[data-message-preview]").isVisible(), false);
+    await page.unroute(`${base}/solutions`);
+    await page.route(`${base}/solutions`, async (route) => {
+      const res = await route.fetch();
+      const html = (await res.text()).replace(/<body\b([^>]*)>/, '<body$1 data-static="1" data-base="" data-form-cc="second@example.com">');
+      await route.fulfill({ response: res, body: html, headers: { ...res.headers(), "content-type": "text/html; charset=utf-8", "content-length": String(Buffer.byteLength(html)) } });
+    });
     relayOk = false;
     await page.goto(`${base}/solutions`);
     await page.locator(".header-cta").click();
     await fill();
-    assert.equal(relayCalls, 2);
+    assert.equal(relayCalls, 3);
     assert.match(await page.locator("[data-result-title]").textContent(), /ready to send/i, "relay failure must fall back to the WhatsApp hand-off, never a fake success");
     await page.unroute(`${base}/solutions`);
 

@@ -19,9 +19,7 @@
 > ملاحظة: عنوانا `/who-we-help` و`/about` بطول 78 حرفًا (كما طُلب في المواصفة) فيظهران كتحذير WARN فقط.
 
 ## ما تحتاجه أنت قبل الإطلاق (بالترتيب)
-1. **رقم واتساب** — هو قناة التواصل الحالية على النسخة الحية (GitHub Pages):
-   - في GitHub: الريبو → Settings → Secrets and variables → Actions → **Variables** → New repository variable: `MIRAI_WHATSAPP` = الرقم بالصيغة الدولية أرقامًا فقط (مثال `2010XXXXXXXX`)، ثم أعد تشغيل الـ workflow (Actions → Deploy to GitHub Pages → Run workflow) أو ادفع أي commit.
-   - بدون هذا المتغير تعرض النافذة الرسالة المجهّزة مع زر «انسخ الرسالة» بدل زر واتساب.
+1. **قناة الاستلام على النسخة الحية (GitHub Pages)** — البريد هو القناة الأساسية، وزر واتساب للزائر **موقوف** بقرار المالك (الرقم لا يظهر على الموقع). لإعادته لاحقًا: أزل علامة التعليق عن سطر `MIRAI_WHATSAPP` في `.github/workflows/pages.yml` مع متغيّر `MIRAI_WHATSAPP` في GitHub (Settings → Secrets and variables → Actions → **Variables**) بالصيغة الدولية أرقامًا فقط.
    - **البريد على النسخة الثابتة** — متغيّران آخران في المكان نفسه: `MIRAI_FORM_ENDPOINT` = `https://formsubmit.co/ajax/<بريدك>` و`MIRAI_FORM_CC` = بريد إضافي يستلم نسخة. عند أول طلب يصلك من FormSubmit بريد تفعيل بعنوان «Activate Form» — اضغط الرابط مرة واحدة، وبعدها تصل الطلبات تلقائيًا (تحقق من مجلد Junk أول مرة).
    - **تنبيه واتساب لك** — من رقم الواتساب أرسل رسالة `I allow callmebot to send me messages` إلى رقم CallMeBot (موجود في https://www.callmebot.com/blog/free-api-whatsapp-messages/) فيصلك apikey، ثم أضف المتغيّر `MIRAI_NOTIFY_URL` = `https://api.callmebot.com/whatsapp.php?phone=2010XXXXXXXX&apikey=<المفتاح>&text={text}` وأعد تشغيل الـ workflow. ملاحظة: المفتاح يظهر في كود الصفحة؛ يمكنك إبطاله في أي وقت بإعادة الاشتراك.
 2. **الجهات التي عملنا معها** — أضف كل جهة حقيقية (بإذنها) في `content/organizations.mjs` بالاسم والرابط، وضع الشعار في `public/brand/orgs/` إن توفر (وإلا يظهر الاسم نصًا). القسم `#clients` لا يظهر على الرئيسية حتى تُضاف جهة واحدة على الأقل. لا تضف أسماء أو شعارات غير مؤكدة.
