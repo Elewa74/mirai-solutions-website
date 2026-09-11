@@ -6,6 +6,7 @@
 const en = {
   nav: {
     items: [
+      { label: "Home", href: "/" },
       { label: "Solutions", href: "/solutions" },
       { label: "Who We Help", href: "/who-we-help" },
       { label: "About", href: "/about" }
@@ -282,6 +283,7 @@ const en = {
 const ar = {
   nav: {
     items: [
+      { label: "الرئيسية", href: "/" },
       { label: "الحلول", href: "/solutions" },
       { label: "من نخدم", href: "/who-we-help" },
       { label: "عن Mirai", href: "/about" }

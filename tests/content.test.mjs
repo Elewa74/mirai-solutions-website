@@ -21,9 +21,9 @@ test("English and Arabic content dictionaries have matching shapes (parity)", ()
   assert.deepEqual(shape(siteContent.en), shape(siteContent.ar));
 });
 
-test("navigation exposes only the four-page IA and the consultation CTA", () => {
+test("navigation exposes Home + the three inner pages and the consultation CTA", () => {
   for (const locale of ["en", "ar"]) {
-    assert.deepEqual(siteContent[locale].nav.items.map((i) => i.href), ["/solutions", "/who-we-help", "/about"]);
+    assert.deepEqual(siteContent[locale].nav.items.map((i) => i.href), ["/", "/solutions", "/who-we-help", "/about"]);
     assert.ok(siteContent[locale].nav.cta.length > 5);
   }
   assert.equal(siteContent.en.nav.cta, "Get a Free Consultation");

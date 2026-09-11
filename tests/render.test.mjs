@@ -11,6 +11,9 @@ test("English is the default locale with an LTR document; Arabic pages are RTL u
   assert.match(en, /<html[^>]*lang="en"[^>]*dir="ltr"/);
   assert.match(en, /Digital solutions built around/);
   assert.match(en, /href="\/ar"[^>]*>AR</);
+  assert.match(en, /<nav class="desktop-nav"[^>]*>\s*<a aria-current="page" href="\/">Home<\/a>/);
+  assert.match(renderPage("/about", "en"), /<nav class="desktop-nav"[^>]*>\s*<a  href="\/">Home<\/a>/);
+  assert.match(renderPage("/ar/about", "ar"), /<a  href="\/ar">الرئيسية<\/a>/);
   const ar = renderPage("/ar/who-we-help", "ar");
   assert.match(ar, /<html[^>]*lang="ar"[^>]*dir="rtl"/);
   assert.match(ar, /أعمال مختلفة\. تحديات مختلفة\. حلول رقمية عملية\./);
