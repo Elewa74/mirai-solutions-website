@@ -1,6 +1,6 @@
 # Mirai Solutions Website — Review Guide / دليل المراجعة (v1.6)
 
-**رابط المعاينة الأونلاين / Live preview:** https://elewa74.github.io/mirai-solutions-website/ (Arabic: `/ar/`) — نسخة ثابتة: الفحص الفوري وإرسال الفورم يعملان فقط في النسخة المستضافة على سيرفر Node.
+**الرابط الأونلاين / Live site:** https://miraisolutions.net/ (Arabic: https://miraisolutions.net/ar/) — GitHub Pages، نسخة ثابتة: الفحص الفوري وإرسال الفورم يعملان فقط في النسخة المستضافة على سيرفر Node.
 **الكود / Code:** https://github.com/Elewa74/mirai-solutions-website
 
 ## تشغيل النسخة محليًا (دقيقة واحدة)

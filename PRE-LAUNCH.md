@@ -28,7 +28,7 @@
 5. شغّل `npm run check` مرة أخيرة بعد ضبط `.env` — يجب أن يختفي التحذير الوحيد المتبقي (env).
 
 ## معاينة عامة على GitHub Pages (بدون سيرفر)
-الرابط الحالي: **https://elewa74.github.io/mirai-solutions-website/** (الريبو: github.com/Elewa74/mirai-solutions-website). كل push إلى `main` ينشر نسخة ثابتة تلقائيًا (`.github/workflows/pages.yml`). تُظهر كل الصفحات والتصميم، لكن الفحص الفوري وإرسال الفورم يحتاجان السيرفر (Render/VPS). لتحويلها إلى الدومين: Settings → Pages → Custom domain = `miraisolutions.net`، وفي NameSilo: أربعة سجلات A للجذر (185.199.108.153 / 185.199.109.153 / 185.199.110.153 / 185.199.111.153) وسجل CNAME للـ `www` → `elewa74.github.io`، ثم فعّل Enforce HTTPS.
+الموقع يعمل على **https://miraisolutions.net/** عبر GitHub Pages (الريبو: github.com/Elewa74/mirai-solutions-website؛ DNS في NameSilo: 4 سجلات A للجذر → GitHub + CNAME www → elewa74.github.io). كل push إلى `main` ينشر نسخة ثابتة تلقائيًا (`.github/workflows/pages.yml`). تُظهر كل الصفحات والتصميم، لكن الفحص الفوري وإرسال الفورم يحتاجان السيرفر (Render/VPS). الدومين مربوط بالفعل (Settings → Pages → Custom domain = `miraisolutions.net`). عند الانتقال لاحقًا إلى Render/VPS للنسخة الكاملة: غيّر سجلات A في NameSilo إلى ما يعرضه المزود الجديد وأزل الدومين من إعدادات Pages.
 
 ## خيارات الرفع الكاملة (كلها بلا build step — Node 20+ فقط)
 | الخيار | الملف | الخطوات |
