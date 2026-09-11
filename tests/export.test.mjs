@@ -45,7 +45,8 @@ test("static export: canonical pages + noindex legacy redirects, honest static f
 
     // every page: static flags, WhatsApp baked, no scanner text, and every internal link resolves to an exported file
     const rel = (p) => relative(dir, p).split(sep).join("/");
-    const pages = (await walk(dir)).filter((p) => !/^(ar\/)?(work|audit|manufacturing|retail|ngo)\/index\.html$/.test(rel(p)));
+    const pages = (await walk(dir)).filter((p) => !/^(ar\/)?(work|audit|manufacturing|retail|ngo)\/index\.html$/.test(rel(p)) && !/^google[0-9a-f]+\.html$/.test(rel(p)));
+    assert.equal(await readFile(join(dir, "google81ab947214573202.html"), "utf8"), "google-site-verification: google81ab947214573202.html", "Search Console verification file is exported");
     for (const file of pages) {
       const html = await readFile(file, "utf8");
       assert.match(html, /<body[^>]*data-static="1" data-base="">/, file);

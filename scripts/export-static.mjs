@@ -71,7 +71,7 @@ for (const { path, locale } of legacy) {
 await writeFile(resolve(dist, "404.html"), rewrite(renderPage("/not-found", "en")));
 
 // static assets
-for (const entry of ["site.css", "theme.mjs", "favicon.svg", "favicon.ico", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-512-maskable.png", "brand", "images"]) {
+for (const entry of ["site.css", "theme.mjs", "favicon.svg", "favicon.ico", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-512-maskable.png", "google81ab947214573202.html", "brand", "images"]) {
   await cp(resolve(root, "public", entry), resolve(dist, entry), { recursive: true });
 }
 const js = (await readFile(resolve(root, "public", "site.js"), "utf8")).replace('from "/theme.mjs"', `from "${BASE}/theme.mjs"`);
