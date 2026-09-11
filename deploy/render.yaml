@@ -1,0 +1,25 @@
+# Render.com Blueprint (https://render.com/docs/blueprint-spec)
+# Dashboard → New + → Blueprint → pick this repo. Free plan is enough for review; upgrade for production.
+# Custom domain: Settings → Custom Domains → add miraisolutions.net and www.miraisolutions.net, then create the DNS records
+# Render shows at NameSilo (A record for the apex, CNAME for www). Once DNS is live set MIRAI_REDIRECT_TO_SITE_URL=1 so the
+# onrender.com address redirects to the real domain. Add the secrets (RESEND_API_KEY, MIRAI_LEAD_EMAIL, MIRAI_FROM_EMAIL,
+# MIRAI_WHATSAPP) in the service's Environment tab when ready.
+services:
+  - type: web
+    name: mirai-solutions
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: ""
+    startCommand: node server.mjs
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SITE_URL
+        value: https://miraisolutions.net
+      - key: MIRAI_REDIRECT_TO_SITE_URL
+        value: "0"
+      - key: MIRAI_THEME
+        value: light

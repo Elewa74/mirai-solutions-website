@@ -1,0 +1,11 @@
+# Reverse proxy with automatic HTTPS (Let's Encrypt) for miraisolutions.net (VPS option).
+miraisolutions.net, www.miraisolutions.net {
+  @www host www.miraisolutions.net
+  redir @www https://miraisolutions.net{uri} permanent
+  encode zstd gzip
+  reverse_proxy 127.0.0.1:3000
+  header {
+    # HSTS is set by the app; Caddy adds the rest of the TLS hardening automatically
+    -Server
+  }
+}

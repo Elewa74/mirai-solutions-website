@@ -1,0 +1,19 @@
+{
+  "name": "mirai-solutions-website",
+  "version": "1.6.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "start:prod": "node --env-file=.env server.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "preflight": "node scripts/preflight.mjs",
+    "preflight:live": "node scripts/preflight.mjs --url http://localhost:3000",
+    "lighthouse": "npx --yes lighthouse http://localhost:3000 --output html --output-path ./_reports/lighthouse-mobile.html --form-factor mobile --screenEmulation.mobile --only-categories=performance,accessibility,best-practices,seo --chrome-flags=\"--headless=new\" && npx --yes lighthouse http://localhost:3000 --preset=desktop --output html --output-path ./_reports/lighthouse-desktop.html --only-categories=performance,accessibility,best-practices,seo --chrome-flags=\"--headless=new\"",
+    "check": "node --test \"tests/*.test.mjs\" && node scripts/preflight.mjs"
+  }
+}
