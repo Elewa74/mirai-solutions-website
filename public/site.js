@@ -440,6 +440,14 @@ if (matchMedia("(pointer: fine)").matches) {
   });
 }
 
+// Inner-page header: the outlined "ghost" page name drifts slightly with the scroll
+const ghost = document.querySelector("[data-inner-hero] [data-ghost]");
+if (ghost && !reduceMotion) {
+  let ticking = false;
+  const drift = () => { ghost.style.transform = `translateY(${Math.min(window.scrollY, 900) * 0.16}px)`; ticking = false; };
+  window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(drift); } }, { passive: true });
+}
+
 // Hero dot grid: light, cursor-reactive
 const dotsCanvas = document.querySelector("[data-dots]");
 if (dotsCanvas && !reduceMotion) {
@@ -456,7 +464,7 @@ if (dotsCanvas && !reduceMotion) {
   const draw = () => {
     if (!running) return;
     ctx.clearRect(0, 0, w, h);
-    const base = isDark() ? "255,255,255" : "14,26,36";
+    const base = isDark() || host.hasAttribute("data-dark") ? "255,255,255" : "14,26,36";
     for (const p of pts) {
       const dx = p.x - mouse.x, dy = p.y - mouse.y, d = Math.hypot(dx, dy);
       const target = d < 160 ? (1 - d / 160) : 0;

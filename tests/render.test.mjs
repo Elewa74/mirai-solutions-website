@@ -76,6 +76,31 @@ test("homepage follows the approved section order and has no fake proof", () => 
   assert.match(html, /role="tablist"[\s\S]*role="tab"[\s\S]*role="tabpanel"/);
 });
 
+test("inner-page header: dark editorial band with page index, ghost name and on-page anchors that resolve; 404/redirect stay plain", () => {
+  const cases = [["/solutions", "en", "01", "Solutions", ["websites", "brand", "content", "workflows"]], ["/who-we-help", "en", "02", "Who we help", ["smes", "manufacturing", "retail", "ngo"]], ["/about", "en", "03", "About", ["story", "today", "principles"]], ["/ar/solutions", "ar", "01", "الحلول", ["websites"]], ["/ar/who-we-help", "ar", "02", "من نخدم", ["smes"]], ["/ar/about", "ar", "03", "عنّا", ["story", "today", "principles"]]];
+  for (const [path, locale, no, ghost, ids] of cases) {
+    const html = renderPage(path, locale);
+    assert.match(html, /<section class="inner-hero" data-inner-hero data-dark>/, `${path}: dark header`);
+    assert.match(html, new RegExp(`<span class="ih-ghost" data-ghost aria-hidden="true">${ghost}</span>`), `${path}: ghost name`);
+    assert.match(html, new RegExp(`<span class="ih-no gradient-text">${no}</span>`), `${path}: page index`);
+    assert.match(html, /<h1 class="ih-title[^"]*" aria-label="[^"]+"><span class="w" style="--i:0">/, `${path}: word-by-word title`);
+    assert.match(html, /<nav class="ih-anchors" aria-label="[^"]+">/, `${path}: anchors row`);
+    for (const id of ids) {
+      assert.match(html, new RegExp(`<a href="#${id}">`), `${path}: anchor #${id}`);
+      assert.match(html, new RegExp(` id="${id}"`), `${path}: target #${id} exists`);
+    }
+    assert.equal((html.match(/class="dark-section/g) || []).length, 0, `${path}: the header is the only dark band`);
+    assert.equal((html.match(/data-dots/g) || []).length, 1, `${path}: one dot canvas`);
+  }
+  assert.match(renderPage("/about", "en"), /<h1 class="ih-title ih-title--long"/, "long titles get the smaller step");
+  assert.doesNotMatch(renderPage("/solutions", "en"), /ih-title--long/);
+  for (const html of [renderPage("/not-found", "en"), renderPage("/redirect", "ar", { redirectTo: "/ar" })]) {
+    assert.match(html, /class="inner-hero inner-hero--plain section-pad"/);
+    assert.doesNotMatch(html, /data-inner-hero|ih-ghost/);
+  }
+  assert.doesNotMatch(renderPage("/", "en"), /data-inner-hero/);
+});
+
 test("who-we-help rows are not links and carry needs; about lists what we do today", () => {
   const who = renderPage("/who-we-help", "en");
   assert.doesNotMatch(who, /<a class="audience-row/);

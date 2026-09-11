@@ -18,6 +18,7 @@ const en = {
   },
   global: {
     brandLine: "Practical digital solutions built around real business needs.",
+    onThisPage: "On this page",
     philosophy: "The future belongs to those who create it.",
     consultLabel: "Get a Free Consultation",
     consultShort: "Request a Consultation",
@@ -185,6 +186,7 @@ const en = {
   },
   solutionsPage: {
     kicker: "OUR SOLUTIONS",
+    short: "Solutions",
     title: "Practical digital solutions, built around the problem first.",
     intro: "Mirai combines business understanding, creativity, technology and AI-enabled workflows to solve practical digital challenges for growing businesses and organizations.",
     labels: { problem: "The problem", helps: "What Mirai helps with", outputs: "Typical outputs", useful: "Useful for" },
@@ -202,22 +204,25 @@ const en = {
   },
   whoWeHelp: {
     kicker: "WHO WE HELP",
+    short: "Who we help",
     title: "Different businesses. Different challenges. Practical digital solutions.",
     intro: "SMEs across different sectors are Mirai's broad audience. We also bring deeper thinking to several priority business types where digital presence, content and workflows play an important role.",
     needsLabel: "Needs may include",
     groups: [
-      { title: "SMEs & Growing Businesses", needs: ["Professional digital presence", "Clearer messaging", "Brand essentials", "Customer inquiries", "Practical workflow improvements"] },
-      { title: "Manufacturing & Industrial", needs: ["B2B credibility", "Products and capabilities", "Certifications", "Company profiles", "RFQ journeys", "Content organization", "Workflow improvement"] },
-      { title: "Retail & Local Chains", needs: ["Brand consistency", "Products and locations", "Branches / maps", "WhatsApp / customer contact", "Practical content and digital materials", "Operational digital improvements"] },
-      { title: "NGOs & Organizations", needs: ["Mission and programs", "Impact communication", "Reports and content", "Partners and stakeholders", "Document digitalization", "Practical digital workflows"] }
+      { key: "smes", title: "SMEs & Growing Businesses", needs: ["Professional digital presence", "Clearer messaging", "Brand essentials", "Customer inquiries", "Practical workflow improvements"] },
+      { key: "manufacturing", title: "Manufacturing & Industrial", needs: ["B2B credibility", "Products and capabilities", "Certifications", "Company profiles", "RFQ journeys", "Content organization", "Workflow improvement"] },
+      { key: "retail", title: "Retail & Local Chains", needs: ["Brand consistency", "Products and locations", "Branches / maps", "WhatsApp / customer contact", "Practical content and digital materials", "Operational digital improvements"] },
+      { key: "ngo", title: "NGOs & Organizations", needs: ["Mission and programs", "Impact communication", "Reports and content", "Partners and stakeholders", "Document digitalization", "Practical digital workflows"] }
     ],
     closingTitle: "Don't see your sector here?",
     closingBody: "Mirai isn't limited to these categories. If you have a digital challenge worth solving, we start by understanding the business and finding the simplest practical solution."
   },
   about: {
     kicker: "ABOUT MIRAI",
+    short: "About",
     title: "Mirai means Future. We think that should show in how we solve problems — not just how we look.",
     intro: "Mirai Solutions is a technology-driven company combining business understanding, creativity, AI and modern tools to create practical digital solutions.",
+    storyLabel: "Our story",
     storyTitle: "Built on experience across business, products and impact.",
     story: "The experience behind Mirai spans 12+ years across Product Management, business development, EdTech, digital products, operations, social impact and AI-assisted workflows. Mirai Solutions itself is a new company, built to turn that experience into a faster, clearer way to solve practical digital problems.",
     experience: ["Product Management", "Business Development", "EdTech", "Digital Products", "Operations", "Social Impact", "AI-assisted workflows"],
@@ -295,6 +300,7 @@ const ar = {
   },
   global: {
     brandLine: "حلول رقمية عملية تُبنى حول احتياجات عملك الحقيقية.",
+    onThisPage: "في هذه الصفحة",
     philosophy: "المستقبل لمن يصنعه.",
     consultLabel: "اطلب استشارة مجانية",
     consultShort: "اطلب استشارة",
@@ -462,6 +468,7 @@ const ar = {
   },
   solutionsPage: {
     kicker: "حلولنا",
+    short: "الحلول",
     title: "حلول رقمية عملية تبدأ من المشكلة أولًا.",
     intro: "تجمع Mirai بين فهم الأعمال والإبداع والتقنية ومسارات العمل المدعومة بالذكاء الاصطناعي لحل تحديات رقمية عملية للشركات والمنظمات النامية.",
     labels: { problem: "المشكلة", helps: "كيف تساعد Mirai", outputs: "مخرجات شائعة", useful: "لمن يناسب" },
@@ -479,22 +486,25 @@ const ar = {
   },
   whoWeHelp: {
     kicker: "من نخدم",
+    short: "من نخدم",
     title: "أعمال مختلفة. تحديات مختلفة. حلول رقمية عملية.",
     intro: "الشركات الصغيرة والمتوسطة من مختلف القطاعات هي جمهور Mirai الأوسع. ونبني فهمًا أعمق لعدة فئات ذات أولوية يلعب فيها الحضور الرقمي والمحتوى وسير العمل دورًا مهمًا.",
     needsLabel: "قد تشمل الاحتياجات",
     groups: [
-      { title: "الشركات الصغيرة والمتوسطة النامية", needs: ["حضور رقمي احترافي", "رسالة أوضح", "أساسيات الهوية", "استفسارات العملاء", "تحسينات عملية لسير العمل"] },
-      { title: "المصانع والشركات الصناعية", needs: ["مصداقية أمام مشتري الأعمال", "المنتجات والقدرات", "الشهادات والاعتمادات", "الملفات التعريفية", "رحلات طلب عروض الأسعار", "تنظيم المحتوى", "تحسين سير العمل"] },
-      { title: "التجزئة والسلاسل المحلية", needs: ["اتساق الهوية", "المنتجات والمواقع", "الفروع والخرائط", "التواصل عبر واتساب", "محتوى ومواد رقمية عملية", "تحسينات رقمية للتشغيل"] },
-      { title: "المنظمات والمؤسسات", needs: ["الرسالة والبرامج", "التواصل حول الأثر", "التقارير والمحتوى", "الشركاء وأصحاب المصلحة", "رقمنة المستندات", "سير عمل رقمي عملي"] }
+      { key: "smes", title: "الشركات الصغيرة والمتوسطة النامية", needs: ["حضور رقمي احترافي", "رسالة أوضح", "أساسيات الهوية", "استفسارات العملاء", "تحسينات عملية لسير العمل"] },
+      { key: "manufacturing", title: "المصانع والشركات الصناعية", needs: ["مصداقية أمام مشتري الأعمال", "المنتجات والقدرات", "الشهادات والاعتمادات", "الملفات التعريفية", "رحلات طلب عروض الأسعار", "تنظيم المحتوى", "تحسين سير العمل"] },
+      { key: "retail", title: "التجزئة والسلاسل المحلية", needs: ["اتساق الهوية", "المنتجات والمواقع", "الفروع والخرائط", "التواصل عبر واتساب", "محتوى ومواد رقمية عملية", "تحسينات رقمية للتشغيل"] },
+      { key: "ngo", title: "المنظمات والمؤسسات", needs: ["الرسالة والبرامج", "التواصل حول الأثر", "التقارير والمحتوى", "الشركاء وأصحاب المصلحة", "رقمنة المستندات", "سير عمل رقمي عملي"] }
     ],
     closingTitle: "قطاعك غير موجود هنا؟",
     closingBody: "Mirai لا تقتصر على هذه الفئات. إذا كان لديك تحدٍّ رقمي يستحق الحل، نبدأ بفهم عملك ثم نبحث عن أبسط حل عملي له."
   },
   about: {
     kicker: "عن Mirai",
+    short: "عنّا",
     title: "Mirai تعني «المستقبل». ونرى أن ذلك ينبغي أن يظهر في طريقة حلّنا للمشكلات، لا في شكلنا فقط.",
     intro: "Mirai Solutions شركة تقودها التقنية، تجمع بين فهم الأعمال والإبداع والذكاء الاصطناعي والأدوات الحديثة لبناء حلول رقمية عملية.",
+    storyLabel: "قصتنا",
     storyTitle: "خبرة تمتد عبر الأعمال والمنتجات والأثر.",
     story: "تمتد الخبرة خلف Mirai لأكثر من اثني عشر عامًا في إدارة المنتجات وتطوير الأعمال وتقنيات التعليم والمنتجات الرقمية والعمليات والعمل المجتمعي ومسارات العمل المدعومة بالذكاء الاصطناعي. أما Mirai Solutions نفسها فشركة جديدة، أُسّست لتحوّل هذه الخبرة إلى طريقة أسرع وأوضح لحل المشكلات الرقمية العملية.",
     experience: ["إدارة المنتجات", "تطوير الأعمال", "تقنيات التعليم", "المنتجات الرقمية", "العمليات", "الأثر المجتمعي", "مسارات عمل مدعومة بالذكاء الاصطناعي"],
