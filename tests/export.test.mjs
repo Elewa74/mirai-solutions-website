@@ -4,7 +4,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { mkdtemp, readFile, readdir, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { join, relative, sep } from "node:path";
 import { SCANNER_TEXT } from "./content.test.mjs";
 
 const run = promisify(execFile);
@@ -44,7 +44,8 @@ test("static export: canonical pages + noindex legacy redirects, honest static f
     assert.match(await readFile(join(dir, "robots.txt"), "utf8"), /Allow: \/\nSitemap: https:\/\/miraisolutions\.net\/sitemap\.xml/);
 
     // every page: static flags, WhatsApp baked, no scanner text, and every internal link resolves to an exported file
-    const pages = (await walk(dir)).filter((p) => !/\/(ar\/)?(work|audit|manufacturing|retail|ngo)\/index\.html$/.test(p));
+    const rel = (p) => relative(dir, p).split(sep).join("/");
+    const pages = (await walk(dir)).filter((p) => !/^(ar\/)?(work|audit|manufacturing|retail|ngo)\/index\.html$/.test(rel(p)));
     for (const file of pages) {
       const html = await readFile(file, "utf8");
       assert.match(html, /<body[^>]*data-static="1" data-base="">/, file);
