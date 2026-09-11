@@ -41,6 +41,12 @@ jobs:
           # Repository variable (Settings → Secrets and variables → Actions → Variables): the WhatsApp number in
           # international digits (e.g. 2010XXXXXXXX). The static site hands consultation requests to WhatsApp with it.
           MIRAI_WHATSAPP: ${{ vars.MIRAI_WHATSAPP }}
+          # Optional email relay for the static site: a FormSubmit AJAX endpoint (https://formsubmit.co/ajax/<address>)
+          # and extra recipients (comma-separated). Success is shown only when the relay confirms delivery.
+          MIRAI_FORM_ENDPOINT: ${{ vars.MIRAI_FORM_ENDPOINT }}
+          MIRAI_FORM_CC: ${{ vars.MIRAI_FORM_CC }}
+          # Optional owner WhatsApp notification (CallMeBot URL with a {text} placeholder), fired after a confirmed send
+          MIRAI_NOTIFY_URL: ${{ vars.MIRAI_NOTIFY_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

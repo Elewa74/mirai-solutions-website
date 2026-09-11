@@ -30,13 +30,15 @@ const mime = {
 const compressible = /^(text\/|application\/(javascript|json|xml)|image\/svg)/;
 
 /* ---------- security headers (applied to every response) ---------- */
+// Optional third-party endpoints the consultation form may call from the browser (static-site email relay + owner notification)
+const extraConnect = ["MIRAI_FORM_ENDPOINT", "MIRAI_NOTIFY_URL"].map((k) => { try { return new URL(process.env[k] || "").origin; } catch { return ""; } }).filter((o) => /^https:/.test(o));
 const csp = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: https:",
-  "connect-src 'self'",
+  ["connect-src 'self'", ...new Set(extraConnect)].join(" "),
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self' https://wa.me"

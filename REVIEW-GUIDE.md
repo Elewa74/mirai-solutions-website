@@ -1,6 +1,6 @@
 # Mirai Solutions Website — Review Guide / دليل المراجعة (v2.0)
 
-**الرابط الأونلاين / Live site:** https://miraisolutions.net/ (Arabic: https://miraisolutions.net/ar/) — GitHub Pages، نسخة ثابتة: نافذة الاستشارة تعمل عبر واتساب؛ إرسال البريد يعمل فقط في نسخة السيرفر (Node).
+**الرابط الأونلاين / Live site:** https://miraisolutions.net/ (Arabic: https://miraisolutions.net/ar/) — GitHub Pages، نسخة ثابتة: نافذة الاستشارة ترسل بالبريد عبر FormSubmit (مع تنبيه واتساب لصاحب الموقع) وتُبقي زر واتساب للزائر؛ وعند تعذّر البريد تتحول تلقائيًا إلى متابعة واتساب.
 **الكود / Code:** https://github.com/Elewa74/mirai-solutions-website
 
 ## ما الذي يمثله الموقع
@@ -10,7 +10,7 @@ Mirai Solutions شركة حلول رقمية تقودها التقنية — ل�
 يحتاج Node.js 20 أو أحدث فقط — بلا تثبيت حزم ولا build.
 
 ```bash
-npm test                 # 59 اختبارًا (+1 اختبار متصفح عند توفر Playwright)
+npm test                 # 60 اختبارًا (اختبار المتصفح يعمل عند توفر Playwright)
 npm run check            # الاختبارات + 164 فحصًا (المسارات، التحويلات، SEO، الرؤوس، الأصول، API) → _reports/preflight.md
 node server.mjs          # http://localhost:3000  (العربية: http://localhost:3000/ar)
 ```
@@ -18,7 +18,7 @@ node server.mjs          # http://localhost:3000  (العربية: http://localh
 ## ما الذي نطلب مراجعته
 1. **التموضع** — هل يفهم الزائر الجديد أن Mirai تقدّم أربعة مجالات حلول (والمواقع في المقدمة) وليست شركة تصميم مواقع فقط؟ وهل واضح أن الذكاء الاصطناعي جزء من طريقة العمل لا خدمة؟
 2. **المحتوى** — وضوح كل حل (المشكلة → كيف نساعد → المخرجات → لمن يناسب)، ووضوح الفئات (من نخدم)، وجودة العربية (عربية معاصرة طبيعية لا ترجمة حرفية).
-3. **رحلة التحويل** — نافذة «اطلب استشارة مجانية» من الهيدر والهيرو وكل حل والنهاية: سهولة التعبئة، وضوح رسالة واتساب المجهّزة، الوصول بلوحة المفاتيح (Tab/Esc)، والتجربة على الموبايل.
+3. **رحلة التحويل** — نافذة «اطلب استشارة مجانية» من الهيدر والهيرو وكل حل والنهاية: سهولة التعبئة، وضوح رسالة «تم إرسال طلبك» ورسالة واتساب المجهّزة، الوصول بلوحة المفاتيح (Tab/Esc)، والتجربة على الموبايل.
 4. **الشكل والهوية** — الحفاظ على الاتجاه البصري (التايبوغرافي التحريري، الفراغات، التدرج اللوني، البند الداكن الواحد، الحركة الهادئة) في الفاتح والداكن.
 5. **الموبايل** — كل الصفحات بالعربية والإنجليزية عند 375px.
 6. **الأداء والتقنية** — تقرير `_reports/preflight.md` بعد التشغيل، وLighthouse إن أمكن.
@@ -53,7 +53,7 @@ node server.mjs          # http://localhost:3000  (العربية: http://localh
 Node.js 20+ only — no dependencies, no build step.
 
 ```bash
-npm test          # 59 tests (+1 browser test when Playwright is available)
+npm test          # 60 tests (the browser test runs when Playwright is available)
 npm run check     # tests + 164 preflight checks → _reports/preflight.md
 node server.mjs   # http://localhost:3000  (Arabic: /ar)
 ```

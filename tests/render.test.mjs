@@ -132,11 +132,21 @@ test("photography: every image has localised alt text, responsive sources and re
   }
 });
 
-test("WhatsApp number is exposed to the client only when configured", () => {
-  const prev = process.env.MIRAI_WHATSAPP;
-  delete process.env.MIRAI_WHATSAPP;
-  assert.doesNotMatch(renderPage("/", "en"), /data-whatsapp=/);
+test("WhatsApp number and the optional email relay are exposed to the client only when configured", () => {
+  const prev = { w: process.env.MIRAI_WHATSAPP, f: process.env.MIRAI_FORM_ENDPOINT, c: process.env.MIRAI_FORM_CC };
+  delete process.env.MIRAI_WHATSAPP; delete process.env.MIRAI_FORM_ENDPOINT; delete process.env.MIRAI_FORM_CC;
+  const bare = renderPage("/", "en");
+  assert.doesNotMatch(bare, /data-whatsapp=|data-form-endpoint=|data-form-cc=/);
   process.env.MIRAI_WHATSAPP = "+20 100 000 0000";
-  assert.match(renderPage("/", "en"), /data-whatsapp="201000000000"/);
-  if (prev === undefined) delete process.env.MIRAI_WHATSAPP; else process.env.MIRAI_WHATSAPP = prev;
+  process.env.MIRAI_FORM_ENDPOINT = "https://formsubmit.co/ajax/leads@example.com";
+  process.env.MIRAI_FORM_CC = "second@example.com";
+  const html = renderPage("/", "en");
+  assert.match(html, /data-whatsapp="201000000000"/);
+  assert.match(html, /data-form-endpoint="https:\/\/formsubmit\.co\/ajax\/leads@example\.com" data-form-cc="second@example\.com"/);
+  process.env.MIRAI_NOTIFY_URL = "https://api.callmebot.com/whatsapp.php?phone=201000000000&apikey=k&text={text}";
+  assert.match(renderPage("/", "en"), /data-notify-url="https:\/\/api\.callmebot\.com\/whatsapp\.php\?phone=201000000000&amp;apikey=k&amp;text=\{text\}"/);
+  delete process.env.MIRAI_NOTIFY_URL;
+  process.env.MIRAI_FORM_ENDPOINT = "not-a-url";
+  assert.doesNotMatch(renderPage("/", "en"), /data-form-endpoint=/, "only https endpoints are accepted");
+  for (const [k, v] of [["MIRAI_WHATSAPP", prev.w], ["MIRAI_FORM_ENDPOINT", prev.f], ["MIRAI_FORM_CC", prev.c]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
 });

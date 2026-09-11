@@ -26,7 +26,7 @@ async function withServer(env, fn) {
 }
 
 test("browser: consultation modal — open/close, focus management, preselect, ?consult=1, validation, static WhatsApp hand-off, theme, no mobile overflow", { skip: pw ? false : "Playwright not installed" }, async () => {
-  await withServer({ MIRAI_WHATSAPP: "201000000000" }, async (base) => {
+  await withServer({ MIRAI_WHATSAPP: "201000000000", MIRAI_FORM_ENDPOINT: "https://formsubmit.co/ajax/leads@example.com", MIRAI_NOTIFY_URL: "https://api.callmebot.com/whatsapp.php?phone=201000000000&apikey=test&text={text}" }, async (base) => {
     const browser = await pw.chromium.launch();
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: "reduce" });
     // fonts are external; keep the test offline-safe
@@ -94,8 +94,41 @@ test("browser: consultation modal — open/close, focus management, preselect, ?
     assert.match(await page.locator("[data-whatsapp-link]").getAttribute("href"), /Not%20Sure%20Yet/);
     assert.match(await page.locator("[data-result-title]").textContent(), /ready to send/i);
 
-    // theme toggle: light default → dark → persisted
+    // static export mode with an email relay: success only when the relay confirms; relay failure → WhatsApp hand-off
     await page.unroute(`${base}/`);
+    let relayCalls = 0, relayOk = true, relayPayload = null, notifyCalls = 0;
+    await page.route("https://api.callmebot.com/**", async (route) => { notifyCalls++; await route.fulfill({ status: 200, body: "ok" }); });
+    await page.route("https://formsubmit.co/ajax/**", async (route) => { relayCalls++; relayPayload = route.request().postDataJSON(); await route.fulfill({ status: relayOk ? 200 : 500, contentType: "application/json", body: JSON.stringify(relayOk ? { success: "true" } : { success: "false" }) }); });
+    await page.route(`${base}/solutions`, async (route) => {
+      const res = await route.fetch();
+      const html = (await res.text()).replace(/<body\b([^>]*)>/, '<body$1 data-static="1" data-base="" data-form-cc="second@example.com">');
+      await route.fulfill({ response: res, body: html, headers: { ...res.headers(), "content-type": "text/html; charset=utf-8", "content-length": String(Buffer.byteLength(html)) } });
+    });
+    const fill = async () => {
+      await page.fill("#c-name", "Mona"); await page.fill("#c-company", "Nile Works"); await page.fill("#c-email", "mona@example.com"); await page.fill("#c-whatsapp", "+201001234567");
+      await page.selectOption("#c-business", { index: 1 }); await page.selectOption("#c-interest", { index: 2 }); await page.fill("#c-message", "Brand essentials for a growing company.");
+      await page.locator(".submit-button").click();
+      await page.locator("[data-consult-result]").waitFor({ state: "visible" });
+    };
+    await page.goto(`${base}/solutions`);
+    await page.locator(".header-cta").click();
+    await fill();
+    assert.equal(relayCalls, 1);
+    assert.equal(relayPayload._cc, "second@example.com");
+    assert.equal(relayPayload["Company / Organization"], "Nile Works");
+    assert.equal(relayPayload._replyto, "mona@example.com");
+    assert.match(await page.locator("[data-result-title]").textContent(), /has been sent/);
+    assert.equal(await page.locator("[data-whatsapp-link]").isVisible(), true, "WhatsApp stays available next to the email confirmation");
+    assert.equal(notifyCalls, 1, "owner WhatsApp notification fired after a confirmed send");
+    relayOk = false;
+    await page.goto(`${base}/solutions`);
+    await page.locator(".header-cta").click();
+    await fill();
+    assert.equal(relayCalls, 2);
+    assert.match(await page.locator("[data-result-title]").textContent(), /ready to send/i, "relay failure must fall back to the WhatsApp hand-off, never a fake success");
+    await page.unroute(`${base}/solutions`);
+
+    // theme toggle: light default → dark → persisted
     await page.goto(`${base}/about`);
     assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), "light");
     await page.locator("[data-theme-toggle]").click();

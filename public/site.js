@@ -6,6 +6,11 @@ const locale = document.body.dataset.locale || "en";
 const STATIC = document.body.dataset.static === "1";
 const BASE = document.body.dataset.base || "";
 const WHATSAPP = (document.body.dataset.whatsapp || "").replace(/\D/g, "");
+// Optional email relay for the static site (FormSubmit-style AJAX endpoint baked in at export time)
+const FORM_ENDPOINT = document.body.dataset.formEndpoint || "";
+const FORM_CC = document.body.dataset.formCc || "";
+// Optional owner notification URL with a {text} placeholder (e.g. CallMeBot WhatsApp); best-effort, fire-and-forget
+const NOTIFY_URL = document.body.dataset.notifyUrl || "";
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isRTL = root.dir === "rtl";
 
@@ -175,6 +180,24 @@ function buildMessage(data) {
   ].filter((l) => l !== null).join("\n");
 }
 
+async function relayEmail(data) {
+  const payload = {
+    "Name": data.name, "Company / Organization": data.company, "Email": data.email, "WhatsApp": data.whatsapp,
+    "Business type": data.businessType, "Interested in": data.interest, "Website": data.website || "-", "Message": data.message,
+    "Language": locale === "ar" ? "Arabic" : "English", "Page": location.href,
+    _subject: `New consultation request — ${data.name} / ${data.company}`, _template: "table", _captcha: "false", _replyto: data.email
+  };
+  if (FORM_CC) payload._cc = FORM_CC;
+  const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "content-type": "application/json", accept: "application/json" }, body: JSON.stringify(payload) });
+  const json = await res.json().catch(() => ({}));
+  return res.ok && (json.success === true || json.success === "true");
+}
+
+function notifyOwner(text) {
+  if (!NOTIFY_URL) return;
+  try { fetch(NOTIFY_URL.replace("{text}", encodeURIComponent(text)), { mode: "no-cors", keepalive: true }).catch(() => {}); } catch {}
+}
+
 function showResult(kind, { whatsappHref, message } = {}) {
   const result = form.querySelector("[data-consult-result]");
   const title = result.querySelector("[data-result-title]");
@@ -217,7 +240,18 @@ if (form) {
     const localWa = WHATSAPP ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}` : null;
 
     if (STATIC) {
-      // No server on GitHub Pages: never pretend an email was sent — hand off to WhatsApp with the details pre-filled.
+      // No server on GitHub Pages. If an email relay is configured, send through it and show success only when it
+      // confirms; otherwise (or on failure) hand off to WhatsApp with the details pre-filled — never a fake "sent".
+      if (FORM_ENDPOINT) {
+        submit.disabled = true;
+        const original = label.textContent;
+        label.textContent = T.sending || original;
+        try {
+          const sent = await relayEmail(data);
+          if (sent) { notifyOwner(text); showResult("success", { whatsappHref: localWa, message: text }); return; }
+        } catch {}
+        finally { submit.disabled = false; label.textContent = original; }
+      }
       showResult(localWa ? "static" : "noChannel", { whatsappHref: localWa, message: text });
       return;
     }
@@ -237,7 +271,7 @@ if (form) {
         return;
       }
       const wa = result.whatsappHref || localWa;
-      if (result.emailSent) showResult("success", { whatsappHref: wa, message: text });
+      if (result.emailSent) { notifyOwner(text); showResult("success", { whatsappHref: wa, message: text }); }
       else showResult(wa ? "noEmail" : "noChannel", { whatsappHref: wa, message: text });
     } catch {
       if (localWa) showResult("noEmail", { whatsappHref: localWa, message: text });

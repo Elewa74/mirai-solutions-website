@@ -259,7 +259,7 @@ const en = {
     channelNote: "WhatsApp is the current contact channel for this website.",
     states: {
       static: { title: "Your request is ready to send.", body: "This version of the site sends consultation requests through WhatsApp. Your details are pre-filled — tap the button to send them to Mirai." },
-      success: { title: "Request received.", body: "We'll review what you shared and reply within one working day with a practical next step. You can also continue on WhatsApp now." },
+      success: { title: "Your request has been sent.", body: "Thank you — we've received your details and will reply within one working day with a practical next step. Prefer WhatsApp? You can continue there now." },
       noEmail: { title: "Ready to send.", body: "Email delivery isn't set up on this server yet, so your request continues on WhatsApp with your details pre-filled." },
       noChannel: { title: "Almost there.", body: "Copy the message below and send it to Mirai on WhatsApp or by email — the contact channel is being set up." }
     },
@@ -536,7 +536,7 @@ const ar = {
     channelNote: "واتساب هو قناة التواصل الحالية لهذا الموقع.",
     states: {
       static: { title: "طلبك جاهز للإرسال.", body: "هذه النسخة من الموقع ترسل طلبات الاستشارة عبر واتساب. بياناتك مجهّزة مسبقًا — اضغط الزر لإرسالها إلى Mirai." },
-      success: { title: "استلمنا طلبك.", body: "سنراجع ما أرسلته ونرد عليك خلال يوم عمل واحد بخطوة عملية تالية. ويمكنك متابعة الحديث على واتساب الآن." },
+      success: { title: "تم إرسال طلبك بنجاح.", body: "شكرًا لك — وصلتنا بياناتك وسنرد عليك خلال يوم عمل واحد بخطوة عملية تالية. تفضّل واتساب؟ يمكنك المتابعة هناك الآن." },
       noEmail: { title: "جاهز للإرسال.", body: "إرسال البريد غير مفعّل على هذا الخادم بعد، لذلك يتابع طلبك عبر واتساب وبياناتك مجهّزة مسبقًا." },
       noChannel: { title: "خطوة أخيرة.", body: "انسخ الرسالة أدناه وأرسلها إلى Mirai عبر واتساب أو البريد — قناة التواصل قيد الإعداد." }
     },

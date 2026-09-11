@@ -24,7 +24,7 @@ async function walk(dir, out = []) {
 const exists = (p) => stat(p).then(() => true, () => false);
 
 test("static export: canonical pages + noindex legacy redirects, honest static flags, sitemap and links that resolve", async () => {
-  const dir = await exportTo({ BASE_PATH: "", MIRAI_WHATSAPP: "+20 100 000 0000" });
+  const dir = await exportTo({ BASE_PATH: "", MIRAI_WHATSAPP: "+20 100 000 0000", MIRAI_FORM_ENDPOINT: "https://formsubmit.co/ajax/leads@example.com", MIRAI_FORM_CC: "second@example.com" });
   try {
     for (const p of ["index.html", "solutions/index.html", "who-we-help/index.html", "about/index.html", "ar/index.html", "ar/solutions/index.html", "ar/who-we-help/index.html", "ar/about/index.html", "404.html", ".nojekyll", "site.css", "site.js", "theme.mjs", "sitemap.xml", "robots.txt", "site.webmanifest"]) assert.ok(await exists(join(dir, p)), `missing ${p}`);
 
@@ -50,6 +50,7 @@ test("static export: canonical pages + noindex legacy redirects, honest static f
       const html = await readFile(file, "utf8");
       assert.match(html, /<body[^>]*data-static="1" data-base="">/, file);
       assert.match(html, /data-whatsapp="201000000000"/, file);
+      assert.match(html, /data-form-endpoint="https:\/\/formsubmit\.co\/ajax\/leads@example\.com" data-form-cc="second@example\.com"/, file);
       assert.doesNotMatch(html, SCANNER_TEXT, file);
       assert.doesNotMatch(html, /href="\/(ar\/)?(work|audit|manufacturing|retail|ngo)\/?"/, file);
       if (!file.endsWith("404.html")) assert.doesNotMatch(html, /name="robots" content="noindex/, file);
